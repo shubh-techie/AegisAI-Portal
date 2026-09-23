@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import ArchitectureDiagram from "../components/ArchitectureDiagram.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+---
+
+<Layout
+  title="Architecture"
+  description="A conceptual AegisAI authorization architecture separating implemented deterministic capabilities from planned behavioral intelligence and feedback."
+>
+  <Hero
+    eyebrow="02 / Architecture"
+    title="Explicit policy. Informed decisions."
+    description="A conceptual view of the authorization path and the research extensions that could connect evidence, bounded decisions and continuous feedback."
+  />
+  <div class="container page-content">
+    <ArchitectureDiagram detailed />
+    <section
+      class="section capability-list"
+      aria-label="Architecture capabilities"
+    >
+      <article>
+        <span class="card-index">01</span>
+        <div>
+          <h2>Deterministic Policy</h2>
+          <p>
+            Role-based authorization and attribute conditions provide explicit
+            rules in the implemented baselines. They form the foundation for
+            investigating policy-bounded adaptation.
+          </p>
+        </div>
+        <StatusBadge status="Implemented" />
+      </article>
+      <article>
+        <span class="card-index">02</span>
+        <div>
+          <h2>Contextual Risk</h2>
+          <p>
+            Model C uses deterministic contextual risk. This rule-based
+            capability is distinct from learned behavioral anomaly detection.
+          </p>
+        </div>
+        <StatusBadge status="Implemented" />
+      </article>
+      <article>
+        <span class="card-index">03</span>
+        <div>
+          <h2>Behavioral Intelligence</h2>
+          <p>
+            Planned investigation of behavioral evidence to help assess abnormal
+            or potentially compromised access. No learned behavioral model is
+            represented as implemented.
+          </p>
+        </div>
+        <StatusBadge status="Planned Research" />
+      </article>
+      <article>
+        <span class="card-index">04</span>
+        <div>
+          <h2>Policy-Bounded AI</h2>
+          <p>
+            Proposed AI-derived evidence would operate within deterministic
+            policy constraints. The allowed actions, explanations and handling
+            of policy/AI disagreement require research specification and
+            evaluation.
+          </p>
+        </div>
+        <StatusBadge status="Planned Research" />
+      </article>
+      <article>
+        <span class="card-index">05</span>
+        <div>
+          <h2>Continuous Feedback</h2>
+          <p>
+            A proposed feedback loop would connect telemetry and observed
+            outcomes to subsequent risk assessment. Its stability, usefulness
+            and operational costs remain open research questions.
+          </p>
+        </div>
+        <StatusBadge status="Planned Research" />
+      </article>
+    </section>
+    <aside class="notice">
+      <h2>A map of the investigation</h2>
+      <p>
+        The diagram combines existing baseline capabilities with proposed
+        research elements. It does not specify deployed services, current
+        telemetry coverage or an implemented adaptive decision engine.
+      </p>
+    </aside>
+  </div>
+</Layout>

@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { models } from "../data/project";
+const workstreams = [
+  {
+    title: "Scenario Generator",
+    text: "Future work: define repeatable access scenarios with documented identities, resource context and behavioral conditions.",
+  },
+  {
+    title: "Attack Simulation",
+    text: "Future work: specify controlled abnormal-access and operational disruption scenarios with explicit ground truth.",
+  },
+  {
+    title: "Benchmark Methodology",
+    text: "Future work: document model configurations, controlled conditions, measurement procedures and evaluation limitations.",
+  },
+  {
+    title: "Datasets",
+    text: "Future work: publish dataset descriptions, provenance, access conditions and reproducible preparation steps when available.",
+  },
+];
+---
+
+<Layout
+  title="Experiments"
+  description="The planned AegisAI reproducibility program: authorization model comparisons, scenarios, attack simulation, methodology and future results."
+>
+  <Hero
+    eyebrow="03 / Experiments"
+    title="Reproducibility before conclusions."
+    description="AegisAI emphasizes comparisons that can be inspected and repeated. The experimental program is being defined; no benchmark outcomes are reported here."
+  />
+  <div class="container page-content">
+    <section>
+      <SectionHeading
+        eyebrow="Comparison framework"
+        title="One question. Four model definitions."
+        description="Implemented baselines do not imply completed comparative experiments."
+      />
+      <div
+        class="table-scroll"
+        role="region"
+        aria-label="Authorization model comparison"
+        tabindex="0"
+      >
+        <table>
+          <caption>Authorization models and implementation status</caption>
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">Authorization approach</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {models.map((model) => (
+              <tr>
+                <th scope="row">Model {model.id}</th>
+                <td>{model.baseline}</td>
+                <td>
+                  <StatusBadge status={model.status} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section">
+      <SectionHeading
+        eyebrow="Planned experimental program"
+        title="Making the work repeatable."
+      />
+      <div class="cards-grid two">
+        {workstreams.map((item, index) => (
+          <article class="info-card">
+            <div class="card-top">
+              <span class="card-index">0{index + 1}</span>
+              <StatusBadge status="Planned Research" />
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section class="results-panel">
+      <span class="eyebrow">Results</span>
+      <h2>Experimental results in progress.</h2>
+      <p>
+        Comparative results and supporting artifacts will be published after
+        evaluation. There are no published measurements on this portal yet.
+      </p>
+    </section>
+  </div>
+</Layout>

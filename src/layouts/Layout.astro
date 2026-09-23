@@ -1,0 +1,53 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { project, asset } from "../data/project";
+import "../styles/global.css";
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+const {
+  title,
+  description = project.description,
+  noindex = false,
+} = Astro.props;
+const fullTitle = `${title} | AegisAI Research`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080f1c" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex ? (
+      <meta name="robots" content="noindex, follow" />
+    ) : (
+      <link rel="canonical" href={canonical} />
+    )}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AegisAI Research" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={asset("favicon.svg")} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

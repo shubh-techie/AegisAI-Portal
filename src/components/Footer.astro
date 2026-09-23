@@ -1,0 +1,26 @@
+---
+import { project, href } from "../data/project";
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <a class="wordmark" href={href()}>
+        Aegis<span>AI</span>
+      </a>
+      <p>{project.tagline}</p>
+    </div>
+    <div class="footer-note">
+      <span class="eyebrow">Open research / evolving work</span>
+      <p>Models A–C implemented. Model D is planned research.</p>
+    </div>
+    <a
+      class="text-link"
+      href={project.github}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Research repository ↗<span class="sr-only"> (opens in a new tab)</span>
+    </a>
+  </div>
+</footer>

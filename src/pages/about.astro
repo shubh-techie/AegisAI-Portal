@@ -1,0 +1,123 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ResearchTimeline from "../components/ResearchTimeline.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { project } from "../data/project";
+---
+
+<Layout
+  title="About & Roadmap"
+  description="The evolution of AegisAI from Securing-Microservices, its research roadmap and creator Shubh Prabhat."
+>
+  <Hero
+    eyebrow="05 / About & Roadmap"
+    title="An engineering origin. A research direction."
+    description="AegisAI grows from a microservices security project into a research program exploring adaptive intelligence for secure distributed systems."
+  />
+  <div class="container page-content">
+    <section class="split-section">
+      <SectionHeading
+        eyebrow="Project evolution"
+        title="From foundation to investigation."
+      />
+      <ResearchTimeline />
+    </section>
+    <section class="section">
+      <SectionHeading
+        eyebrow="The path ahead"
+        title="Research roadmap"
+        description="Research phases describe intent, not delivery dates or validated outcomes."
+      />
+      <div class="cards-grid two">
+        <article class="info-card">
+          <div class="card-top">
+            <span class="eyebrow">V0.1</span>
+            <StatusBadge status="Implemented" />
+          </div>
+          <h3>Deterministic Authorization Baselines</h3>
+          <p>
+            Models A–C establish role-based, attribute-based and deterministic
+            contextual-risk baselines.
+          </p>
+        </article>
+        <article class="info-card">
+          <div class="card-top">
+            <span class="eyebrow">Research Phase</span>
+            <StatusBadge status="In Preparation" />
+          </div>
+          <h3>Hypotheses and literature analysis</h3>
+          <p>
+            Finalize the research specification and review verified literature
+            before publishing hypotheses.
+          </p>
+        </article>
+        <article class="info-card">
+          <div class="card-top">
+            <span class="eyebrow">V0.2</span>
+            <StatusBadge status="Planned Research" />
+          </div>
+          <h3>Behavioral Risk Research</h3>
+          <p>
+            Investigate behavioral evidence for the proposed Model D and define
+            its evaluation conditions.
+          </p>
+        </article>
+        <article class="info-card">
+          <div class="card-top">
+            <span class="eyebrow">Future</span>
+            <StatusBadge status="Planned Research" />
+          </div>
+          <h3>
+            Closed-loop adaptive authorization and reproducible experiments
+          </h3>
+          <p>
+            Evaluate policy-bounded adaptation and publish reproducible
+            comparisons when supported by completed work.
+          </p>
+        </article>
+      </div>
+    </section>
+    <section class="split-section">
+      <SectionHeading eyebrow="Creator" title="Shubh Prabhat" />
+      <div class="prose">
+        <p class="lead">Software / Cloud / Distributed Systems Engineering</p>
+        <p>
+          Creator of AegisAI, exploring the intersection of authorization,
+          adaptive intelligence and resilient distributed systems.
+        </p>
+        <a
+          class="text-link"
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Explore the research repository ↗
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
+    </section>
+    <section class="notice">
+      <h2>Reading research status</h2>
+      <div class="status-guide">
+        <p>
+          <StatusBadge status="Implemented" /> Existing capability in the
+          research/application repository.
+        </p>
+        <p>
+          <StatusBadge status="Planned Research" /> Proposed work that has not
+          been implemented.
+        </p>
+        <p>
+          <StatusBadge status="Experimental" /> Reserved for work under
+          evaluation; it does not indicate validated results.
+        </p>
+        <p>
+          <StatusBadge status="In Preparation" /> A specification, paper or
+          other artifact being prepared.
+        </p>
+      </div>
+    </section>
+  </div>
+</Layout>

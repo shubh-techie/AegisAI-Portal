@@ -1,0 +1,15 @@
+---
+import { evolution } from "../data/project";
+---
+
+<ol class="timeline">
+  {evolution.map((item) => (
+    <li>
+      <span class="timeline-date">{item.date}</span>
+      <div>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </div>
+    </li>
+  ))}
+</ol>

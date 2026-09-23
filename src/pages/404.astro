@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { href } from "../data/project";
+---
+
+<Layout
+  title="Page not found"
+  description="This page could not be found in the AegisAI research portal."
+  noindex
+>
+  <section class="container not-found">
+    <span class="eyebrow">404 / Outside the research map</span>
+    <h1>Page not found.</h1>
+    <p>The address may have changed, or this page may not exist.</p>
+    <div class="actions">
+      <a class="button button-primary" href={href()}>
+        Return home →
+      </a>
+      <a class="button" href={href("research")}>
+        Explore Research
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { papers, talks } from "../data/project";
+---
+
+<Layout
+  title="Publications & Talks"
+  description="AegisAI research papers in preparation and proposed talks. No publication or conference acceptance is claimed."
+>
+  <Hero
+    eyebrow="04 / Publications & Talks"
+    title="AegisAI Research"
+    description="Working paper topics and proposed talks from the evolving research program. All items below are in preparation; no publication or conference acceptance is claimed."
+  />
+  <div class="container page-content">
+    <section>
+      <SectionHeading eyebrow="Writing in progress" title="Research papers" />
+      <div class="publication-list">
+        {papers.map((title, index) => (
+          <article>
+            <span class="publication-number">P / 0{index + 1}</span>
+            <div>
+              <StatusBadge status="In Preparation" />
+              <h3>{title}</h3>
+              <p>Working title · Manuscript in preparation</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section class="section">
+      <SectionHeading eyebrow="Ideas for discussion" title="Proposed talks" />
+      <div class="publication-list">
+        {talks.map((title, index) => (
+          <article>
+            <span class="publication-number">T / 0{index + 1}</span>
+            <div>
+              <StatusBadge status="Proposed / In Preparation" />
+              <h3>{title}</h3>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section class="notice">
+      <span class="eyebrow">Literature context</span>
+      <h2>Related Research</h2>
+      <p>
+        A curated list of verified related research will be added after the
+        literature review. References and publication metadata are not yet
+        available.
+      </p>
+    </section>
+  </div>
+</Layout>
