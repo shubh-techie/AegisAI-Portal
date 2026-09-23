@@ -1,0 +1,133 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ModelCard from "../components/ModelCard.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { project, models, href } from "../data/project";
+---
+
+<Layout
+  title="Research"
+  description="The AegisAI research problem, deterministic baselines and proposed policy-bounded behavioral adaptive authorization model."
+>
+  <Hero
+    eyebrow="01 / Research"
+    title="Authorization as a research question."
+    description="From deterministic access rules to explainable, policy-bounded adaptation. A research program grounded in comparison, transparency and reproducibility."
+  />
+  <div class="container page-content">
+    <section class="split-section">
+      <SectionHeading
+        eyebrow="The problem"
+        title="Decisions in changing systems."
+      />
+      <div class="prose">
+        <h3>Research Problem</h3>
+        <p>
+          Cloud-native distributed systems make access decisions while
+          identities, request context and operational conditions change. Roles
+          and attributes provide explicit policy boundaries, but understanding
+          how authorization should respond to abnormal behavior remains a
+          research challenge.
+        </p>
+        <p>
+          AegisAI investigates whether behavioral evidence and operational
+          system state can inform useful adaptations while preserving
+          deterministic constraints and understandable decisions. The benefits
+          and tradeoffs remain to be tested.
+        </p>
+      </div>
+    </section>
+    <section class="question-panel">
+      <span class="eyebrow">Research Question</span>
+      <h2>{project.question}</h2>
+    </section>
+    <section class="section">
+      <SectionHeading
+        eyebrow="Comparative foundation"
+        title="Baselines"
+        description="Implementation status refers to the separate AegisAI research/application repository. This portal presents the research program."
+      />
+      <div class="models-grid three">
+        {models.slice(0, 3).map((model) => (
+          <ModelCard model={model} />
+        ))}
+      </div>
+    </section>
+    <section class="split-section">
+      <SectionHeading
+        eyebrow="The next investigation"
+        title="Proposed Model D"
+      />
+      <div class="prose">
+        <StatusBadge status="Planned Research" />
+        <p>
+          {models[3].baseline}. The proposed model investigates behavioral
+          intelligence, operational state and continuous feedback within
+          explicit authorization policy boundaries.
+        </p>
+        <p>
+          AI-derived evidence would inform a decision; deterministic policy
+          would constrain the available actions. The research must establish
+          whether this approach improves security outcomes and at what
+          operational cost. Model D is not implemented.
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <SectionHeading
+        eyebrow="How we investigate"
+        title="Research Principles"
+      />
+      <div class="cards-grid three">
+        <article class="info-card">
+          <span class="card-index">01</span>
+          <h3>Policy remains explicit</h3>
+          <p>
+            Investigate adaptation constrained by deterministic rules and
+            reviewable decision boundaries.
+          </p>
+        </article>
+        <article class="info-card">
+          <span class="card-index">02</span>
+          <h3>Evidence before claims</h3>
+          <p>
+            Separate implemented capabilities, planned designs and
+            experimentally supported findings.
+          </p>
+        </article>
+        <article class="info-card">
+          <span class="card-index">03</span>
+          <h3>Explain the decision</h3>
+          <p>
+            Make the contributing policy, context and proposed risk evidence
+            understandable to reviewers.
+          </p>
+        </article>
+      </div>
+    </section>
+    <section class="split-section">
+      <SectionHeading eyebrow="Open methodology" title="Reproducibility" />
+      <div class="prose">
+        <p>
+          The intended experimental program compares models under documented
+          scenarios and controlled conditions. Methods, configurations and
+          limitations should accompany results so others can assess and
+          reproduce the work.
+        </p>
+        <a class="text-link" href={href("experiments")}>
+          View the experimental plan →
+        </a>
+      </div>
+    </section>
+    <section class="notice">
+      <StatusBadge status="In Preparation" />
+      <h2>Research hypotheses</h2>
+      <p>
+        Research hypotheses will be published after the research specification
+        is finalized.
+      </p>
+    </section>
+  </div>
+</Layout>

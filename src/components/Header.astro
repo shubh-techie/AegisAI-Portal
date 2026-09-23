@@ -1,0 +1,36 @@
+---
+import { href, navigation, project } from "../data/project";
+const current = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href={href()} aria-label="AegisAI home">
+      <span class="brand-symbol" aria-hidden="true">
+        Λ
+      </span>
+      Aegis<span>AI</span>
+    </a>
+    <nav aria-label="Main navigation">
+      {navigation.map((item) => (
+        <a
+          href={href(item.path)}
+          aria-current={
+            current === href(item.path).replace(/\/$/, "") ? "page" : undefined
+          }
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <a
+      class="button button-small header-github"
+      href={project.github}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View on GitHub <span aria-hidden="true">↗</span>
+      <span class="sr-only"> (opens in a new tab)</span>
+    </a>
+  </div>
+</header>

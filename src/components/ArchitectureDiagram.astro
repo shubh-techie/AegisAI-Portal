@@ -1,0 +1,107 @@
+---
+interface Props {
+  detailed?: boolean;
+}
+const { detailed = false } = Astro.props;
+---
+
+<figure class="architecture">
+  <div class="diagram-header">
+    <span class="eyebrow">
+      {detailed ? "02 / System architecture" : "01 / Research architecture"}
+    </span>
+    <span class="diagram-label">Conceptual flow</span>
+  </div>
+  <div class="diagram-legend">
+    <span>
+      <i class="legend-solid" aria-hidden="true"></i>Implemented baseline
+      capabilities
+    </span>
+    <span>
+      <i class="legend-dashed" aria-hidden="true"></i>Planned research
+    </span>
+  </div>
+  {detailed && (
+    <div class="request-node">
+      Request <span aria-hidden="true">↓</span>
+    </div>
+  )}
+  <div class="input-grid">
+    <div class="diagram-node">
+      Identity<small>Roles & attributes</small>
+    </div>
+    <div class="diagram-node">
+      Context<small>Request evidence</small>
+    </div>
+    <div class="diagram-node future">
+      Behavior<small>Planned research</small>
+    </div>
+    <div class="diagram-node future">
+      Operational State<small>Planned research</small>
+    </div>
+  </div>
+  <div class="flow-arrow" aria-hidden="true">
+    ↓
+  </div>
+  <div class="engine-grid">
+    <div class="diagram-node">
+      {detailed ? "Policy Engine" : "Risk Intelligence"}
+      <small>
+        {detailed ? "Deterministic policy" : "Deterministic contextual risk"}
+      </small>
+    </div>
+    <span class="inline-arrow" aria-hidden="true">
+      →
+    </span>
+    <div class="diagram-node">
+      {detailed ? "Risk Intelligence" : "Policy Engine"}
+      <small>
+        {detailed ? "Deterministic contextual risk" : "Deterministic policy"}
+      </small>
+    </div>
+    <span class="inline-arrow" aria-hidden="true">
+      →
+    </span>
+    <div class="diagram-node future">
+      {detailed ? "Decision Engine" : "Adaptive Decision"}
+      <small>Adaptive extension · planned</small>
+    </div>
+  </div>
+  <div class="planned-strip">
+    Behavioral intelligence + policy-bounded AI <span>Planned research</span>
+  </div>
+  <div class="flow-arrow" aria-hidden="true">
+    ↓
+  </div>
+  <div class="decision-row" aria-label="Conceptual decision outputs">
+    <span>ALLOW</span>
+    <span>STEP-UP</span>
+    <span>LIMIT</span>
+    <span>DENY</span>
+  </div>
+  {detailed && (
+    <>
+      <div class="flow-arrow" aria-hidden="true">
+        ↓
+      </div>
+      <div class="feedback-row">
+        <div class="diagram-node future">
+          Telemetry<small>Research instrumentation · planned</small>
+        </div>
+        <span aria-hidden="true">→</span>
+        <div class="diagram-node future">
+          Feedback<small>Continuous loop · planned research</small>
+        </div>
+      </div>
+      <div class="feedback-return">
+        ↳ Proposed feedback to risk assessment and policy-bounded adaptation
+      </div>
+    </>
+  )}
+  <figcaption>
+    Conceptual research architecture, not a deployment schematic. Solid nodes
+    represent capabilities of Models A–C; dashed nodes describe planned
+    extensions. The output vocabulary does not assert that every model
+    implements every action.
+  </figcaption>
+</figure>

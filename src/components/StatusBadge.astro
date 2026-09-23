@@ -1,0 +1,18 @@
+---
+import type { Status } from "../data/project";
+interface Props {
+  status: Status;
+}
+const { status } = Astro.props;
+const kind =
+  status === "Implemented"
+    ? "implemented"
+    : status === "Experimental"
+      ? "experimental"
+      : "planned";
+---
+
+<span class:list={["badge", kind]}>
+  <span aria-hidden="true" class="status-dot"></span>
+  {status}
+</span>
