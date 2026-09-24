@@ -1,0 +1,40 @@
+---
+import { creator } from "../data/creator";
+interface Props {
+  showPending?: boolean;
+}
+const { showPending = false } = Astro.props;
+const links = [
+  { label: "GitHub", url: creator.links.github },
+  { label: "Google Scholar", url: creator.links.scholar },
+  { label: "LinkedIn", url: creator.links.linkedin },
+];
+---
+
+<ul
+  class="creator-links"
+  aria-label={`${creator.name}'s professional profiles`}
+>
+  {links.map(({ label, url }) =>
+    url ? (
+      <li>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${creator.name} on ${label} (opens in a new tab)`}
+        >
+          {label} <span aria-hidden="true">↗</span>
+        </a>
+      </li>
+    ) : (
+      showPending && (
+        <li>
+          <span class="profile-unavailable">
+            {label} <small>(not provided)</small>
+          </span>
+        </li>
+      )
+    ),
+  )}
+</ul>

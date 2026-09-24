@@ -130,3 +130,21 @@ test("production artifacts contain no development URLs or custom domain file", (
   assert.ok(!existsSync("public/CNAME"));
   assert.ok(!existsSync("dist/CNAME"));
 });
+
+test("creator identity is accessible without inventing social profiles", () => {
+  for (const { html } of [...pages, { html: read("404.html") }]) {
+    assert.match(html, /name="author" content="Shubh Prabhat"/);
+    assert.match(html, /href="https:\/\/github\.com\/shubh-techie"/);
+    assert.match(html, /scholar\.google\.com\/citations\?user=HrEzOfIAAAAJ/);
+    assert.doesNotMatch(html, /href="[^"]*linkedin/i);
+  }
+  const about = read("about/index.html");
+  assert.match(about, /id="creator-heading"/);
+  assert.match(about, /Software &amp; Distributed Systems Engineer/);
+  assert.match(about, /LinkedIn/);
+  assert.match(
+    about,
+    /separate AegisAI-Portal website repository began in 2026/,
+  );
+  assert.match(read("publications/index.html"), /Creator profile:/);
+});

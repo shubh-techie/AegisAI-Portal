@@ -1,0 +1,53 @@
+---
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { creator } from "../data/creator";
+import { asset } from "../data/project";
+import CreatorLinks from "./CreatorLinks.astro";
+const hasPhoto = existsSync(resolve("public", creator.photo.path));
+---
+
+<section class="creator-profile" aria-labelledby="creator-heading">
+  <div class="creator-portrait">
+    {hasPhoto ? (
+      <img
+        class="creator-photo"
+        src={asset(creator.photo.path)}
+        alt={creator.photo.alt}
+        width="200"
+        height="200"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div
+        class="creator-placeholder"
+        role="img"
+        aria-label={`${creator.name}; portrait not yet supplied`}
+      >
+        <span aria-hidden="true">{creator.initials}</span>
+        <span aria-hidden="true" class="portrait-caption">
+          Portrait forthcoming
+        </span>
+      </div>
+    )}
+  </div>
+  <div class="creator-details">
+    <span class="eyebrow">The person behind the project</span>
+    <h2 id="creator-heading">Creator &amp; Maintainer</h2>
+    <h3>{creator.name}</h3>
+    <p class="creator-role">{creator.role}</p>
+    <div class="prose">
+      {creator.biography.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+    <h4>Research interests</h4>
+    <ul class="creator-interests">
+      {creator.interests.map((interest) => (
+        <li>{interest}</li>
+      ))}
+    </ul>
+    <CreatorLinks showPending />
+  </div>
+</section>

@@ -4,12 +4,13 @@ import Hero from "../components/Hero.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ResearchTimeline from "../components/ResearchTimeline.astro";
 import StatusBadge from "../components/StatusBadge.astro";
-import { project } from "../data/project";
+import CreatorProfile from "../components/CreatorProfile.astro";
+import { creator } from "../data/creator";
 ---
 
 <Layout
   title="About & Roadmap"
-  description="The evolution of AegisAI from Securing-Microservices, its research roadmap and creator Shubh Prabhat."
+  description={`The evolution of AegisAI from Securing-Microservices, its research roadmap and creator ${creator.name}.`}
 >
   <Hero
     eyebrow="05 / About & Roadmap"
@@ -21,6 +22,7 @@ import { project } from "../data/project";
       <SectionHeading
         eyebrow="Project evolution"
         title="From foundation to investigation."
+        description="This timeline describes the AegisAI research/application project. The separate AegisAI-Portal website repository began in 2026."
       />
       <ResearchTimeline />
     </section>
@@ -79,25 +81,7 @@ import { project } from "../data/project";
         </article>
       </div>
     </section>
-    <section class="split-section">
-      <SectionHeading eyebrow="Creator" title="Shubh Prabhat" />
-      <div class="prose">
-        <p class="lead">Software / Cloud / Distributed Systems Engineering</p>
-        <p>
-          Creator of AegisAI, exploring the intersection of authorization,
-          adaptive intelligence and resilient distributed systems.
-        </p>
-        <a
-          class="text-link"
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Explore the research repository ↗
-          <span class="sr-only"> (opens in a new tab)</span>
-        </a>
-      </div>
-    </section>
+    <CreatorProfile />
     <section class="notice">
       <h2>Reading research status</h2>
       <div class="status-guide">

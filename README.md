@@ -74,6 +74,14 @@ Implementation is not evidence of measured research outcomes. Architecture diagr
 
 Hypotheses await the finalized research specification. Papers and talks are in preparation. There are no invented measurements, citations, affiliations, acceptance claims or publication metadata. `Experimental` is defined as a status reserved for work under evaluation; no completed comparative experiment is claimed.
 
+## Creator and professional profiles
+
+Creator details are centralized in `src/data/creator.ts`. About presents the technical biography and research interests; the footer and Publications page reuse the supplied professional links. LinkedIn has an unlinked About slot until a verified URL is provided.
+
+The supplied creator portrait is stored unchanged at `public/images/shubh-prabhat.jpg` (the attachment contains JPEG data). About displays it as a round 200px desktop / 160px mobile avatar using CSS, with meaningful alt text, lazy loading and the GitHub Pages base-path helper. The source image is not retouched, converted or destructively cropped. The build retains an accessible initials fallback if the configured image is missing.
+
+See [creator specification](docs/specs/SPEC-001-creator-profile.md) and [Portal V1 review](docs/PORTAL_V1_REVIEW.md) for implementation status, validation and remaining limitations.
+
 ## Deployment
 
 The portal is configured to deploy through **GitHub Pages using GitHub Actions**.
@@ -93,7 +101,7 @@ Permissions are scoped by job: the build receives `contents: read`; deployment r
 3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
 4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
 
-The first live deployment remains pending until these changes are reviewed and reach `main`; a successful local build is not confirmation of a live GitHub Pages deployment.
+The existing Pages URL returned HTTP 200 during the 2026-09-23 PORTAL-003 review. The creator-profile changes remain local and are not part of that deployed version; a successful local build does not publish them.
 
 ### Project-path configuration
 

@@ -38,3 +38,27 @@ Record meaningful engineering changes in chronological order. This is not a copy
 - Added a durable documentation index to the root README while preserving its pending deployment edits.
 - **Validation:** checked milestone dates and changes against Git, reviewed existing deployment/configuration files, and checked documentation links and whitespace. No application behavior changed; no additional build or runtime tests were required for this documentation-only task.
 - **Status:** documentation created locally, pending review and commit. Existing PORTAL-002 changes remain uncommitted and should be kept as a separate logical change when commits are authorized.
+
+## 2026-09-23 — PORTAL-003: Creator profile and Portal V1 review
+
+- **Evidence:** local implementation on `feature/creator-profile`, based on `653e401`. Git now shows the earlier deployment/documentation work in `ff1e711` and its merge through PR #2 (`653e401`); this updates the earlier pending working-tree snapshot without rewriting it. The existing Pages URL returned HTTP 200 during this task; this does not publish the current enhancement.
+- Centralized creator name, role, supplied biography, research interests, portrait settings and professional URLs in `src/data/creator.ts`.
+- Added `CreatorProfile.astro` and `CreatorLinks.astro`; updated About, footer, Publications and author metadata. GitHub and Google Scholar use supplied URLs; LinkedIn remains an unlinked slot because no verified URL was found.
+- The required `public/images/shubh-prabhat.webp` is absent. Implemented the requested accessible placeholder, with an original-photo path ready for a future build. Did not generate, manipulate or substitute the attached person's photo. Actual WebP loading is pending supply of that file.
+- Clarified the research/application timeline versus the 2026 portal repository. Model D, paper/talk preparation status and absence of experimental results remain explicit. No unsupported research claims were discovered; no new research assertions were added.
+- Added `SPEC-001-creator-profile.md` and `PORTAL_V1_REVIEW.md`; updated documentation links and appended a clearly labeled working-tree milestone to project history without altering historical entries.
+- **Validation:** `npm ci`, type-check, production build and all seven output tests passed. Final Chrome/axe review passed 28 page/viewport cases with no automated accessibility violations, overflow or runtime/network failures. Keyboard navigation, reduced motion, internal links/fragments and base-path assets passed. An initial footer link color-only accessibility failure was corrected with an underline before rerunning. No apparent secrets or unintended private information were found in the bounded public-source/artifact review. Existing GitHub, Scholar and Pages URLs returned HTTP 200.
+- **Warnings:** npm emitted the environment-level `Unknown env config "min-release-age"` warning. No Astro/type-check errors or warnings remained. Actual person-photo loading was not tested because the specified file is missing.
+- **Git integrity:** pre-task commit IDs and refs preserved; project history verified append-only. No commit, push or merge performed.
+- **Status:** IMPLEMENTED locally and ready for V1 release review with the permitted portrait and LinkedIn placeholders. See the review report for limitations; the creator enhancement is not yet deployed.
+
+## 2026-09-23 — PORTAL-003 follow-up: Supplied round creator avatar
+
+- The user explicitly extended PORTAL-003 to use the attached author photo and present it as a round avatar on About. This supersedes the earlier missing-photo limitation without altering its historical record.
+- Added `public/images/shubh-prabhat.jpg`. The supplied attachment contains JPEG data despite its temporary PNG extension; the asset is an unchanged copy, verified by matching SHA-256 hashes. No image generation, retouching, conversion or destructive cropping was performed.
+- Updated the centralized portrait path and CSS to use a circular frame with `object-fit: cover`, retaining 200px desktop / 160px mobile sizes, lazy loading, asynchronous decoding, meaningful alt text and the Pages base-path helper. The initials fallback remains for a genuinely missing file.
+- Updated the creator specification, README and V1 review to include the authorized photo rather than the earlier pending WebP requirement. Project history received only an appended follow-up.
+- Validation: type-check, production build and all seven output tests passed. The source EXIF check found no GPS, artist, user-comment, camera-owner-name or body-serial tags; source bytes and ordinary camera metadata are preserved. The original photo is approximately 492 KiB and is lazy-loaded instead of recompressed.
+- Environment note: npm still reports the external `min-release-age` warning. The initial preview-start approval review timed out; the retry found an existing preview on port 4321, which was reused and left running.
+- Status: implemented locally as part of PORTAL-003; no commit, push, merge or deployment performed. LinkedIn remains unlinked pending a verified URL.
+- Browser follow-up: the actual JPEG decoded from `/AegisAI-Portal/images/shubh-prabhat.jpg`; circular styling, alt text, responsive dimensions, no overflow and axe accessibility checks passed at 1440, 768, 390 and 320px. Desktop/mobile screenshots were inspected.
