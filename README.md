@@ -6,6 +6,21 @@ Observe. Assess. Authorize. Respond.
 
 A static public research website built with Astro, TypeScript and CSS. This repository is separate from the [AegisAI research/application repository](https://github.com/shubh-techie/AegisAI). Research theme: AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems.
 
+## Project records and agent workflow
+
+Start with [AGENTS.md](AGENTS.md), then read [Project history](docs/PROJECT_HISTORY.md), [Development log](docs/DEVELOPMENT_LOG.md), and relevant [specifications](docs/specs/README.md) and [ADRs](docs/adr/README.md). Inspect Git history before making changes. These records provide durable context for future sessions.
+
+The development workflow is:
+
+```text
+main -> feature branch -> implementation -> local validation -> commit -> push
+     -> pull request -> CI -> merge -> delete feature branch
+```
+
+Preserve existing commits and use new commits for corrections. Do not rewrite history, amend historical commits, alter their dates/authors or force push. Keep one logical change per commit and follow the current task's authorization before committing or publishing. Update the development log for meaningful work; significant functionality needs a SPEC, and important architectural decisions need an ADR.
+
+This workflow describes the required process, not existing branch-protection settings. The pending deployment workflow has no pull-request trigger; pre-merge PR CI remains a setup task.
+
 ## Local development
 
 Use Node.js 24 LTS (`nvm use` if you use nvm) and npm.
@@ -59,31 +74,48 @@ Implementation is not evidence of measured research outcomes. Architecture diagr
 
 Hypotheses await the finalized research specification. Papers and talks are in preparation. There are no invented measurements, citations, affiliations, acceptance claims or publication metadata. `Experimental` is defined as a status reserved for work under evaluation; no completed comparative experiment is claimed.
 
-## GitHub Pages deployment strategy (not deployed)
+## Deployment
 
-Default build configuration targets `https://shubh-techie.github.io/AegisAI-Portal/`. This is a proposed deployment address, not a claim that the website is live. Confirm the account and repository path before deployment.
+The portal is configured to deploy through **GitHub Pages using GitHub Actions**.
 
-`astro.config.mjs` sets a static output, `site` origin and repository `base`. Internal links, assets, canonical URLs, robots.txt and sitemap use this configuration. Override at build time for a custom domain or another path:
+Temporary production URL: **https://shubh-techie.github.io/AegisAI-Portal/**
 
-```sh
-SITE_URL=https://research.example.org BASE_PATH=/ npm run build
+The deployment workflow is `.github/workflows/deploy-pages.yml`. It runs on pushes to `main` and supports manual `workflow_dispatch` runs from the Actions tab. Only `main` can deploy; manual runs on other branches perform the build and checks without publishing.
+
+The build job uses Node 24 from `.nvmrc`, runs `npm ci`, `npm run check`, `npm run build`, and `npm test`, then uploads `dist/` with the official `actions/upload-pages-artifact` action. The deployment job configures Pages and publishes that artifact with `actions/deploy-pages` in the `github-pages` environment. This follows the official GitHub Pages static-site build/artifact/deploy approach with explicit npm steps for the Astro build.
+
+Permissions are scoped by job: the build receives `contents: read`; deployment receives only `pages: write` and `id-token: write`. Concurrent deployments are serialized. The workflow uses GitHub's token; no personal access token or third-party hosting service is needed.
+
+### First deployment
+
+1. In this repository's **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source.
+2. After review, commit and merge the deployment changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AegisAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
+3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
+4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
+
+The first live deployment remains pending until these changes are reviewed and reach `main`; a successful local build is not confirmation of a live GitHub Pages deployment.
+
+### Project-path configuration
+
+`astro.config.mjs` defaults to:
+
+```js
+site: "https://shubh-techie.github.io",
+base: "/AegisAI-Portal",
 ```
 
-`SITE_URL` must be an absolute origin; put any subpath in `BASE_PATH`. Use `/` explicitly for a root-hosted site. Changing either setting requires rebuilding.
+The workflow explicitly supplies these same values through `SITE_URL` and `BASE_PATH`. Internal links and local assets use the shared base-path helpers. Canonical and Open Graph URLs, robots.txt and sitemap references include the project path. The static output contains directory indexes plus `404.html`, and requires no application server.
 
-After review and explicit deployment authorization:
+The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; no external font or image service is required. Tests check generated routes, local assets, metadata, sitemap references and the absence of development URLs. GitHub Pages project sites host robots.txt under the repository path; crawlers normally look for robots.txt at the origin root. Submit the project sitemap separately or manage the origin-root robots.txt when needed.
 
-1. Enable GitHub Pages with GitHub Actions as its source.
-2. Add a reviewed workflow that checks out the repository, sets up Node 24, runs `npm ci`, `npm run check`, `npm run build`, and `npm test`.
-3. Upload `dist/` with the GitHub Pages artifact action, then deploy that artifact with the Pages deployment action using the `github-pages` environment and appropriate `pages: write` / `id-token: write` permissions.
-4. Verify all six routes, asset paths, canonical metadata, sitemap and the custom 404 on the published URL.
+### Custom domain later
 
-No deployment workflow is enabled in this task. The build emits directory indexes and `404.html` suitable for GitHub Pages; it needs no application server. GitHub Pages project sites host robots.txt under the repository path; search engines generally discover robots.txt at the origin root. Control the root site's robots.txt or submit the project sitemap separately when deploying under a project subpath.
+A custom domain will be configured later. No domain has been selected and no `CNAME` file is included. When that work is authorized, update both the Astro configuration and workflow URL settings, configure the domain in GitHub Pages, and rebuild to refresh canonical URLs and sitemap references.
 
-Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en/guides/deploy/github/) and [Astro sitemap integration](https://docs.astro.build/en/guides/integrations-guide/sitemap/).
+Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en/guides/deploy/github/) and [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
 ## Review and next work
 
 Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results, verified literature list or social preview image are supplied yet. Metadata includes text-based Open Graph and Twitter/X summary cards.
 
-Recommended next task: review content and accessibility on the target deployment URL configuration, then authorize a GitHub Pages workflow separately. Do not publish speculative hypotheses or research outcomes.
+Recommended next task: review and merge the deployment configuration, then verify the first live GitHub Pages deployment. Do not publish speculative hypotheses or research outcomes.

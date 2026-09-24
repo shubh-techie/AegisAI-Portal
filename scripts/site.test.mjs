@@ -115,3 +115,18 @@ test("production output has no client scripts or third-party embeds", () => {
     assert.doesNotMatch(html, /<script\b|<iframe\b|<form\b/);
   assert.equal(walk("dist").filter((path) => /\.(m?js)$/.test(path)).length, 0);
 });
+
+test("production artifacts contain no development URLs or custom domain file", () => {
+  for (const path of walk("dist").filter((path) =>
+    /\.(html|css|xml|txt|svg)$/.test(path),
+  )) {
+    const content = readFileSync(path, "utf8");
+    assert.doesNotMatch(
+      content,
+      /(?:localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\]|https?:\/\/[^\s"'<>]*(?:\.local|\.localhost|\.test|\.invalid)(?:[/:\s"'<>]|$)|https?:\/\/(?:[^/\s]+\.)?example\.(?:com|org|net)|\/@(?:vite|fs|id)\/|astro-dev-toolbar)/i,
+      `Development reference in ${path}`,
+    );
+  }
+  assert.ok(!existsSync("public/CNAME"));
+  assert.ok(!existsSync("dist/CNAME"));
+});
