@@ -1,6 +1,6 @@
 # Specifications
 
-Add or update a SPEC when implementing significant functionality. This directory currently contains guidance only; it does not imply that an earlier portal or research specification has been finalized.
+Add or update a SPEC when implementing significant functionality. Specifications below document their stated scope and status; they do not imply that the separate AegisAI research specification has been finalized.
 
 Use sequential filenames such as `SPEC-001-short-title.md`. Include:
 
@@ -17,3 +17,7 @@ Separate proposed behavior from existing behavior. For a retrospective specifica
 The separate AegisAI research repository owns its research specification and finalized hypotheses. Do not invent them in this portal repository. Use the root [README.md](../../README.md) and [development log](../DEVELOPMENT_LOG.md) for the current portal baseline and pending work.
 
 Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md).
+
+## Specifications
+
+- [SPEC-001 — Creator profile and research identity](SPEC-001-creator-profile.md): PORTAL-003 implementation and portrait fallback requirements.

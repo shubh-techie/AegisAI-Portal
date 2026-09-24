@@ -1203,3 +1203,125 @@ tbody tr:last-child > * {
     column-gap: 18px;
   }
 }
+
+/* Creator identity remains secondary to the research project. */
+.creator-profile {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 40px;
+  padding-block: 36px 44px;
+  border-bottom: 1px solid var(--line);
+}
+.creator-photo,
+.creator-placeholder {
+  display: block;
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.creator-photo {
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+.creator-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  color: var(--cyan);
+  font: 2.7rem var(--mono);
+}
+.portrait-caption {
+  color: var(--muted);
+  font: 0.65rem var(--mono);
+}
+.creator-details h2 {
+  margin-top: 10px;
+}
+.creator-details h3 {
+  font-size: 1.4rem;
+  margin-top: 22px;
+}
+.creator-role {
+  color: var(--cyan);
+  margin-block: 8px 22px;
+  font-size: 0.95rem;
+}
+.creator-details h4 {
+  margin: 24px 0 12px;
+  font-size: 0.9rem;
+  font-weight: 550;
+}
+.creator-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+}
+.creator-interests li {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.creator-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+.creator-links a {
+  display: inline-block;
+  padding-block: 6px;
+  color: var(--cyan);
+}
+.creator-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.profile-unavailable {
+  display: inline-block;
+  padding-block: 6px;
+  color: var(--muted);
+}
+.profile-unavailable small {
+  font-size: 0.72rem;
+}
+.footer-project {
+  max-width: 390px;
+}
+.footer-project p a {
+  color: var(--cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.site-footer .creator-links {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  gap: 8px 16px;
+}
+.scholar-note {
+  margin-bottom: 32px;
+  font-size: 0.88rem;
+}
+@media (max-width: 760px) {
+  .creator-profile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .creator-photo,
+  .creator-placeholder {
+    width: 160px;
+    height: 160px;
+  }
+}

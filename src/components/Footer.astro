@@ -1,18 +1,25 @@
 ---
 import { project, href } from "../data/project";
+import { creator } from "../data/creator";
+import CreatorLinks from "./CreatorLinks.astro";
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <div>
+    <div class="footer-project">
       <a class="wordmark" href={href()}>
         Aegis<span>AI</span>
       </a>
-      <p>{project.tagline}</p>
+      <p>{project.fullName}</p>
+      <p>
+        Open-source research initiative created and maintained by{" "}
+        <a href={`${href("about")}#creator-heading`}>{creator.name}</a>.
+      </p>
     </div>
     <div class="footer-note">
       <span class="eyebrow">Open research / evolving work</span>
       <p>Models A–C implemented. Model D is planned research.</p>
+      <CreatorLinks />
     </div>
     <a
       class="text-link"
