@@ -25,7 +25,7 @@ At build time, check the configured image path. Render the original file through
 
 ## Acceptance and validation
 
-- All seven pages build below `/AegisAI-Portal/`; local assets, navigation, fragments, canonical URLs and sitemap references resolve.
+- All seven pages build at `/` on `https://aegisai.world` under PORTAL-005; local assets, navigation, fragments, canonical URLs and sitemap references resolve. The original repository-prefix validation is preserved in the dated Portal V1 review.
 - Creator metadata is consistent across About, footer, Publications and document heads.
 - No invented LinkedIn destination, research measurements, citations or accepted publications are added.
 - Layout supports desktop, tablet and narrow mobile screens; keyboard focus and reduced-motion behavior remain usable.

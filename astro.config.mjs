@@ -2,9 +2,9 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  // Temporary GitHub Pages project URL; change together for a future custom domain.
-  site: process.env.SITE_URL || "https://shubh-techie.github.io",
-  base: process.env.BASE_PATH || "/AegisAI-Portal",
+  // GitHub Pages serves the custom domain from its root.
+  site: "https://aegisai.world",
+  base: "/",
   output: "static",
   trailingSlash: "always",
   integrations: [sitemap({ filter: (page) => !page.endsWith("/404/") })],
