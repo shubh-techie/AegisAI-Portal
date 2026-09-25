@@ -30,7 +30,7 @@ npm install
 npm run dev
 ```
 
-Open the local address printed by Astro, including `/AegisAI-Portal/`.
+Open the local address printed by Astro at `/`. Development and preview use the same root routes as production.
 
 ```sh
 npm run check
@@ -86,7 +86,7 @@ See [creator specification](docs/specs/SPEC-001-creator-profile.md) and [Portal 
 
 The portal is configured to deploy through **GitHub Pages using GitHub Actions**.
 
-Temporary production URL: **https://shubh-techie.github.io/AegisAI-Portal/**
+Canonical production URL: **https://aegisai.world/**
 
 The deployment workflow is `.github/workflows/deploy-pages.yml`. It runs on pushes to `main` and supports manual `workflow_dispatch` runs from the Actions tab. Only `main` can deploy; manual runs on other branches perform the build and checks without publishing.
 
@@ -94,31 +94,31 @@ The build job uses Node 24 from `.nvmrc`, runs `npm ci`, `npm run check`, `npm r
 
 Permissions are scoped by job: the build receives `contents: read`; deployment receives only `pages: write` and `id-token: write`. Concurrent deployments are serialized. The workflow uses GitHub's token; no personal access token or third-party hosting service is needed.
 
-### First deployment
+### Deployment workflow
 
 1. In this repository's **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source.
-2. After review, commit and merge the deployment changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AegisAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
+2. After review, commit and merge approved portal changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AegisAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
 3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
 4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
 
-The existing Pages URL returned HTTP 200 during the 2026-09-23 PORTAL-003 review. The creator-profile changes remain local and are not part of that deployed version; a successful local build does not publish them.
+The custom domain is configured in GitHub Pages. A successful local build does not publish changes; the workflow deploys the reviewed version after it reaches `main`.
 
-### Project-path configuration
+### Custom-domain root configuration
 
-`astro.config.mjs` defaults to:
+`astro.config.mjs` is the production URL source of truth:
 
 ```js
-site: "https://shubh-techie.github.io",
-base: "/AegisAI-Portal",
+site: "https://aegisai.world",
+base: "/",
 ```
 
-The workflow explicitly supplies these same values through `SITE_URL` and `BASE_PATH`. Internal links and local assets use the shared base-path helpers. Canonical and Open Graph URLs, robots.txt and sitemap references include the project path. The static output contains directory indexes plus `404.html`, and requires no application server.
+The deployment workflow uses this configuration directly, without `SITE_URL` or `BASE_PATH` overrides. The static output and GitHub Pages build/upload/deploy architecture remain unchanged. Do not restore the former repository prefix when building for this domain.
 
-The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; no external font or image service is required. Tests check generated routes, local assets, metadata, sitemap references and the absence of development URLs. GitHub Pages project sites host robots.txt under the repository path; crawlers normally look for robots.txt at the origin root. Submit the project sitemap separately or manage the origin-root robots.txt when needed.
+Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, favicon and creator photo are served from root paths. Canonical and Open Graph URLs use `https://aegisai.world`; robots.txt references `https://aegisai.world/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
 
-### Custom domain later
+The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, social-preview image references or JSON-LD to migrate. Existing Twitter/X summary-card metadata remains unchanged. Tests reject old deployment paths and development URLs in generated artifacts.
 
-A custom domain will be configured later. No domain has been selected and no `CNAME` file is included. When that work is authorized, update both the Astro configuration and workflow URL settings, configure the domain in GitHub Pages, and rebuild to refresh canonical URLs and sitemap references.
+The existing GitHub Actions custom-domain setup is retained. No `CNAME` file is added. See [SPEC-002 — Custom-domain migration](docs/specs/SPEC-002-custom-domain.md) for the audit and validation requirements. Earlier deployment URLs in historical logs and the dated V1 review are intentionally preserved.
 
 Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en/guides/deploy/github/) and [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
@@ -126,4 +126,4 @@ Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en
 
 Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results, verified literature list or social preview image are supplied yet. Metadata includes text-based Open Graph and Twitter/X summary cards.
 
-Recommended next task: review and merge the deployment configuration, then verify the first live GitHub Pages deployment. Do not publish speculative hypotheses or research outcomes.
+Recommended next task: review and merge the root-path migration, then verify the deployed routes and assets at aegisai.world. Do not publish speculative hypotheses or research outcomes.

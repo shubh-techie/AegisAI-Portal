@@ -148,3 +148,31 @@ test("creator identity is accessible without inventing social profiles", () => {
   );
   assert.match(read("publications/index.html"), /Creator profile:/);
 });
+
+test("production routes and metadata use the aegisai.world root", () => {
+  assert.equal(site.origin, "https://aegisai.world");
+  assert.equal(base, "/");
+  for (const { route, html } of pages) {
+    const expected = `https://aegisai.world/${route ? route + "/" : ""}`;
+    assert.ok(html.includes(`property="og:url" content="${expected}"`));
+    for (const destination of routes) {
+      assert.ok(
+        html.includes(`href="/${destination ? destination + "/" : ""}"`),
+      );
+    }
+  }
+  assert.ok(
+    read("sitemap-index.xml").includes("https://aegisai.world/sitemap-0.xml"),
+  );
+  assert.match(read("about/index.html"), /src="\/images\/shubh-prabhat\.jpg"/);
+  assert.ok(existsSync("dist/images/shubh-prabhat.jpg"));
+  for (const path of walk("dist").filter((path) =>
+    /\.(html|css|js|json|xml|txt|svg)$/.test(path),
+  )) {
+    assert.doesNotMatch(
+      readFileSync(path, "utf8"),
+      /\/AegisAI-Portal(?:\/|["'?#\s<]|$)|shubh-techie\.github\.io/i,
+      `Former deployment URL in ${path}`,
+    );
+  }
+});

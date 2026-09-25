@@ -19,8 +19,6 @@ jobs:
       contents: read
     env:
       ASTRO_TELEMETRY_DISABLED: "1"
-      SITE_URL: https://shubh-techie.github.io
-      BASE_PATH: /AegisAI-Portal
     steps:
       - name: Checkout
         uses: actions/checkout@v7
