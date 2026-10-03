@@ -26,3 +26,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-003 — Community hackathon program](SPEC-003-hackathon-program.md): planned events, configurable community roles and registration integrity.
 
 - [SPEC-004 — Speakers, judges and participation workflow](SPEC-004-participation-workflow.md): PORTAL-006 public profiles, configurable forms, privacy and invitation templates.
+
+- [SPEC-005 — Communications and launch readiness](SPEC-005-launch-readiness.md): PORTAL-007 templates, operations, proposed scoring and social metadata.

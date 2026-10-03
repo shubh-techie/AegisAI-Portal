@@ -4,12 +4,13 @@ export type ProgramStatus = "CONFIRMED" | "INVITED" | "PLANNED" | "COMPLETED";
 // Set to official HTTPS application forms when available; never invent URLs.
 export const PARTICIPANT_REGISTRATION_FORM_URL: string | null = null;
 export const JUDGE_INVITATION_FORM_URL: string | null = null;
+export const SUBMISSION_FORM_URL: string | null = null;
 // Compatibility alias for PORTAL-005 consumers; configure the registration URL above.
 export const PARTICIPANT_FORM_URL = PARTICIPANT_REGISTRATION_FORM_URL;
 export const registrationLinks = {
   participant: PARTICIPANT_REGISTRATION_FORM_URL,
   judge: JUDGE_INVITATION_FORM_URL,
-  submission: null as string | null,
+  submission: SUBMISSION_FORM_URL,
 };
 export const program = {
   title: "AegisAI Community Hackathons",
@@ -19,7 +20,7 @@ export const program = {
   terms: "Prizes and rules are subject to official event terms until finalized. No prize has been awarded.",
   eligibility: "Free participation for platform engineers, cloud engineers, security engineers, SREs, software engineers, AI/ML engineers, researchers and graduate students. Final eligibility, team limits and any geographic or age requirements will be specified in official event terms.",
 };
-export const participants = ["Platform Engineers", "Cloud Engineers", "Security Engineers", "SREs", "Software Engineers", "AI/ML Engineers", "Researchers", "Graduate Students"];
+export const participants = ["Platform Engineers", "Cloud Engineers", "Security Engineers", "Distributed Systems Engineers", "SREs", "Software Engineers", "AI/ML Engineers", "Researchers", "Graduate Students"];
 export const judgingCriteria = ["Technical correctness", "Security reasoning", "Architecture quality", "Reproducibility", "Innovation", "Explainability", "Documentation"];
 export const statusDefinitions: Record<ProgramStatus, string> = {
   CONFIRMED: "Participation or arrangements explicitly confirmed.",
@@ -62,3 +63,24 @@ export const events: {
 ];
 export const keynote = { person: creator, status: "PLANNED" as ProgramStatus };
 export { speakers, judges } from "./hackathonPeople";
+
+/** Proposed operating rubric; finalize in official terms before the event opens. */
+export const scoringFramework = [
+  { category: "Technical Correctness", weight: 25 },
+  { category: "Security & Threat Reasoning", weight: 20 },
+  { category: "Architecture & Engineering", weight: 20 },
+  { category: "Reproducibility", weight: 15 },
+  { category: "Innovation", weight: 10 },
+  { category: "Documentation & Explainability", weight: 10 },
+];
+export const submissionRequirements = [
+  "Public GitHub repository unless an exception is approved before submission",
+  "README", "Architecture description", "Setup instructions", "Demo",
+  "Test evidence", "Security considerations", "Limitations", "License information",
+];
+export const optionalSubmissionMaterials = ["Video demo", "Benchmark results", "Research notes"];
+export const engineeringProblems = [
+  { title: "Authorization and identity", description: "Test how roles, attributes and identity context affect policy decisions across service boundaries. Explain who can do what and why." },
+  { title: "Risk and observability", description: "Explore which signals support a risk decision, how to trace its evidence and how to distinguish anomalies from legitimate operational changes." },
+  { title: "Resilience and incident response", description: "Use isolated failure scenarios to evaluate detection, recovery and policy-bounded response. Document safeguards and effects on distributed services." },
+];

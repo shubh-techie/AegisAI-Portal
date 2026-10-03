@@ -240,3 +240,26 @@ test("public profiles require both confirmation and explicit display permission"
   assert.ok([...speakers, ...judges].every(slot => slot.person === null));
   assert.doesNotMatch(read("hackathons/community/index.html"), /Synthetic test fixture/);
 });
+
+
+test("launch rubric, submission package and hackathon social metadata are consistent", () => {
+  const source = readFileSync("src/data/hackathons.ts", "utf8");
+  const weights = [...source.matchAll(/category: "([^"]+)", weight: (\d+)/g)].map(match => ({category: match[1], weight: Number(match[2])}));
+  assert.deepEqual(weights.map(item => item.weight), [25, 20, 20, 15, 10, 10]);
+  assert.equal(weights.reduce((sum, item) => sum + item.weight, 0), 100);
+  const rubric = readFileSync("docs/hackathons/JUDGING_FRAMEWORK.md", "utf8");
+  for (const item of weights) assert.ok(rubric.includes(`| ${item.category} | ${item.weight}% |`));
+  const events = read("hackathons/events/index.html");
+  for (const item of weights) assert.ok(events.includes(`${item.weight}%`));
+  for (const artifact of ["README", "Architecture description", "Setup instructions", "Demo", "Test evidence", "Security considerations", "Limitations", "License information", "Video demo", "Benchmark results", "Research notes"])
+    assert.ok(events.includes(artifact), artifact);
+  assert.match(events, /Public GitHub repository unless an exception is approved before submission/);
+  assert.match(read("hackathons/index.html"), /Distributed Systems Engineers/);
+  for (const route of ["hackathons", "hackathons/events", "hackathons/community"]) {
+    const html = read(`${route}/index.html`);
+    assert.match(html, /property="og:description"/);
+    assert.match(html, /name="twitter:description"/);
+    assert.match(html, /name="twitter:card" content="summary"/);
+    assert.doesNotMatch(html, /property="og:image"|name="twitter:image"|drive\.google\.com|mailto:|tel:/);
+  }
+});
