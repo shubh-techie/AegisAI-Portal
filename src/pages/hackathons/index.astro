@@ -1,0 +1,31 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HackathonNav from "../../components/HackathonNav.astro";
+import HackathonRegistration from "../../components/HackathonRegistration.astro";
+import { events, participants, program, judgingCriteria } from "../../data/hackathons";
+import { href, project } from "../../data/project";
+---
+<Layout title="Community Hackathons" description={program.description}>
+  <section class="page-hero container hackathon-hero">
+    <span class="eyebrow">Community engineering / PLANNED</span>
+    <h1>{program.title}</h1>
+    <p class="hackathon-tagline">{program.subtitle}</p>
+    <p class="lead">{program.description}</p>
+    <div class="actions"><HackathonRegistration /><a class="button" href={project.github}>Explore AegisAI on GitHub ↗</a></div>
+  </section>
+  <div class="container page-content">
+    <HackathonNav />
+    <section class="section" aria-labelledby="timeline-heading">
+      <span class="eyebrow">Three challenges / one research direction</span>
+      <h2 id="timeline-heading">The planned event timeline</h2>
+      <p>Participation is FREE. {program.prize}. {program.terms} Exact dates and time zones are pending.</p>
+      <div class="cards-grid three hackathon-timeline">
+        {events.map((event, i) => <article class="info-card"><div class="card-top"><span class="eyebrow">0{i + 1}</span><span class="program-status">{event.status}</span></div><h3>{event.title}</h3><p><strong>Launch:</strong> {event.launch}<br /><strong>Submission:</strong> {event.submission}</p><ul class="theme-tags">{event.themes.map(theme => <li>{theme}</li>)}</ul><a class="text-link" href={`${href("hackathons/events")}#${event.id}`}>Explore the challenge →</a></article>)}
+      </div>
+    </section>
+    <section class="section" aria-labelledby="participants-heading"><h2 id="participants-heading">For people who build and investigate</h2><p>Bring engineering experience, research curiosity or a new perspective.</p><ul class="theme-tags">{participants.map(person => <li>{person}</li>)}</ul></section>
+    <section class="section" aria-labelledby="how-heading"><h2 id="how-heading">How participation works</h2><ol class="participation-steps"><li><h3>Register interest</h3><p>Use the official form once available. Review finalized eligibility and event terms before entering.</p></li><li><h3>Choose a challenge</h3><p>Explore the repository, define a scoped problem and work in an isolated test environment.</p></li><li><h3>Build and measure</h3><p>Document assumptions, create reproducible tests and explain both successes and limitations.</p></li><li><h3>Submit and share</h3><p>Share code, evidence and documentation through the official submission channel when announced.</p></li></ol></section>
+    <section class="section" aria-labelledby="judging-heading"><h2 id="judging-heading">Evidence before spectacle</h2><p>Proposed judging rewards sound engineering and honest security reasoning. A clear negative result can be valuable when it is reproducible. Criteria weights, judging procedures and tie-breaking will be published in official terms.</p><ul class="theme-tags">{judgingCriteria.map(criterion => <li>{criterion}</li>)}</ul><a class="text-link" href={href("hackathons/events")}>Read deliverables and proposed rules →</a></section>
+    <section class="notice" id="code-of-conduct"><h2>Code of Conduct</h2><p>Program conduct expectations: treat others respectfully, welcome different backgrounds and experience levels, give constructive feedback, and credit collaborators and prior work. Harassment, discrimination and intimidation are unacceptable.</p><p>Test only systems and data you are authorized to use. Keep credentials and personal information out of submissions. Report vulnerabilities privately to the affected maintainer rather than exposing sensitive details publicly.</p><p>A reporting contact and enforcement procedure will be published with official event terms before registration opens. Do not post conduct reports or sensitive vulnerability details in public submissions.</p></section>
+  </div>
+</Layout>

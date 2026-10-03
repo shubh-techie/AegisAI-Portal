@@ -1,0 +1,7 @@
+---
+import { registrationLinks } from "../data/hackathons";
+interface Props { url?: string | null; id?: string; }
+const id = Astro.props.id ?? "registration-note";
+const url = Astro.props.url ?? registrationLinks.participant;
+---
+{url ? <a class="button button-primary" href={url}>Register Interest</a> : <div class="registration-placeholder"><button class="button" disabled aria-describedby={id}>Register Interest</button><p id={id}>Interest registration is not open yet. The official form will be linked here when available.</p></div>}

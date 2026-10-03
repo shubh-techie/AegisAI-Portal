@@ -22,6 +22,7 @@ export const navigation = [
   { label: "Experiments", path: "experiments" },
   { label: "Publications", path: "publications" },
   { label: "About", path: "about" },
+  { label: "Hackathons", path: "hackathons" },
 ];
 export const models: {
   id: string;
