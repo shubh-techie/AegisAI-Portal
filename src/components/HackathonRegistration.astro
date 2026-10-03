@@ -1,7 +1,12 @@
 ---
 import { registrationLinks } from "../data/hackathons";
-interface Props { url?: string | null; id?: string; }
-const id = Astro.props.id ?? "registration-note";
-const url = Astro.props.url ?? registrationLinks.participant;
+interface Props { url?: string | null; id?: string; kind?: "participant" | "judge"; }
+const kind = Astro.props.kind ?? "participant";
+const id = Astro.props.id ?? `${kind}-registration-note`;
+const url = Astro.props.url ?? registrationLinks[kind];
+const label = kind === "judge" ? "Apply to Judge" : "Register for Hackathon";
+const note = kind === "judge"
+  ? "Judge applications are not open yet. The official application form will be linked here when available."
+  : "Participant registration is not open yet. The official registration form will be linked here when available.";
 ---
-{url ? <a class="button button-primary" href={url}>Register Interest</a> : <div class="registration-placeholder"><button class="button" disabled aria-describedby={id}>Register Interest</button><p id={id}>Interest registration is not open yet. The official form will be linked here when available.</p></div>}
+{url ? <a class="button button-primary" href={url}>{label}</a> : <div class="registration-placeholder"><button class="button" disabled aria-describedby={id}>{label}</button><p id={id}>{note}</p></div>}

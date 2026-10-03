@@ -137,11 +137,31 @@ The planned program is configured in `src/data/hackathons.ts`: events, status de
 speaker/judge slots and registration/submission links. Creator identity and portrait remain
 owned by `src/data/creator.ts` and reused through `CreatorProfile.astro`.
 
-Set `PARTICIPANT_FORM_URL` to an official HTTPS form URL when available. Its default is
-`null`, so Register Interest is disabled with a visible explanation. Event-specific
-registration URLs override the shared form; submission URLs can be configured per event
-or through `registrationLinks.submission`. Rebuild the static site after configuration changes.
-No registration or submission data is collected by the portal itself.
+Set `PARTICIPANT_REGISTRATION_FORM_URL` and `JUDGE_INVITATION_FORM_URL` to official HTTPS
+Google Form URLs when ready. Both default to `null`; Register for Hackathon and Apply to
+Judge remain disabled with visible explanations. `PARTICIPANT_FORM_URL` is a compatibility
+alias for the participant registration setting. Event-specific registration URLs override
+the shared participant form; submission URLs are configured separately. Rebuild after changes.
+No authentication, participant database or application collection is added to this portal.
+Google Forms/Drive will initially handle applications; no live external workflow is configured here.
+
+`src/data/hackathonPeople.ts` provides three guest speaker slots and three independent judge
+slots. Fill a slot only with approved public information. Speaker records support name,
+title, organization, local photo/alt, bio, topics, LinkedIn URL and CONFIRMED/INVITED status.
+Judge records additionally support technical expertise and event assignments (event IDs
+from `hackathons.ts`). Public profiles require CONFIRMED status and `publicDisplayApproved: true`.
+Invited and unapproved records render anonymous planned slots; they are never presented as confirmed.
+The keynote continues to reuse the existing approved creator profile; scheduling remains planned.
+
+This repository is public: keep application responses, private emails, phone numbers,
+Drive IDs, conflict disclosures, invitation tracking and internal notes outside repository
+configuration. Status is separate from permission to publish. Request consent for the exact
+public fields and photo before adding them, and remove/rebuild if permission is withdrawn.
+Invitation templates are available for [judges](docs/hackathons/JUDGE_INVITATION_TEMPLATE.md),
+[speakers](docs/hackathons/SPEAKER_INVITATION_TEMPLATE.md) and
+[participants](docs/hackathons/PARTICIPANT_INVITATION_TEMPLATE.md). Templates are drafts;
+replace placeholders privately and verify terms before sending. No invitations were sent.
+See [SPEC-004](docs/specs/SPEC-004-participation-workflow.md) for PORTAL-006.
 
 All three events and keynote arrangements are PLANNED. Free participation, proposed rules
 and a planned USD $300 prize per event are presented subject to finalized official terms.

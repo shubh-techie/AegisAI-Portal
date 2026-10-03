@@ -1,0 +1,32 @@
+---
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { approvedPublicPerson, type Speaker, type Judge, type CommunitySlot } from "../data/hackathonPeople";
+import { events } from "../data/hackathons";
+import { asset, href } from "../data/project";
+interface Props { entry: CommunitySlot<Speaker> | CommunitySlot<Judge>; }
+const { entry } = Astro.props;
+const person = approvedPublicPerson<Speaker | Judge>(entry.person);
+const photo = person?.photo;
+const hasPhoto = photo && existsSync(resolve("public", photo.path));
+---
+<article class="info-card">
+  {person ? <>
+    <span class="program-status">{person.status}</span>
+    {hasPhoto && photo && <img class="creator-photo" src={asset(photo.path)} alt={photo.alt} width="200" height="200" loading="lazy" decoding="async" />}
+    <h3>{person.name}</h3>
+    <p>{person.title}{person.organization && ` · ${person.organization}`}</p>
+    <p>{person.bio}</p>
+    {"topics" in person && <><h4>Topics</h4><ul>{person.topics.map(topic => <li>{topic}</li>)}</ul></>}
+    {"technicalExpertise" in person && <><h4>Technical expertise</h4><ul>{person.technicalExpertise.map(expertise => <li>{expertise}</li>)}</ul><h4>Event assignment</h4>{person.eventAssignments.length ? <ul>{person.eventAssignments.map(id => {const event = events.find(event => event.id === id);return event && <li><a class="text-link" href={`${href("hackathons/events")}#${id}`}>{event.title}</a></li>;})}</ul> : <p>Event assignment to be announced.</p>}</>}
+    {person.linkedinUrl && <a class="text-link" href={person.linkedinUrl}>LinkedIn profile</a>}
+  </> : <>
+    <span class="program-status">PLANNED</span><h3>{entry.label}</h3>
+    <p>Person to be announced after confirmation and public-profile approval.</p>
+  </>}
+</article>
+
+<style>
+  .info-card { min-width: 0; overflow-wrap: anywhere; }
+  .creator-photo { max-width: 100%; height: auto; aspect-ratio: 1; }
+</style>

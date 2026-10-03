@@ -1,10 +1,14 @@
 import { creator } from "./creator";
 
 export type ProgramStatus = "CONFIRMED" | "INVITED" | "PLANNED" | "COMPLETED";
-// Set to an official HTTPS interest form when available; never invent a URL.
-export const PARTICIPANT_FORM_URL: string | null = null;
+// Set to official HTTPS application forms when available; never invent URLs.
+export const PARTICIPANT_REGISTRATION_FORM_URL: string | null = null;
+export const JUDGE_INVITATION_FORM_URL: string | null = null;
+// Compatibility alias for PORTAL-005 consumers; configure the registration URL above.
+export const PARTICIPANT_FORM_URL = PARTICIPANT_REGISTRATION_FORM_URL;
 export const registrationLinks = {
-  participant: PARTICIPANT_FORM_URL,
+  participant: PARTICIPANT_REGISTRATION_FORM_URL,
+  judge: JUDGE_INVITATION_FORM_URL,
   submission: null as string | null,
 };
 export const program = {
@@ -56,16 +60,5 @@ export const events: {
     registrationUrl: null, submissionUrl: null,
   },
 ];
-export interface CommunitySlot {
-  id: string;
-  label: string;
-  status: ProgramStatus;
-  person: { name: string; role: string; profileUrl: string | null } | null;
-}
 export const keynote = { person: creator, status: "PLANNED" as ProgramStatus };
-export const speakers: CommunitySlot[] = Array.from({ length: 3 }, (_, i) => ({
-  id: `guest-${i + 1}`, label: `Future guest speaker ${i + 1}`, status: "PLANNED", person: null,
-}));
-export const judges: CommunitySlot[] = Array.from({ length: 3 }, (_, i) => ({
-  id: `judge-${i + 1}`, label: `Independent judge slot ${i + 1}`, status: "PLANNED", person: null,
-}));
+export { speakers, judges } from "./hackathonPeople";
