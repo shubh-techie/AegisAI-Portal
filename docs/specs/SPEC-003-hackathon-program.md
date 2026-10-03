@@ -102,3 +102,14 @@ Official eligibility, exact dates/time zones, prize funding/payment and award co
 judging procedures, conduct reporting/enforcement contact, licenses, forms and confirmed
 people remain pending. No real registration, deployed update or completed event is claimed.
 No ADR is required: this extends the existing static data/component approach.
+
+
+## PORTAL-006 extension — 2026-10-03
+
+[SPEC-004](SPEC-004-participation-workflow.md) extends this foundation without redesign.
+Actual speaker/judge records now allow CONFIRMED or INVITED, separately from anonymous
+PLANNED slots and event status. Public profiles require confirmation and explicit display
+approval. Participant CTAs now say Register for Hackathon and use
+`PARTICIPANT_REGISTRATION_FORM_URL`; `PARTICIPANT_FORM_URL` remains a compatibility alias.
+`JUDGE_INVITATION_FORM_URL` configures Apply to Judge. Both forms remain unset.
+The earlier implementation observations above describe PORTAL-005, not a deployed workflow.

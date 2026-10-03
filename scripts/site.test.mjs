@@ -199,7 +199,7 @@ test("hackathon foundation keeps events provisional and registration unavailable
   assert.match(landing, /Participation is FREE/);
   assert.match(landing, /USD \$300 prize per hackathon/);
   assert.match(landing, /subject to official event terms until finalized/);
-  assert.match(landing, /disabled[^>]*>Register Interest/);
+  assert.match(landing, /disabled[^>]*>Register for Hackathon/);
   for (const id of ["adaptive-authorization", "behavioral-risk", "autonomous-resilience"])
     assert.ok(events.includes(`id="${id}"`));
   for (const month of ["November 2026", "December 2026", "January 2027", "February 2027", "March 2027"])
@@ -208,4 +208,35 @@ test("hackathon foundation keeps events provisional and registration unavailable
   assert.match(community, /src="\/images\/shubh-prabhat\.jpg"/);
   assert.equal((community.match(/Future guest speaker [123]/g) || []).length, 3);
   assert.equal((community.match(/Independent judge slot [123]/g) || []).length, 3);
+});
+
+
+test("participation CTAs stay unavailable without official forms", () => {
+  const community = read("hackathons/community/index.html");
+  assert.match(community, /disabled[^>]*>Apply to Judge/);
+  assert.match(community, /disabled[^>]*>Register for Hackathon/);
+  assert.match(community, /Google Forms\/Drive/);
+  assert.doesNotMatch(community, /mailto:|tel:|drive\.google\.com|docs\.google\.com\/forms|forms\.gle/);
+  for (const route of ["hackathons", "hackathons/events", "hackathons/community"]) {
+    const html = read(`${route}/index.html`);
+    assert.match(html, /Register for Hackathon/);
+    assert.doesNotMatch(html, /Register Interest/);
+  }
+});
+
+test("public profiles require both confirmation and explicit display permission", async () => {
+  const { transpileModule } = await import("typescript");
+  const source = readFileSync("src/data/hackathonPeople.ts", "utf8");
+  const { outputText } = transpileModule(source, { compilerOptions: { module: 99, target: 99 } });
+  const { approvedPublicPerson, speakers, judges } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  const approved = { name: "Synthetic test fixture", status: "CONFIRMED", publicDisplayApproved: true };
+  assert.equal(approvedPublicPerson(approved), approved);
+  assert.equal(approvedPublicPerson({ ...approved, status: "INVITED" }), null);
+  assert.equal(approvedPublicPerson({ ...approved, publicDisplayApproved: false }), null);
+  assert.equal(approvedPublicPerson({ name: "Synthetic test fixture", status: "CONFIRMED" }), null);
+  assert.equal(approvedPublicPerson(null), null);
+  assert.equal(speakers.length, 3);
+  assert.equal(judges.length, 3);
+  assert.ok([...speakers, ...judges].every(slot => slot.person === null));
+  assert.doesNotMatch(read("hackathons/community/index.html"), /Synthetic test fixture/);
 });

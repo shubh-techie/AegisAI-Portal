@@ -24,3 +24,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-002 — aegisai.world root-path migration](SPEC-002-custom-domain.md): PORTAL-005 production URL configuration, occurrence audit and validation requirements.
 
 - [SPEC-003 — Community hackathon program](SPEC-003-hackathon-program.md): planned events, configurable community roles and registration integrity.
+
+- [SPEC-004 — Speakers, judges and participation workflow](SPEC-004-participation-workflow.md): PORTAL-006 public profiles, configurable forms, privacy and invitation templates.
