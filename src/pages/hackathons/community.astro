@@ -1,4 +1,5 @@
 ---
+import { hackathonSeo, hackathonSocialPreview } from "../../data/hackathonSeo";
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
 import CreatorProfile from "../../components/CreatorProfile.astro";
@@ -7,7 +8,7 @@ import HackathonRegistration from "../../components/HackathonRegistration.astro"
 import HackathonNav from "../../components/HackathonNav.astro";
 import { keynote, speakers, judges, statusDefinitions } from "../../data/hackathons";
 ---
-<Layout title="Hackathon Community" description="Meet the AegisAI creator and explore planned keynote, guest speaker and independent judge roles for the community hackathon program.">
+<Layout title={hackathonSeo.community.title} description={hackathonSeo.community.description} socialImage={hackathonSocialPreview.image}>
   <Hero eyebrow="Community / People" title="Engineering grows through exchange." description="A planned space for practitioners and researchers to share methods, critique evidence and improve secure distributed systems." />
   <div class="container page-content"><HackathonNav />
     <section class="section" aria-labelledby="keynote-heading"><span class="program-status">{keynote.status}</span><h2 id="keynote-heading">Keynote Speaker</h2><p>{keynote.person.name} is the creator and maintainer of AegisAI and the planned program keynote speaker. Talk topic and schedule are pending.</p><CreatorProfile /></section>

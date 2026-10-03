@@ -168,3 +168,24 @@ and a planned USD $300 prize per event are presented subject to finalized offici
 Before opening registration, publish exact deadlines/time zones, eligibility, award and
 judging procedures, licensing requirements, and conduct reporting/enforcement details.
 See [SPEC-003](docs/specs/SPEC-003-hackathon-program.md).
+
+## Hackathon launch operations
+
+See the [launch checklist](docs/hackathons/LAUNCH_READINESS.md),
+[participant operations](docs/hackathons/OPERATIONS.md),
+[proposed judging framework](docs/hackathons/JUDGING_FRAMEWORK.md),
+[submission requirements](docs/hackathons/SUBMISSION_REQUIREMENTS.md) and
+[eleven communication drafts](docs/hackathons/communications/README.md).
+The operational framework is prepared; event terms and live forms remain pending.
+No email infrastructure, messages sent, judging or results are implied.
+
+`SUBMISSION_FORM_URL` now configures the shared submission form; all three shared form
+URLs and per-event overrides remain null. Use public responder URLs after testing;
+never place private Drive folders or application responses in public configuration.
+
+`src/data/hackathonSeo.ts` owns per-page SEO and `hackathonSocialPreview.image`.
+The default null image produces text-only Open Graph/Twitter cards. To enable an image,
+add an approved local raster asset under `public/` and configure its relative `path`,
+meaningful `alt`, `width` and `height` (typically 1200×630). Rebuild and verify the asset,
+absolute custom-domain image URL and large-image metadata before publication.
+No social image is currently supplied. See [SPEC-005](docs/specs/SPEC-005-launch-readiness.md).
