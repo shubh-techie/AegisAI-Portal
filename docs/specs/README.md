@@ -22,3 +22,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 
 - [SPEC-001 — Creator profile and research identity](SPEC-001-creator-profile.md): PORTAL-003 implementation and portrait fallback requirements.
 - [SPEC-002 — aegisai.world root-path migration](SPEC-002-custom-domain.md): PORTAL-005 production URL configuration, occurrence audit and validation requirements.
+
+- [SPEC-003 — Community hackathon program](SPEC-003-hackathon-program.md): planned events, configurable community roles and registration integrity.

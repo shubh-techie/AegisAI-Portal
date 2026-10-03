@@ -51,6 +51,9 @@ npm run preview
 | `/experiments/`                         | Experiments           |
 | `/publications/`                        | Publications & Talks  |
 | `/about/`                               | About & Roadmap       |
+| `/hackathons/`                          | Community Hackathons  |
+| `/hackathons/events/`                   | Hackathon Events      |
+| `/hackathons/community/`                | Hackathon Community   |
 | `/404.html`                             | Custom not-found page |
 
 - `src/data/project.ts`: shared project details, models, statuses, navigation, publication topics and timeline.
@@ -127,3 +130,21 @@ Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en
 Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results, verified literature list or social preview image are supplied yet. Metadata includes text-based Open Graph and Twitter/X summary cards.
 
 Recommended next task: review and merge the root-path migration, then verify the deployed routes and assets at aegisai.world. Do not publish speculative hypotheses or research outcomes.
+
+## Community hackathon configuration
+
+The planned program is configured in `src/data/hackathons.ts`: events, status definitions,
+speaker/judge slots and registration/submission links. Creator identity and portrait remain
+owned by `src/data/creator.ts` and reused through `CreatorProfile.astro`.
+
+Set `PARTICIPANT_FORM_URL` to an official HTTPS form URL when available. Its default is
+`null`, so Register Interest is disabled with a visible explanation. Event-specific
+registration URLs override the shared form; submission URLs can be configured per event
+or through `registrationLinks.submission`. Rebuild the static site after configuration changes.
+No registration or submission data is collected by the portal itself.
+
+All three events and keynote arrangements are PLANNED. Free participation, proposed rules
+and a planned USD $300 prize per event are presented subject to finalized official terms.
+Before opening registration, publish exact deadlines/time zones, eligibility, award and
+judging procedures, licensing requirements, and conduct reporting/enforcement details.
+See [SPEC-003](docs/specs/SPEC-003-hackathon-program.md).

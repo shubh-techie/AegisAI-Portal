@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import HackathonNav from "../../components/HackathonNav.astro";
+import HackathonRegistration from "../../components/HackathonRegistration.astro";
+import { events, program, judgingCriteria, registrationLinks } from "../../data/hackathons";
+import { href } from "../../data/project";
+---
+<Layout title="Hackathon Events" description="Explore three planned AegisAI engineering challenges, their timelines, deliverables, proposed judging criteria and provisional event terms.">
+  <Hero eyebrow="Community / Events" title="Three ways to challenge the system." description="Build, evaluate and document security ideas with reproducible evidence. All events are planned; exact dates and official terms are pending." />
+  <div class="container page-content"><HackathonNav />
+    {events.map((event, i) => <article class="section hackathon-event" id={event.id}>
+      <div class="card-top"><span class="eyebrow">Event 0{i + 1}</span><span class="program-status">{event.status}</span></div>
+      <h2>{event.title}</h2><ul class="theme-tags">{event.themes.map(theme => <li>{theme}</li>)}</ul>
+      <div class="cards-grid two">
+        <section class="info-card"><h3>Problem</h3><p>{event.problem}</p><h3>Challenge</h3><p>{event.challenge}</p></section>
+        <section class="info-card"><h3>Timeline</h3><p>Planned launch: {event.launch}<br />Planned submission: {event.submission}</p><p>Exact deadlines, time zones and review dates will be announced in official terms.</p><h3>Eligibility</h3><p>{program.eligibility}</p></section>
+        <section class="info-card"><h3>Deliverables</h3><ul>{event.deliverables.map(item => <li>{item}</li>)}</ul><h3>Judging criteria</h3><ul>{judgingCriteria.map(item => <li>{item}</li>)}</ul><p>Weights, judge assignments, conflicts-of-interest procedures and tie-breaking are pending official terms.</p></section>
+        <section class="info-card"><h3>Prize</h3><p>{program.prize}. {program.terms} Award conditions and payment details remain to be finalized.</p><h3>Submission process</h3><p>Prepare a repository link, README, reproducible evidence and a concise explanation of the work. Submission forms and required fields will be announced before the event opens.</p>{(event.submissionUrl ?? registrationLinks.submission) ? <a class="text-link" href={(event.submissionUrl ?? registrationLinks.submission)!}>Official submission channel</a> : <p>Submissions are not open yet.</p>}</section>
+        <section class="info-card"><h3>Rules</h3><p>Proposed rules: use authorized isolated environments; avoid real credentials or personal data; disclose reused code, datasets and AI assistance; credit collaborators; and report results honestly.</p><p>Final eligibility, team size, permitted prior work, submission deadlines and award procedures are subject to official event terms.</p><a class="text-link" href={`${href("hackathons")}#code-of-conduct`}>Program Code of Conduct →</a></section>
+        <section class="info-card"><h3>Open-source expectations</h3><p>Plan to share source code, setup instructions and evaluation artifacts in a public repository with an explicit compatible open-source license. Respect upstream licenses and document third-party dependencies and data provenance.</p><p>Use synthetic or appropriately licensed data; never publish secrets or sensitive datasets. Final licensing and submission requirements will be defined in official terms.</p></section>
+      </div><div class="actions"><HackathonRegistration url={event.registrationUrl} id={`${event.id}-registration`} /></div>
+    </article>)}
+  </div>
+</Layout>

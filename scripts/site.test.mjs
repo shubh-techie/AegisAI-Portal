@@ -10,6 +10,9 @@ const routes = [
   "experiments",
   "publications",
   "about",
+  "hackathons",
+  "hackathons/events",
+  "hackathons/community",
 ];
 const read = (path) => readFileSync(join("dist", path), "utf8");
 const pages = routes.map((route) => ({
@@ -27,7 +30,7 @@ const walk = (dir) =>
     entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
   );
 
-test("six static pages have unique metadata and accessible landmarks", () => {
+test("nine static pages have unique metadata and accessible landmarks", () => {
   const titles = new Set();
   const descriptions = new Set();
   for (const { route, html } of pages) {
@@ -47,11 +50,11 @@ test("six static pages have unique metadata and accessible landmarks", () => {
     descriptions.add(html.match(/name="description" content="([^"]+)"/)[1]);
     assert.equal(
       (html.match(/aria-current="page"/g) || []).length,
-      route ? 1 : 0,
+      route && !route.startsWith("hackathons/") ? 1 : 0,
     );
   }
-  assert.equal(titles.size, 6);
-  assert.equal(descriptions.size, 6);
+  assert.equal(titles.size, routes.length);
+  assert.equal(descriptions.size, routes.length);
 });
 
 test("all generated local links and assets resolve under the configured base", () => {
@@ -155,7 +158,7 @@ test("production routes and metadata use the aegisai.world root", () => {
   for (const { route, html } of pages) {
     const expected = `https://aegisai.world/${route ? route + "/" : ""}`;
     assert.ok(html.includes(`property="og:url" content="${expected}"`));
-    for (const destination of routes) {
+    for (const destination of routes.filter(route => !route.startsWith("hackathons/"))) {
       assert.ok(
         html.includes(`href="/${destination ? destination + "/" : ""}"`),
       );
@@ -175,4 +178,34 @@ test("production routes and metadata use the aegisai.world root", () => {
       `Former deployment URL in ${path}`,
     );
   }
+});
+
+
+test("hackathon foundation keeps events provisional and registration unavailable", () => {
+  const landing = read("hackathons/index.html");
+  const events = read("hackathons/events/index.html");
+  const community = read("hackathons/community/index.html");
+  for (const html of [landing, events, community]) {
+    assert.match(html, /PLANNED/);
+    assert.doesNotMatch(html, /docs\.google\.com\/forms|forms\.gle/);
+    assert.doesNotMatch(html, /immigration|profile.building/i);
+    const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+    assert.equal(new Set(ids).size, ids.length, "IDs must be unique");
+    for (const link of html.matchAll(/href="(\/[^"]*)#([^"]+)"/g)) {
+      const target = read(`${link[1].slice(1)}index.html`);
+      assert.ok(target.includes(`id="${link[2]}"`), `Missing fragment ${link[0]}`);
+    }
+  }
+  assert.match(landing, /Participation is FREE/);
+  assert.match(landing, /USD \$300 prize per hackathon/);
+  assert.match(landing, /subject to official event terms until finalized/);
+  assert.match(landing, /disabled[^>]*>Register Interest/);
+  for (const id of ["adaptive-authorization", "behavioral-risk", "autonomous-resilience"])
+    assert.ok(events.includes(`id="${id}"`));
+  for (const month of ["November 2026", "December 2026", "January 2027", "February 2027", "March 2027"])
+    assert.ok(events.includes(month));
+  assert.match(events, /Model D is planned research, not an existing implemented capability/);
+  assert.match(community, /src="\/images\/shubh-prabhat\.jpg"/);
+  assert.equal((community.match(/Future guest speaker [123]/g) || []).length, 3);
+  assert.equal((community.match(/Independent judge slot [123]/g) || []).length, 3);
 });

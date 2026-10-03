@@ -1325,3 +1325,28 @@ tbody tr:last-child > * {
     height: 160px;
   }
 }
+
+/* Community program uses the portal's existing static design system. */
+.hackathon-nav { display: flex; flex-wrap: wrap; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.hackathon-nav [aria-current="true"] { text-decoration: underline; text-underline-offset: 6px; }
+.hackathon-tagline { color: var(--cyan); font: 1.2rem var(--mono); margin-top: 24px; }
+.hackathon-hero { background: radial-gradient(ellipse at top right, #16344680, transparent 65%); }
+.hackathon-timeline { margin-top: 28px; }
+.program-status { display: inline-block; color: var(--amber); font: 0.72rem var(--mono); border: 1px solid #6a5536; border-radius: 4px; padding: 5px 9px; }
+.theme-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 20px 0; }
+.theme-tags li { border: 1px solid var(--line); border-radius: 4px; padding: 5px 10px; color: var(--muted); font-size: 0.8rem; }
+.registration-placeholder { max-width: 360px; }
+.registration-placeholder p { margin-top: 10px; font-size: 0.82rem; }
+.button:disabled { color: var(--muted); cursor: not-allowed; background: var(--surface); }
+.participation-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 48px; padding-left: 24px; margin-top: 28px; }
+.participation-steps li::marker { color: var(--cyan); }
+.participation-steps p { margin-top: 12px; }
+.hackathon-event { scroll-margin-top: 24px; }
+.hackathon-event .info-card h3:not(:first-child) { margin-top: 24px; }
+.hackathon-event li { color: var(--muted); }
+.program-status-guide dt { color: var(--amber); font: 0.8rem var(--mono); margin-top: 18px; }
+.program-status-guide dd { color: var(--muted); margin: 6px 0 0; }
+@media (max-width: 760px) {
+  .site-header nav { flex-wrap: wrap; justify-content: flex-start; column-gap: 20px; }
+  .participation-steps { grid-template-columns: 1fr; }
+}
