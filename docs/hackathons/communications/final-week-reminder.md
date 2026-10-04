@@ -21,4 +21,4 @@ Only the official terms determine eligibility, deadline treatment and awards. Co
 [Approved private organizer contact] for clarification; no extension is implied.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

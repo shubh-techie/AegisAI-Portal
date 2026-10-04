@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">AeglysAI</title><desc id="desc">Adaptive Intelligence for Secure &amp; Resilient Distributed Systems. Observe • Assess • Authorize • Respond.</desc>
+<rect width="1200" height="630" fill="#080f1c"/>
+<rect x="40" y="40" width="1120" height="550" rx="8" fill="#0d1727" stroke="#273448"/>
+<path d="M80 145 110 85 140 145M95 126h30" fill="none" stroke="#64e1ed" stroke-width="6" stroke-linejoin="round"/>
+<g font-family="Arial, sans-serif">
+<text x="80" y="205" fill="#a2b2c5" font-size="18" letter-spacing="3">OPEN-SOURCE ENGINEERING / RESEARCH</text>
+<text x="76" y="315" fill="#edf2f5" font-size="88" font-weight="600">Aeglys<tspan fill="#64e1ed">AI</tspan></text>
+<text x="80" y="382" fill="#edf2f5" font-size="35">Adaptive Intelligence for Secure &amp; Resilient</text>
+<text x="80" y="429" fill="#edf2f5" font-size="35">Distributed Systems</text>
+<text x="80" y="506" fill="#64e1ed" font-size="25">Observe • Assess • Authorize • Respond</text>
+<text x="1015" y="552" fill="#a2b2c5" font-size="17">aeglysai.com</text>
+</g></svg>

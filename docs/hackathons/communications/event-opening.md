@@ -4,7 +4,7 @@
 
 **Send only when:** Registration is operational, dates/terms/prize conditions are finalized, and the event has actually opened.
 
-**Subject:** [Event name] is open — AegisAI Community Hackathons
+**Subject:** [Event name] is open — AeglysAI Community Hackathons
 
 Hello [Community or approved recipient],
 
@@ -24,4 +24,4 @@ Review [Required deliverables URL], [Published judging rubric URL] and [Code of 
 Model D remains planned research; challenge themes do not imply validated platform results.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

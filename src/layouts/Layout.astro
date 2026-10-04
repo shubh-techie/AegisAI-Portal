@@ -1,4 +1,5 @@
 ---
+import { socialPreview } from "../data/social";
 import type { SocialImage } from "../data/hackathonSeo";
 import ThemeInit from "../components/ThemeInit.astro";
 import Header from "../components/Header.astro";
@@ -16,9 +17,9 @@ const {
   title,
   description = project.description,
   noindex = false,
-  socialImage = null,
+  socialImage = socialPreview,
 } = Astro.props;
-const fullTitle = `${title} | AegisAI Research`;
+const fullTitle = `${title} | AeglysAI Research`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = socialImage ? new URL(asset(socialImage.path), Astro.site) : null;
 ---
@@ -40,7 +41,7 @@ const socialImageUrl = socialImage ? new URL(asset(socialImage.path), Astro.site
       <link rel="canonical" href={canonical} />
     )}
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="AegisAI Research" />
+    <meta property="og:site_name" content="AeglysAI Research" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

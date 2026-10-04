@@ -12,7 +12,7 @@ Thank you for confirming your session for [Event name].
 Topic: [Agreed topic]. Format: [Agreed remote/in-person format].
 Date/time zone: [Confirmed session schedule]. Duration: [Agreed presentation and Q&A minutes].
 Audience: platform engineers, SREs, cloud engineers, security engineers, distributed systems
-engineers and other practitioners and researchers interested in AegisAI.
+engineers and other practitioners and researchers interested in AeglysAI.
 
 Please provide [Agreed materials] by [Agreed deadline] through [Approved private channel].
 Confirm the exact name, title, organization, bio, photo, topics and optional LinkedIn URL
@@ -22,4 +22,4 @@ Recording and redistribution require separate permission; no recording is assume
 Please let us know through [Approved private organizer contact] if your availability changes.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

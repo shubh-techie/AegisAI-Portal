@@ -3,12 +3,12 @@
 Template only. Replace bracketed fields and confirm proposed arrangements before sending.
 Keep recipient contacts, responses and internal correspondence outside this public repository.
 
-**Subject:** Invitation to speak — AegisAI [Challenge name]
+**Subject:** Invitation to speak — AeglysAI [Challenge name]
 
 Dear [Speaker name],
 
 I would like to invite you to contribute a guest session to [event name] in the
-AegisAI Community Hackathons program. AegisAI explores adaptive authorization,
+AeglysAI Community Hackathons program. AeglysAI explores adaptive authorization,
 behavioral risk, cloud-native security and resilient distributed systems through
 open-source engineering and research: https://github.com/shubh-techie/AegisAI.
 
@@ -28,7 +28,7 @@ outline and any logistical needs.
 
 Please also supply a short bio, approved professional title/organization, topics,
 optional LinkedIn URL and a photo you are authorized to share. Explicitly indicate
-whether we may display each supplied item on the public AegisAI community page. We will
+whether we may display each supplied item on the public AeglysAI community page. We will
 publish only the approved profile after participation is confirmed; an invitation is not
 confirmation. You may decline public-profile display independently of the speaking invitation.
 Do not include private contact details in your public bio.
@@ -36,4 +36,4 @@ Do not include private contact details in your public bio.
 Thank you for considering sharing your experience with the community.
 
 Shubh Prabhat
-Creator & Maintainer, AegisAI
+Creator & Maintainer, AeglysAI

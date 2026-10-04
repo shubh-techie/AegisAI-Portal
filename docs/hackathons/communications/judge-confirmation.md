@@ -26,4 +26,4 @@ Acceptance does not authorize a public profile. We will display only the exact p
 information for which you have separately provided permission.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

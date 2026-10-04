@@ -13,9 +13,9 @@ export const registrationLinks = {
   submission: SUBMISSION_FORM_URL,
 };
 export const program = {
-  title: "AegisAI Community Hackathons",
+  title: "AeglysAI Community Hackathons",
   subtitle: "Build. Break. Measure. Improve.",
-  description: "A community engineering program for exploring adaptive authorization, behavioral risk, cloud-native security and resilient distributed systems using the open-source AegisAI research platform.",
+  description: "A community engineering program for exploring adaptive authorization, behavioral risk, cloud-native security and resilient distributed systems using the open-source AeglysAI research platform.",
   prize: "Planned USD $300 prize per hackathon",
   terms: "Prizes and rules are subject to official event terms until finalized. No prize has been awarded.",
   eligibility: "Free participation for platform engineers, cloud engineers, security engineers, SREs, software engineers, AI/ML engineers, researchers and graduate students. Final eligibility, team limits and any geographic or age requirements will be specified in official event terms.",
@@ -34,16 +34,16 @@ export const events: {
   deliverables: string[]; registrationUrl: string | null; submissionUrl: string | null;
 }[] = [
   {
-    id: "adaptive-authorization", title: "AegisAI Adaptive Authorization Challenge", status: "PLANNED",
+    id: "adaptive-authorization", title: "AeglysAI Adaptive Authorization Challenge", status: "PLANNED",
     launch: "November 2026", submission: "January 2027",
     themes: ["RBAC", "ABAC", "Contextual risk", "Adaptive authorization", "Policy explainability"],
     problem: "Authorization policies must account for roles, attributes and context while making security decisions understandable and testable.",
-    challenge: "Build or evaluate an authorization capability around AegisAI. Compare policy behavior under changing context, identify failure cases and explain the security tradeoffs with reproducible evidence.",
+    challenge: "Build or evaluate an authorization capability around AeglysAI. Compare policy behavior under changing context, identify failure cases and explain the security tradeoffs with reproducible evidence.",
     deliverables: ["Source code or evaluation harness and setup instructions", "Policy examples, threat assumptions and reproducible test cases", "Results with limitations and an explanation of authorization decisions"],
     registrationUrl: null, submissionUrl: null,
   },
   {
-    id: "behavioral-risk", title: "AegisAI Behavioral Risk Challenge", status: "PLANNED",
+    id: "behavioral-risk", title: "AeglysAI Behavioral Risk Challenge", status: "PLANNED",
     launch: "December 2026", submission: "February 2027",
     themes: ["Behavioral anomaly detection", "Risk evidence", "Identity/context signals", "Explainability", "False-positive reduction"],
     problem: "Behavioral signals can be noisy, and risk assessments need evidence that distinguishes suspicious activity from legitimate variation.",
@@ -52,11 +52,11 @@ export const events: {
     registrationUrl: null, submissionUrl: null,
   },
   {
-    id: "autonomous-resilience", title: "AegisAI Autonomous Resilience Challenge", status: "PLANNED",
+    id: "autonomous-resilience", title: "AeglysAI Autonomous Resilience Challenge", status: "PLANNED",
     launch: "January 2027", submission: "March 2027",
     themes: ["Incident detection", "Policy-bounded response", "Resilience", "Observability", "Distributed-system security"],
     problem: "Distributed-system incidents require observable evidence and response mechanisms constrained by explicit security policies.",
-    challenge: "Build or evaluate an incident-detection or resilience prototype in an isolated environment. Define response boundaries, test failure scenarios and explain recovery behavior. Autonomous response is a challenge theme, not a claim of deployed AegisAI functionality.",
+    challenge: "Build or evaluate an incident-detection or resilience prototype in an isolated environment. Define response boundaries, test failure scenarios and explain recovery behavior. Autonomous response is a challenge theme, not a claim of deployed AeglysAI functionality.",
     deliverables: ["Prototype or evaluation harness with architecture documentation", "Isolated incident scenarios, telemetry and reproducible runs", "Response policies, safeguards, recovery analysis and limitations"],
     registrationUrl: null, submissionUrl: null,
   },

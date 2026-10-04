@@ -1,10 +1,10 @@
-# AegisAI Research Portal
+# AeglysAI Research Portal
 
-**Adaptive Intelligence for Secure Distributed Systems**
+**Adaptive Intelligence for Secure & Resilient Distributed Systems**
 
 Observe. Assess. Authorize. Respond.
 
-A static public research website built with Astro, TypeScript and CSS. This repository is separate from the [AegisAI research/application repository](https://github.com/shubh-techie/AegisAI). Research theme: AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems.
+A static public research website built with Astro, TypeScript and CSS. This repository is separate from the [AeglysAI research/application repository](https://github.com/shubh-techie/AegisAI). Research theme: AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems.
 
 ## Project records and agent workflow
 
@@ -100,7 +100,7 @@ Permissions are scoped by job: the build receives `contents: read`; deployment r
 ### Deployment workflow
 
 1. In this repository's **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source.
-2. After review, commit and merge approved portal changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AegisAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
+2. After review, commit and merge approved portal changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AeglysAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
 3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
 4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
 
@@ -119,7 +119,7 @@ The deployment workflow uses this configuration directly, without `SITE_URL` or 
 
 Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, favicon and creator photo are served from root paths. Canonical and Open Graph URLs use `https://aeglysai.com`; robots.txt references `https://aeglysai.com/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
 
-The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, social-preview image references or JSON-LD to migrate. Existing Twitter/X summary-card metadata remains unchanged. Tests reject old deployment paths and development URLs in generated artifacts.
+The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, JSON-LD; social previews use the local AeglysAI asset. Twitter/X metadata uses the shared large-image preview. Tests reject old deployment paths and development URLs in generated artifacts.
 
 The existing GitHub Actions custom-domain setup is retained. No `CNAME` file is added. See [SPEC-002 — Custom-domain migration](docs/specs/SPEC-002-custom-domain.md) for the audit and validation requirements. Earlier deployment URLs in historical logs and the dated V1 review are intentionally preserved.
 
@@ -127,7 +127,7 @@ Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en
 
 ## Review and next work
 
-Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results, verified literature list or social preview image are supplied yet. Metadata includes text-based Open Graph and Twitter/X summary cards.
+Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results or verified literature list are supplied yet. Open Graph and Twitter/X metadata use the local AeglysAI social preview.
 
 Recommended next task: review the domain-only migration, then verify the deployed routes and assets at aeglysai.com after an authorized deployment. Do not publish speculative hypotheses or research outcomes.
 
@@ -183,19 +183,24 @@ No email infrastructure, messages sent, judging or results are implied.
 URLs and per-event overrides remain null. Use public responder URLs after testing;
 never place private Drive folders or application responses in public configuration.
 
-`src/data/hackathonSeo.ts` owns per-page SEO and `hackathonSocialPreview.image`.
-The default null image produces text-only Open Graph/Twitter cards. To enable an image,
+`src/data/hackathonSeo.ts` owns per-page SEO; `src/data/social.ts` owns the shared social asset referenced by `hackathonSocialPreview.image` and the site layout.
+The configured 1200×630 PNG produces Open Graph/Twitter large-image cards. To enable an image,
 add an approved local raster asset under `public/` and configure its relative `path`,
 meaningful `alt`, `width` and `height` (typically 1200×630). Rebuild and verify the asset,
 absolute custom-domain image URL and large-image metadata before publication.
-No social image is currently supplied. See [SPEC-005](docs/specs/SPEC-005-launch-readiness.md).
+The code-authored social image is stored at `public/images/aeglysai-social.png`, with an editable SVG source alongside it. See [SPEC-005](docs/specs/SPEC-005-launch-readiness.md) for original launch work and [SPEC-007](docs/specs/SPEC-007-aeglysai-brand.md) for the current brand/social asset.
 
 
 ## PORTAL-008 production domain
 
 The production origin is now configured as `https://aeglysai.com` with base `/`.
-AegisAI remains the portal brand; no repository rename or old-domain redirect is included.
+At the PORTAL-008 domain-only migration, AegisAI remained the portal brand; no repository rename or old-domain redirect was included. PORTAL-009 updates the current brand separately.
 GitHub Actions Pages deployment is preserved. GitHub Pages custom-domain, apex DNS and
 HTTPS settings require separate verification before publishing. No CNAME file is managed
 by this repository. See [SPEC-006](docs/specs/SPEC-006-aeglysai-domain.md) for the classified
 URL audit. Dated history and prior domain-migration specifications retain their original URLs.
+
+
+## Current brand
+
+AeglysAI is the evolution of the initiative previously known as AegisAI. Existing research direction, model IDs, publication titles and technical lineage are preserved. GitHub repository URLs and the internal package identifier remain unchanged.

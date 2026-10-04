@@ -5,7 +5,7 @@ export const creator = {
   role: "Software & Distributed Systems Engineer",
   biography: [
     "Shubh Prabhat is a software and distributed-systems engineer whose technical interests span cloud-native architecture, microservices, identity and authorization, network automation, resilient systems, and AI-driven automation.",
-    "He created and maintains AegisAI as an open-source research initiative for investigating explainable, risk-aware and adaptive authorization in cloud-native distributed systems.",
+    "He created the initiative previously known as AegisAI and maintains it as AeglysAI, an open-source research initiative for investigating explainable, risk-aware and adaptive authorization in cloud-native distributed systems.",
   ],
   interests: [
     "AI-driven automation",
@@ -16,7 +16,7 @@ export const creator = {
   ],
   photo: {
     path: "images/shubh-prabhat.jpg",
-    alt: "Shubh Prabhat, creator and maintainer of AegisAI",
+    alt: "Shubh Prabhat, creator and maintainer of AeglysAI",
   },
   links: {
     github: "https://github.com/shubh-techie",

@@ -1,6 +1,8 @@
-# SPEC-007 — Light/dark theme system
+# SPEC-008 — Light/dark theme system
 
 Recorded: 2026-10-03. PORTAL-010, local implementation for review.
+
+Revision: renumbered from SPEC-007 to SPEC-008 on 2026-10-03 during merge reconciliation, preserving SPEC-007 for the brand migration. Implementation and validation content unchanged.
 
 ## Scope and behavior
 
