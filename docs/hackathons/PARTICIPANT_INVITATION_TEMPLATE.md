@@ -27,7 +27,7 @@ confirmed deadline]. Each hackathon has a planned USD $300 prize. Prizes and rul
 subject to official event terms until finalized; no award is claimed.
 
 Start with https://github.com/shubh-techie/AegisAI and review the event details at
-https://aegisai.world/hackathons/events/. Model D remains planned research; prototypes
+https://aeglysai.com/hackathons/events/. Model D remains planned research; prototypes
 and evaluation themes do not imply implemented or validated platform capabilities.
 
 Prepare a public repository with source or evaluation code, an explicit compatible
@@ -39,7 +39,7 @@ The official submission channel and final requirements will be announced in even
 
 Follow the program Code of Conduct: respect others, give constructive feedback, credit
 collaborators, avoid harassment and test only authorized systems. Read
-https://aegisai.world/hackathons/#code-of-conduct for expectations; conduct reporting
+https://aeglysai.com/hackathons/#code-of-conduct for expectations; conduct reporting
 contact and enforcement procedures must be finalized before registration opens.
 
 Register through [PARTICIPANT_REGISTRATION_FORM_URL — official Google Form pending].

@@ -89,7 +89,7 @@ See [creator specification](docs/specs/SPEC-001-creator-profile.md) and [Portal 
 
 The portal is configured to deploy through **GitHub Pages using GitHub Actions**.
 
-Canonical production URL: **https://aegisai.world/**
+Canonical production URL: **https://aeglysai.com/**
 
 The deployment workflow is `.github/workflows/deploy-pages.yml`. It runs on pushes to `main` and supports manual `workflow_dispatch` runs from the Actions tab. Only `main` can deploy; manual runs on other branches perform the build and checks without publishing.
 
@@ -104,20 +104,20 @@ Permissions are scoped by job: the build receives `contents: read`; deployment r
 3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
 4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
 
-The custom domain is configured in GitHub Pages. A successful local build does not publish changes; the workflow deploys the reviewed version after it reaches `main`.
+Configure and verify the production custom domain in GitHub Pages before deployment. A successful local build does not publish changes; the workflow deploys the reviewed version after it reaches `main`.
 
 ### Custom-domain root configuration
 
 `astro.config.mjs` is the production URL source of truth:
 
 ```js
-site: "https://aegisai.world",
+site: "https://aeglysai.com",
 base: "/",
 ```
 
 The deployment workflow uses this configuration directly, without `SITE_URL` or `BASE_PATH` overrides. The static output and GitHub Pages build/upload/deploy architecture remain unchanged. Do not restore the former repository prefix when building for this domain.
 
-Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, favicon and creator photo are served from root paths. Canonical and Open Graph URLs use `https://aegisai.world`; robots.txt references `https://aegisai.world/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
+Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, favicon and creator photo are served from root paths. Canonical and Open Graph URLs use `https://aeglysai.com`; robots.txt references `https://aeglysai.com/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
 
 The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, social-preview image references or JSON-LD to migrate. Existing Twitter/X summary-card metadata remains unchanged. Tests reject old deployment paths and development URLs in generated artifacts.
 
@@ -129,7 +129,7 @@ Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en
 
 Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results, verified literature list or social preview image are supplied yet. Metadata includes text-based Open Graph and Twitter/X summary cards.
 
-Recommended next task: review and merge the root-path migration, then verify the deployed routes and assets at aegisai.world. Do not publish speculative hypotheses or research outcomes.
+Recommended next task: review the domain-only migration, then verify the deployed routes and assets at aeglysai.com after an authorized deployment. Do not publish speculative hypotheses or research outcomes.
 
 ## Community hackathon configuration
 
@@ -189,3 +189,13 @@ add an approved local raster asset under `public/` and configure its relative `p
 meaningful `alt`, `width` and `height` (typically 1200×630). Rebuild and verify the asset,
 absolute custom-domain image URL and large-image metadata before publication.
 No social image is currently supplied. See [SPEC-005](docs/specs/SPEC-005-launch-readiness.md).
+
+
+## PORTAL-008 production domain
+
+The production origin is now configured as `https://aeglysai.com` with base `/`.
+AegisAI remains the portal brand; no repository rename or old-domain redirect is included.
+GitHub Actions Pages deployment is preserved. GitHub Pages custom-domain, apex DNS and
+HTTPS settings require separate verification before publishing. No CNAME file is managed
+by this repository. See [SPEC-006](docs/specs/SPEC-006-aeglysai-domain.md) for the classified
+URL audit. Dated history and prior domain-migration specifications retain their original URLs.
