@@ -3,14 +3,14 @@
 Template only. Replace bracketed fields, select an event and verify official terms before
 sending. Do not claim registration is open while the official form is unset.
 
-**Subject:** Join the AegisAI [Challenge name]
+**Subject:** Join the AeglysAI [Challenge name]
 
 Hello [Participant name or community],
 
-You are invited to explore [challenge name and problem] through AegisAI Community
+You are invited to explore [challenge name and problem] through AeglysAI Community
 Hackathons — Build. Break. Measure. Improve. The program brings engineering and
 research perspectives to adaptive authorization, behavioral risk, cloud-native security
-and resilient distributed systems using the open-source AegisAI platform.
+and resilient distributed systems using the open-source AeglysAI platform.
 
 Participation is FREE. Platform Engineers, Cloud Engineers, Security Engineers, SREs,
 Software Engineers, AI/ML Engineers, Researchers and Graduate Students are welcome.
@@ -50,4 +50,4 @@ personal information. If no official form is available, registration is not yet 
 We look forward to learning from reproducible experiments and thoughtful security reasoning.
 
 Shubh Prabhat
-Creator & Maintainer, AegisAI
+Creator & Maintainer, AeglysAI

@@ -22,4 +22,4 @@ For corrections or withdrawal, use [Approved private organizer contact]. Do not 
 or sensitive data. Review [Application privacy notice URL] for how your registration is handled.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

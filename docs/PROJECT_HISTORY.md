@@ -16,3 +16,16 @@ For chronological engineering details and pending work, see [DEVELOPMENT_LOG.md]
 - Creator/maintainer information and research identity were added to the public AegisAI portal implementation in PORTAL-003. Evidence: `src/data/creator.ts`, creator components, About, footer, Publications and author metadata. This records the local implementation pending review, not a commit, release or deployment. The required portrait file is absent; an explicit placeholder is used.
 
 - **2026-09-23 — PORTAL-003 portrait follow-up:** the user supplied and authorized the actual creator photo. It is now integrated as a circular About-page avatar in the working tree, superseding the missing-photo state recorded above. The original JPEG is preserved; no release or deployment is implied.
+
+
+## 2026-10-03 — PORTAL-009 working-tree brand milestone
+
+AegisAI was rebranded as AeglysAI in the portal working tree to establish a more distinctive
+long-term identity for the open-source research initiative. The rebranding preserves the
+original research direction, implementation history, Git history and technical lineage;
+this is a continuation, not a new project.
+
+- Old brand: AegisAI.
+- New brand: AeglysAI.
+- Primary domain: https://aeglysai.com (the separate domain migration is committed in `03670f7` and merged in `1d68408`).
+- Evidence: current project/creator data, public pages, wordmarks, metadata and social assets; see SPEC-007. Status: local implementation pending review, not a commit, release or live deployment. Earlier milestones remain unchanged.

@@ -22,4 +22,4 @@ personal data out of your repository. Contact [Approved private organizer contac
 need clarification; a reminder does not extend the published deadline.
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

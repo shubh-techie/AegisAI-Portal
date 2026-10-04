@@ -5,8 +5,8 @@ export type Status =
   | "In Preparation"
   | "Proposed / In Preparation";
 export const project = {
-  name: "AegisAI",
-  fullName: "Adaptive Intelligence for Secure Distributed Systems",
+  name: "AeglysAI",
+  fullName: "Adaptive Intelligence for Secure & Resilient Distributed Systems",
   tagline: "Observe. Assess. Authorize. Respond.",
   theme:
     "AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems",
@@ -86,7 +86,7 @@ export const evolution = [
   },
   {
     date: "2026 onward",
-    title: "AegisAI research program",
+    title: "AeglysAI research program",
     text: "A continuing investigation of secure and resilient distributed systems.",
   },
 ];

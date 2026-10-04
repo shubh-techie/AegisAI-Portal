@@ -22,4 +22,4 @@ We do not publish private applications, contact information, conflict disclosure
 unapproved judge identities. Follow [Published results questions/correction procedure].
 
 [Approved organizer name]
-AegisAI Community Hackathons
+AeglysAI Community Hackathons

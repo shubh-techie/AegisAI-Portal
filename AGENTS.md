@@ -14,7 +14,7 @@ These files and the repository are the durable context; do not assume access to 
 
 ## Repository scope and research integrity
 
-This repository is the public AegisAI research portal, separate from the AegisAI research/application repository. The portal uses Astro, TypeScript and CSS with static output. See [README.md](README.md) for routes, development commands and deployment configuration.
+This repository is the public AeglysAI research portal (formerly AegisAI), separate from the research/application repository. The portal uses Astro, TypeScript and CSS with static output. See [README.md](README.md) for routes, development commands and deployment configuration.
 
 Clearly distinguish:
 
