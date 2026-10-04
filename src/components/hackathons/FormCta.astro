@@ -1,0 +1,10 @@
+---
+import { hackathonForms, publicFormUrl, type HackathonFormKind } from "../../data/hackathonForms";
+interface Props { kind: HackathonFormKind; label: string; id: string; }
+const { kind, label, id } = Astro.props;
+const setting = hackathonForms[kind];
+const url = publicFormUrl(setting.url, setting.open);
+---
+<div class="hx-form-cta">
+  {url ? <a class="hx-button hx-primary" href={url}>{label}<span aria-hidden="true">↗</span></a> : <><button class="hx-button hx-primary" disabled aria-describedby={id}>{label}<span aria-hidden="true">→</span></button><span class="hx-opening" id={id}>Opening Soon</span></>}
+</div>

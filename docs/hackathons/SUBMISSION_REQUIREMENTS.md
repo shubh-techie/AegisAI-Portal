@@ -8,6 +8,7 @@ that submissions are open or any entry has been received.
 | --- | --- |
 | Public GitHub repository | Source/evaluation artifacts and exact commit/tag to review; a nonpublic exception must be approved before submission with equivalent judge access |
 | README | Challenge, contribution, usage and links to the artifacts below |
+| Problem statement | Engineering question, scope and contribution |
 | Architecture description | Components, data/control flow, trust boundaries and design tradeoffs |
 | Setup instructions | Dependencies/versions, configuration, commands and synthetic or licensed test data |
 | Demo | Runnable demonstration or documented reproducible walkthrough; video is optional |
@@ -22,7 +23,7 @@ planned research. Identify reused code/data and AI assistance; use only authoriz
 No credentials, personal information or sensitive datasets may be included.
 
 Submit the event choice, repository URL, review commit/tag, artifact links and required
-fields through configured `SUBMISSION_FORM_URL` or the event-specific `submissionUrl`.
+fields through configured `PROJECT_SUBMISSION_URL` (legacy `SUBMISSION_FORM_URL` alias) or the event-specific `submissionUrl`.
 Do not place completed application forms, Drive IDs, access credentials or exception
 correspondence in this public repository. A submission receipt records receipt only;
 organizers perform eligibility checks before independent scoring.

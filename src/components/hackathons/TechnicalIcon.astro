@@ -1,0 +1,12 @@
+---
+interface Props { name: string; }
+const paths: Record<string, string> = {
+  book: "M3 4h7l2 2 2-2h7v15h-7l-2 2-2-2H3V4Zm9 2v15",
+  code: "m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18",
+  nodes: "M6 6h12M6 6l6 12 6-12M4 4h4v4H4V4Zm12 0h4v4h-4V4Zm-6 12h4v4h-4v-4Z",
+  compass: "m16 8-3 5-5 3 3-5 5-3Z",
+  screen: "M3 3h18v14H3V3Zm5 18h8m-4-4v4M7 8h10M7 12h6",
+  branch: "M6 3v18m0-8h6a6 6 0 0 0 6-6V3",
+};
+---
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">{Astro.props.name === "compass" && <circle cx="12" cy="12" r="10"/>}<path d={paths[Astro.props.name] ?? paths.code}/></svg>

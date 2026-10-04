@@ -1,0 +1,17 @@
+---
+import { events } from "../../data/hackathons";
+import { challengePresentation } from "../../data/hackathonExperience";
+import { href } from "../../data/project";
+interface Props { event: (typeof events)[number]; index: number; }
+const { event, index } = Astro.props;
+const display = challengePresentation[event.id];
+---
+<article class="hx-card hx-event">
+  <div class="hx-event-top"><span class="hx-event-number">{String(index + 1).padStart(2, "0")}</span><span class="hx-status">{event.status}</span></div>
+  <p class="hx-eyebrow">{display.stage}</p><h3>{event.title}</h3>
+  <p class="hx-event-date">{event.launch} <span>Planned launch</span></p>
+  <p>{display.question}</p>
+  <ul class="hx-tags">{display.focus.map(focus => <li>{focus}</li>)}</ul>
+  <p class="hx-fine">Planned submission: {event.submission}<br/>Planned {event.prize.currency} ${event.prize.amount} prize · Prize details subject to official event rules.</p>
+  <a class="hx-link" href={href(`hackathons/${event.id}`)}>Explore Challenge <span aria-hidden="true">→</span></a>
+</article>

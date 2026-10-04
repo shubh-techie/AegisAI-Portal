@@ -1,0 +1,52 @@
+# AeglysAI Contributor Qualification
+
+GitHub Username: [public GitHub username]
+
+Environment: [local setup and relevant dependency versions; no secrets]
+
+OS: [operating system/version]
+
+Runtime Version: [actual runtime/version used]
+
+## Build Result
+
+PASS / FAIL
+
+[Replace with the actual result, commands, observed output and limitations.]
+
+## Test Result
+
+PASS / FAIL
+
+[Replace with the actual result and test commands/evidence. If unavailable or not run, explicitly say so; never imply a pass.]
+
+## Architecture Understanding
+
+Briefly explain how you understand the relevant AeglysAI architecture.
+
+## Technical Observation
+
+Describe one meaningful observation after reviewing/running AeglysAI.
+
+## Improvement Idea
+
+Describe one realistic improvement.
+
+## Why It Matters
+
+Explain the engineering/security value.
+
+## Validation Approach
+
+Explain how you would determine whether the improvement actually works.
+
+---
+
+Template only; no applicant or outcome is recorded here. Copy this into
+`community/qualification/<github-username>.md` on `qualification/<github-username>`
+in **your participant fork**, not the official repository. Example branch:
+`qualification/example-user`. Use your public GitHub username, never email, phone,
+student ID or other private identifiers. Retain safe evidence without credentials,
+personal data or sensitive logs. Submit GitHub username, fork URL, qualification
+branch URL and qualification file URL through the official Google Form when open.
+See [participant handbook](README.md) and [GitHub workflow](GITHUB_WORKFLOW.md).

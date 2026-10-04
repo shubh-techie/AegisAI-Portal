@@ -9,4 +9,4 @@ const note = kind === "judge"
   ? "Judge applications are not open yet. The official application form will be linked here when available."
   : "Participant registration is not open yet. The official registration form will be linked here when available.";
 ---
-{url ? <a class="button button-primary" href={url}>{label}</a> : <div class="registration-placeholder"><button class="button" disabled aria-describedby={id}>{label}</button><p id={id}>{note}</p></div>}
+{url ? <a class="button button-primary" href={url}>{label}</a> : <div class="registration-placeholder"><button class="button" disabled aria-describedby={id}>{label}</button><p id={id}>Opening Soon. {note}</p></div>}

@@ -1,33 +1,102 @@
 ---
-import { hackathonSeo, hackathonSocialPreview } from "../../data/hackathonSeo";
 import Layout from "../../layouts/Layout.astro";
 import HackathonNav from "../../components/HackathonNav.astro";
-import HackathonRegistration from "../../components/HackathonRegistration.astro";
-import { events, participants, program, engineeringProblems, scoringFramework } from "../../data/hackathons";
-import { href, project } from "../../data/project";
+import SeriesHero from "../../components/hackathons/SeriesHero.astro";
+import EventCard from "../../components/hackathons/EventCard.astro";
+import ParticipantJourney from "../../components/hackathons/ParticipantJourney.astro";
+import PeopleSection from "../../components/hackathons/PeopleSection.astro";
+import FormCta from "../../components/hackathons/FormCta.astro";
+import TechnicalIcon from "../../components/hackathons/TechnicalIcon.astro";
+import { events, participants, program, scoringFramework, engineeringProblems } from "../../data/hackathons";
+import { values, tracks, engagement, qualification, faq } from "../../data/hackathonExperience";
+import { project, href } from "../../data/project";
+import { hackathonSocialPreview } from "../../data/hackathonSeo";
+import "../../styles/hackathon-experience.css";
+const commonPrize = events.every(event => event.prize.amount === events[0].prize.amount && event.prize.currency === events[0].prize.currency);
+const resources = [
+  { title: "Hackathon Guide", note: "Draft participation and event workflow", url: "https://github.com/shubh-techie/AeglysAI-Portal/blob/main/docs/hackathons/OPERATIONS.md" },
+  { title: "Qualification Guide", note: "Proposed evidence checklist · on this page", url: "#qualification-guide" },
+  { title: "GitHub Workflow", note: "Work in your own fork · on this page", url: "#github-workflow" },
+  { title: "Challenge Rules", note: "Proposed rules; official terms pending", url: href("hackathons/events") },
+  { title: "Judging Rubric", note: "Draft evidence-based scoring framework", url: "https://github.com/shubh-techie/AeglysAI-Portal/blob/main/docs/hackathons/JUDGING_FRAMEWORK.md" },
+  { title: "Code of Conduct", note: "Expectations and pending reporting arrangements", url: "#code-of-conduct" },
+];
 ---
-<Layout title={hackathonSeo.program.title} description={hackathonSeo.program.description} socialImage={hackathonSocialPreview.image}>
-  <section class="page-hero container hackathon-hero">
-    <span class="eyebrow">Community engineering / PLANNED</span>
-    <h1>{program.title}</h1>
-    <p class="hackathon-tagline">{program.subtitle}</p>
-    <p class="lead">{program.description}</p>
-    <div class="actions"><HackathonRegistration /><a class="button" href={project.github}>Explore AeglysAI on GitHub ↗</a></div>
-  </section>
-  <div class="container page-content">
-    <HackathonNav />
-    <section class="section" aria-labelledby="timeline-heading">
-      <span class="eyebrow">Three challenges / one research direction</span>
-      <h2 id="timeline-heading">The planned event timeline</h2>
-      <p>Participation is FREE. {program.prize}. {program.terms} Exact dates and time zones are pending.</p>
-      <div class="cards-grid three hackathon-timeline">
-        {events.map((event, i) => <article class="info-card"><div class="card-top"><span class="eyebrow">0{i + 1}</span><span class="program-status">{event.status}</span></div><h3>{event.title}</h3><p><strong>Launch:</strong> {event.launch}<br /><strong>Submission:</strong> {event.submission}</p><ul class="theme-tags">{event.themes.map(theme => <li>{theme}</li>)}</ul><a class="text-link" href={`${href("hackathons/events")}#${event.id}`}>Explore the challenge →</a></article>)}
-      </div>
-    </section>
-    <section class="section" aria-labelledby="participants-heading"><h2 id="participants-heading">For people who build and investigate</h2><p>Platform engineers, SREs, cloud engineers, security engineers and distributed systems engineers can investigate operational security problems with reproducible tests. Researchers and engineers from other disciplines are welcome.</p><ul class="theme-tags">{participants.map(person => <li>{person}</li>)}</ul></section>
-    <section class="section" aria-labelledby="practical-heading"><h2 id="practical-heading">Practical problems to investigate</h2><div class="cards-grid three">{engineeringProblems.map(problem => <article class="info-card"><h3>{problem.title}</h3><p>{problem.description}</p></article>)}</div></section>
-    <section class="section" aria-labelledby="how-heading"><h2 id="how-heading">How participation works</h2><ol class="participation-steps"><li><h3>Register for a hackathon</h3><p>Use the official form once available. Review finalized eligibility and event terms before entering.</p></li><li><h3>Choose a challenge</h3><p>Explore the repository, define a scoped problem and work in an isolated test environment.</p></li><li><h3>Build and measure</h3><p>Document assumptions, create reproducible tests and explain both successes and limitations.</p></li><li><h3>Submit and share</h3><p>Share code, evidence and documentation through the official submission channel when announced.</p></li></ol></section>
-    <section class="section" aria-labelledby="judging-heading"><h2 id="judging-heading">Evidence before spectacle</h2><p>Proposed judging rewards sound engineering and honest security reasoning. A clear negative result can be valuable when it is reproducible. The proposed scoring weights below total 100%. Independent review, eligibility checks, conflict disclosure and tie handling must be finalized in official terms before launch.</p><ul class="theme-tags">{scoringFramework.map(item => <li>{item.category} — {item.weight}%</li>)}</ul><a class="text-link" href={href("hackathons/events")}>Read deliverables and proposed rules →</a></section>
-    <section class="notice" id="code-of-conduct"><h2>Code of Conduct</h2><p>Program conduct expectations: treat others respectfully, welcome different backgrounds and experience levels, give constructive feedback, and credit collaborators and prior work. Harassment, discrimination and intimidation are unacceptable.</p><p>Test only systems and data you are authorized to use. Keep credentials and personal information out of submissions. Report vulnerabilities privately to the affected maintainer rather than exposing sensitive details publicly.</p><p>A reporting contact and enforcement procedure will be published with official event terms before registration opens. Do not post conduct reports or sensitive vulnerability details in public submissions.</p></section>
+<Layout title="Community Hackathons 2026–2027" description="Three planned, free AeglysAI engineering hackathons exploring adaptive authorization, behavioral risk and resilient distributed systems, with student-friendly tracks." socialImage={hackathonSocialPreview.image}>
+  <div class="hackathon-experience">
+    <SeriesHero/>
+    <div class="container hx-content">
+      <HackathonNav/>
+      <section class="hx-section" id="challenges" aria-labelledby="challenges-heading">
+        <div class="hx-section-heading"><div><p class="hx-eyebrow">THREE CHALLENGES / ONE RESEARCH DIRECTION</p><h2 id="challenges-heading">Understand. Measure. Adapt.</h2></div><span class="hx-status">2026–2027 · PLANNED</span></div>
+        <p class="hx-section-copy">{program.title}. Explore security problems across authorization, identity, risk, observability and incident response. Challenge themes describe work to investigate, not validated platform capabilities. Model D remains planned research.</p>
+        <div class="hx-grid hx-challenges">{events.map((event, index) => <EventCard event={event} index={index}/>)}</div>
+      </section>
+      <ParticipantJourney/>
+      <section class="hx-section" id="qualification" aria-labelledby="qualification-heading">
+        <div class="hx-section-heading"><div><p class="hx-eyebrow">START WITH EVIDENCE</p><h2 id="qualification-heading">AeglysAI Contributor Qualification</h2></div><a class="hx-button" href="#qualification-guide">View Qualification Guide <span aria-hidden="true">↓</span></a></div>
+        <p class="hx-section-copy">Before selection, applicants demonstrate they can fork, clone and run AeglysAI, understand its basic architecture, provide one meaningful technical observation, suggest one realistic improvement and explain how to validate it. Qualification is not a LeetCode-style elimination exercise. This proposed pathway opens after official qualification and selection rules are published.</p>
+        <ol class="hx-qualification hx-grid" id="qualification-guide">{qualification.map(([title, detail], i) => <li class="hx-card"><span class="hx-eyebrow">{String(i + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{detail}</p></li>)}</ol>
+        <div class="hx-callout" id="github-workflow"><h3>Your fork. Your evidence.</h3><p>Fork <a class="hx-link" href={project.github}>AeglysAI on GitHub</a>, clone your own fork and follow the official repository setup instructions. Participants do not receive write access to the official repository or official main.</p><p>Create <code>qualification/&lt;github-username&gt;</code> in your fork, for example <code>qualification/example-user</code>. Record evidence in <code>community/qualification/&lt;github-username&gt;.md</code>: environment, OS, runtime, actual build/test results, architecture understanding, technical observation, improvement idea, engineering value and validation approach. Never use emails, phone numbers, student IDs or other PII in branch names.</p><p>Push to your fork. Submit your GitHub username, fork URL, qualification branch URL and qualification file URL through the official Google Form when it opens. Organizer review uses published selection criteria; completing qualification does not guarantee selection.</p><p>Selected participants use <code>hackathon-01/&lt;github-username-or-team&gt;</code>, <code>hackathon-02/&lt;github-username-or-team&gt;</code> or <code>hackathon-03/&lt;github-username-or-team&gt;</code> in their own forks. Build, test, document and submit; an optional upstream pull request follows review. Final submission does not guarantee an AeglysAI merge. Maintainers retain normal code-review standards.</p><p>Do not submit credentials or private data. Google Forms/Sheets responses, internal selection notes and unpublished judge scores remain private. V1 uses Google Forms, Google Sheets, Google Drive, GitHub and email; no accounts, authentication or custom backend.</p><FormCta kind="qualification" label="Submit Qualification" id="qualification-form-note"/></div>
+      </section>
+      <section class="hx-section" id="why-participate" aria-labelledby="why-heading">
+        <p class="hx-eyebrow">WHY PARTICIPATE</p><h2 id="why-heading">Build something you can explain.</h2>
+        <div class="hx-grid hx-values">{values.map(value => <article class="hx-card"><TechnicalIcon name={value.icon}/><h3>{value.title}</h3><p>{value.description}</p></article>)}</div>
+        <div class="hx-audience"><h3>For people who build and investigate</h3><p>University students, graduate students, early-career engineers and experienced practitioners can explore the same engineering questions at different depth.</p><ul class="hx-tags">{participants.map(audience => <li>{audience}</li>)}</ul></div>
+        <div class="hx-grid hx-problems">{engineeringProblems.map(problem => <article><h3>{problem.title}</h3><p>{problem.description}</p></article>)}</div>
+      </section>
+      <section class="hx-section" id="engagement" aria-labelledby="engagement-heading">
+        <p class="hx-eyebrow">MORE THAN A COMPETITION</p><h2 id="engagement-heading">A community engineering rhythm.</h2>
+        <p class="hx-section-copy">Proposed activities across the build window. Sessions, mentor capacity and discussion arrangements are unconfirmed; dates and accessible alternatives will be announced when available. Live attendance is not a proposed scoring requirement.</p>
+        <div class="hx-grid hx-activities">{engagement.map(activity => <article class="hx-card"><span class="hx-status">PLANNED</span><h3>{activity}</h3></article>)}</div>
+        <p class="hx-fine">GitHub remains the primary engineering community platform. After the event, continue through issues, documentation and reviewed contributions. Mentorship and showcases depend on availability and permission; no outcomes are guaranteed.</p>
+      </section>
+      <section class="hx-section" id="tracks" aria-labelledby="tracks-heading">
+        <p class="hx-eyebrow">DIFFERENT DEPTH / THE SAME ENGINEERING QUESTION</p><h2 id="tracks-heading">Find your starting point.</h2>
+        <div class="hx-grid hx-tracks">{tracks.map(track => <article class="hx-card"><h3>{track.title}</h3><p class="hx-track-audience">{track.audience}</p><p>{track.description}</p></article>)}</div>
+        <p class="hx-fine">Both tracks value correctness, security reasoning and clear evidence. Final prerequisites, track-specific evaluation and award allocation are pending.</p>
+      </section>
+      <section class="hx-prize hx-card" aria-labelledby="prize-heading">
+        <div><p class="hx-eyebrow">PLANNED AWARD · USD</p><h2 id="prize-heading">{commonPrize ? `$${events[0].prize.amount}` : "Event prizes"}</h2><p class="hx-eyebrow">PRIZE PER HACKATHON</p></div>
+        <div><h3>Evidence deserves the spotlight.</h3><p>Prize eligibility and payment are subject to official event rules.</p><p class="hx-fine">Prize details subject to official event rules. {program.terms}</p>{!commonPrize && <ul>{events.map(event => <li>{event.title}: {event.prize.currency} ${event.prize.amount} · {event.prize.status}</li>)}</ul>}</div>
+      </section>
+      <section class="hx-section" id="certificates" aria-labelledby="certificates-heading">
+        <p class="hx-eyebrow">DIGITAL CERTIFICATES</p><h2 id="certificates-heading">Recognition requires completed work.</h2><p class="hx-section-copy">Registration alone does not earn a certificate. Eligibility requires completion of the applicable event requirements; no certificates have been issued by this foundation work.</p>
+        <div class="hx-grid hx-tracks">
+          <article class="hx-card"><h3>Certificate of Participation</h3><p>Complete qualification, be selected, participate in the event and submit a valid final project meeting published minimum requirements.</p></article>
+          <article class="hx-card"><h3>Certificate of Finalist</h3><p>For officially selected finalists under published event criteria.</p></article>
+          <article class="hx-card"><h3>Certificate of Excellence / Winner</h3><p>For officially declared winners or recognized exceptional submissions. Exceptional recognition does not imply winning.</p></article>
+          <article class="hx-card"><h3>Certificate of Appreciation</h3><p>For judges, speakers and mentors who actually perform the corresponding role.</p></article>
+        </div><p class="hx-fine">Future certificate identifiers and private Google Sheets/Drive issuance records support later verification. Issuance timing, verification channel and minimum project criteria: TBD. No certificate database or verification service is implemented.</p>
+      </section>
+      <PeopleSection/>
+      <section class="hx-section" id="timeline" aria-labelledby="timeline-heading">
+        <p class="hx-eyebrow">A STAGGERED SERIES</p><h2 id="timeline-heading">Three build windows. One community.</h2>
+        <p class="hx-section-copy">Approximately three calendar months from launch through submission, with starts one month apart. Judging, demos and results follow on dates still to be announced.</p>
+        <ol class="hx-series-timeline">{events.map((event, i) => <li><span class="hx-step-number">{String(i + 1).padStart(2, "0")}</span><div><h3>{event.title}</h3><p>Launch: {event.launch} <span aria-hidden="true">→</span> Submission: {event.submission}</p></div><span class="hx-status">{event.status}</span></li>)}</ol>
+        <p class="hx-fine">Exact dates and time zones are pending. Project submission is followed by eligibility checks, independent judging, approved results and a verified winner announcement. No submissions, selections or prize payments are claimed.</p>
+        <FormCta kind="project" label="Submit Project" id="project-form-note"/>
+      </section>
+      <section class="hx-section" id="judging" aria-labelledby="judging-heading">
+        <p class="hx-eyebrow">EVIDENCE BEFORE SPECTACLE</p><h2 id="judging-heading">Sound engineering. Honest reasoning.</h2>
+        <p class="hx-section-copy">A reproducible negative result can be valuable. The proposed rubric totals 100%; independent review, conflict disclosure, eligibility, ties and appeals must be finalized in official terms.</p>
+        <ul class="hx-rubric">{scoringFramework.map(item => <li><span>{item.category}</span><strong>{item.weight}%</strong></li>)}</ul>
+        <a class="hx-link" href={href("hackathons/events")}>Read deliverables and proposed rules <span aria-hidden="true">→</span></a>
+      </section>
+      <section class="hx-section" id="resources" aria-labelledby="resources-heading">
+        <p class="hx-eyebrow">START WITH THE RIGHT CONTEXT</p><h2 id="resources-heading">Resources for your next step.</h2>
+        <div class="hx-grid hx-resources">{resources.map(resource => <a class="hx-card hx-resource" href={resource.url}><h3>{resource.title}<span aria-hidden="true">↗</span></h3><p>{resource.note}</p></a>)}</div>
+      </section>
+      <section class="hx-section" id="faq" aria-labelledby="faq-heading">
+        <p class="hx-eyebrow">BEFORE YOU START</p><h2 id="faq-heading">Frequently asked questions.</h2>
+        <div class="hx-faq">{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer.replace("{prize}", commonPrize ? `${events[0].prize.currency} $${events[0].prize.amount}` : "event-specific")}</p></details>)}</div>
+      </section>
+      <section class="hx-callout" id="code-of-conduct" aria-labelledby="conduct-heading"><h2 id="conduct-heading">Code of Conduct</h2><p>Treat others respectfully, welcome different backgrounds and experience levels, give constructive feedback, and credit collaborators and prior work. Harassment, discrimination and intimidation are unacceptable.</p><p>Test only systems and data you are authorized to use. Keep credentials and personal information out of submissions. Report vulnerabilities privately to the affected maintainer rather than exposing sensitive details publicly.</p><p>A reporting contact and enforcement procedure will be published with official event terms before registration opens. Do not post conduct reports or sensitive vulnerability details in public submissions.</p></section>
+      <section class="hx-final" aria-labelledby="final-heading">
+        <p class="hx-eyebrow">READY TO BUILD?</p><h2 id="final-heading">Bring a question.<br/>Build the evidence.</h2><p>Join engineers, students and researchers exploring the future of adaptive security and resilient distributed systems.</p>
+        <div class="hx-actions"><FormCta kind="participant" label="Start Qualification" id="final-form-note"/><a class="hx-button" href={project.github}>View AeglysAI on GitHub <span aria-hidden="true">↗</span></a></div>
+        <p class="hx-fine">Free participation · PLANNED events · Eligibility and official terms pending</p>
+      </section>
+    </div>
   </div>
 </Layout>

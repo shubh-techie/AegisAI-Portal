@@ -137,9 +137,7 @@ The planned program is configured in `src/data/hackathons.ts`: events, status de
 speaker/judge slots and registration/submission links. Creator identity and portrait remain
 owned by `src/data/creator.ts` and reused through `CreatorProfile.astro`.
 
-Set `PARTICIPANT_REGISTRATION_FORM_URL` and `JUDGE_INVITATION_FORM_URL` to official HTTPS
-Google Form URLs when ready. Both default to `null`; Register for Hackathon and Apply to
-Judge remain disabled with visible explanations. `PARTICIPANT_FORM_URL` is a compatibility
+Configure official HTTPS Google Form responder URLs in `src/data/hackathonForms.ts`: `PARTICIPANT_REGISTRATION_URL`, `QUALIFICATION_SUBMISSION_URL`, `JUDGE_APPLICATION_URL`, `SPEAKER_INTEREST_URL` and `PROJECT_SUBMISSION_URL`. All default to `null`; each collection gate defaults to `open: false`. Open a gate only after approving its terms/privacy and testing signed-out access. Legacy `PARTICIPANT_REGISTRATION_FORM_URL`, `JUDGE_INVITATION_FORM_URL` and `SUBMISSION_FORM_URL` are derived compatibility settings. The landing page shows Start Qualification with Opening Soon while unavailable; existing event/community actions retain their labels. `PARTICIPANT_FORM_URL` is a compatibility
 alias for the participant registration setting. Event-specific registration URLs override
 the shared participant form; submission URLs are configured separately. Rebuild after changes.
 No authentication, participant database or application collection is added to this portal.
@@ -204,3 +202,13 @@ URL audit. Dated history and prior domain-migration specifications retain their 
 ## Current brand
 
 AeglysAI is the evolution of the initiative previously known as AegisAI. Existing research direction, model IDs, publication titles and technical lineage are preserved. GitHub repository URLs and the internal package identifier remain unchanged.
+
+### Hackathon foundation closure
+
+The series landing links to /hackathons/adaptive-authorization/,
+/hackathons/behavioral-risk/ and /hackathons/autonomous-resilience/. The events overview
+and community routes remain available. Shared guidance: [handbook](docs/hackathons/README.md),
+[qualification template](docs/hackathons/QUALIFICATION_TEMPLATE.md),
+[GitHub workflow](docs/hackathons/GITHUB_WORKFLOW.md) and
+[certificate policy](docs/hackathons/CERTIFICATE_POLICY.md). Documents newly added in
+this review diff will be available on GitHub main only after a separately authorized merge.

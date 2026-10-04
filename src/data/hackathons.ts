@@ -1,10 +1,11 @@
 import { creator } from "./creator";
+import { hackathonForms, publicFormUrl } from "./hackathonForms";
 
 export type ProgramStatus = "CONFIRMED" | "INVITED" | "PLANNED" | "COMPLETED";
 // Set to official HTTPS application forms when available; never invent URLs.
-export const PARTICIPANT_REGISTRATION_FORM_URL: string | null = null;
-export const JUDGE_INVITATION_FORM_URL: string | null = null;
-export const SUBMISSION_FORM_URL: string | null = null;
+export const PARTICIPANT_REGISTRATION_FORM_URL = publicFormUrl(hackathonForms.participant.url, hackathonForms.participant.open);
+export const JUDGE_INVITATION_FORM_URL = publicFormUrl(hackathonForms.judge.url, hackathonForms.judge.open);
+export const SUBMISSION_FORM_URL = publicFormUrl(hackathonForms.project.url, hackathonForms.project.open);
 // Compatibility alias for PORTAL-005 consumers; configure the registration URL above.
 export const PARTICIPANT_FORM_URL = PARTICIPANT_REGISTRATION_FORM_URL;
 export const registrationLinks = {
@@ -30,13 +31,13 @@ export const statusDefinitions: Record<ProgramStatus, string> = {
 };
 export const events: {
   id: string; title: string; status: ProgramStatus; launch: string;
-  submission: string; themes: string[]; problem: string; challenge: string;
+  submission: string; prize: { amount: number; currency: "USD"; status: "PLANNED" }; themes: string[]; problem: string; challenge: string;
   deliverables: string[]; registrationUrl: string | null; submissionUrl: string | null;
 }[] = [
   {
     id: "adaptive-authorization", title: "AeglysAI Adaptive Authorization Challenge", status: "PLANNED",
-    launch: "November 2026", submission: "January 2027",
-    themes: ["RBAC", "ABAC", "Contextual risk", "Adaptive authorization", "Policy explainability"],
+    launch: "November 2026", submission: "January 2027", prize: { amount: 300, currency: "USD", status: "PLANNED" },
+    themes: ["RBAC", "ABAC", "Zero Trust", "Risk-Aware Authorization", "Contextual risk", "Adaptive authorization", "Policy explainability"],
     problem: "Authorization policies must account for roles, attributes and context while making security decisions understandable and testable.",
     challenge: "Build or evaluate an authorization capability around AeglysAI. Compare policy behavior under changing context, identify failure cases and explain the security tradeoffs with reproducible evidence.",
     deliverables: ["Source code or evaluation harness and setup instructions", "Policy examples, threat assumptions and reproducible test cases", "Results with limitations and an explanation of authorization decisions"],
@@ -44,7 +45,7 @@ export const events: {
   },
   {
     id: "behavioral-risk", title: "AeglysAI Behavioral Risk Challenge", status: "PLANNED",
-    launch: "December 2026", submission: "February 2027",
+    launch: "December 2026", submission: "February 2027", prize: { amount: 300, currency: "USD", status: "PLANNED" },
     themes: ["Behavioral anomaly detection", "Risk evidence", "Identity/context signals", "Explainability", "False-positive reduction"],
     problem: "Behavioral signals can be noisy, and risk assessments need evidence that distinguishes suspicious activity from legitimate variation.",
     challenge: "Prototype or evaluate behavioral risk methods using synthetic or appropriately licensed data. Explain signal selection, assess false positives and document uncertainty. Model D is planned research, not an existing implemented capability.",
@@ -53,8 +54,8 @@ export const events: {
   },
   {
     id: "autonomous-resilience", title: "AeglysAI Autonomous Resilience Challenge", status: "PLANNED",
-    launch: "January 2027", submission: "March 2027",
-    themes: ["Incident detection", "Policy-bounded response", "Resilience", "Observability", "Distributed-system security"],
+    launch: "January 2027", submission: "March 2027", prize: { amount: 300, currency: "USD", status: "PLANNED" },
+    themes: ["Incident detection", "Policy-bounded response", "Resilience", "Observability", "Distributed-system security", "Distributed-System Recovery"],
     problem: "Distributed-system incidents require observable evidence and response mechanisms constrained by explicit security policies.",
     challenge: "Build or evaluate an incident-detection or resilience prototype in an isolated environment. Define response boundaries, test failure scenarios and explain recovery behavior. Autonomous response is a challenge theme, not a claim of deployed AeglysAI functionality.",
     deliverables: ["Prototype or evaluation harness with architecture documentation", "Isolated incident scenarios, telemetry and reproducible runs", "Response policies, safeguards, recovery analysis and limitations"],
@@ -75,7 +76,7 @@ export const scoringFramework = [
 ];
 export const submissionRequirements = [
   "Public GitHub repository unless an exception is approved before submission",
-  "README", "Architecture description", "Setup instructions", "Demo",
+  "README", "Problem statement", "Architecture description", "Setup instructions", "Demo",
   "Test evidence", "Security considerations", "Limitations", "License information",
 ];
 export const optionalSubmissionMaterials = ["Video demo", "Benchmark results", "Research notes"];
