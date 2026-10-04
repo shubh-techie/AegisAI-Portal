@@ -406,3 +406,21 @@ selection capacity/criteria, challenge tasks/resources, funding/payment, indepen
 judges, sessions, privacy/contact and certificate verification details remain TBD.
 No further visual redesign is part of closure; next streams are real form integration,
 CORE-012 Model D and challenge implementation.
+
+## PORTAL-014 sponsorship extension — 2026-10-04
+
+Authorized scope adds /hackathons/sponsors/ using the existing red wrapper/tokens and
+shared theme; landing receives only a Become a Sponsor discovery link. Other routes,
+global styling, research and historical records remain unchanged. Local implementation:
+configurable proposed tiers, null/closed sponsor form/contact, private manual workflow,
+confirmed-and-approved public filter and verified event cash prize allocations.
+
+Acceptance: proposed thresholds 250/500/1000/2500 USD; no invented sponsors/assets;
+no private review states publicly rendered; no increased pool from pledges/in-kind;
+base 300 remains planned until verified funding exists; certificate acknowledgement
+requires four approvals and preserves issuer/eligibility; independence/privacy/IP
+boundaries visible. No payments/accounts/backend/database/automatic acceptance.
+Draft terms and SPONSORSHIP.md contain intake fields, organizer/legal TBDs and process.
+Validate install/typecheck/build/tests, both themes/responsive/keyboard, canonical and
+assets, unconfirmed fixture exclusion and unchanged unrelated page outputs. Public
+launch, actual contributions/agreements and form integration remain separate work.

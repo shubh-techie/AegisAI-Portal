@@ -13,6 +13,7 @@ const routes = [
   "hackathons",
   "hackathons/events",
   "hackathons/community",
+  "hackathons/sponsors",
   "hackathons/adaptive-authorization",
   "hackathons/behavioral-risk",
   "hackathons/autonomous-resilience",
@@ -33,7 +34,7 @@ const walk = (dir) =>
     entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
   );
 
-test("twelve static pages have unique metadata and accessible landmarks", () => {
+test("thirteen static pages have unique metadata and accessible landmarks", () => {
   const titles = new Set();
   const descriptions = new Set();
   for (const { route, html } of pages) {
@@ -318,7 +319,7 @@ test("hackathon visual experience preserves honest empty states and qualificatio
   for (const label of ["Start Qualification", "Submit Qualification", "Apply to Judge", "Express Speaker Interest", "Submit Project"])
     assert.ok(html.includes(`disabled aria-describedby=`) && html.includes(label));
   assert.doesNotMatch(html, /href="(?:#|null|undefined)"|mailto:|tel:|drive\.google\.com/);
-  for (const {route, html: other} of pages.filter(page => page.route !== "hackathons"))
+  for (const {route, html: other} of pages.filter(page => !["hackathons", "hackathons/sponsors"].includes(page.route)))
     assert.doesNotMatch(other, /class="hackathon-experience"/, route);
   const css = readFileSync("src/styles/hackathon-experience.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
   for (const selector of css.matchAll(/(?:^|\n)([^@{}][^{}]*)\{/g))
@@ -366,4 +367,31 @@ test("closure routes preserve event identity, windows and shared fork/certificat
   const policy = readFileSync("docs/hackathons/CERTIFICATE_POLICY.md", "utf8");
   for (const role of ["P", "F", "W", "J", "S", "M"])
     assert.ok(policy.includes(`AEGLYS-H01-${role}-0001`));
+});
+
+test("sponsorship privacy gates exclude review states and unconfirmed prize allocations", async () => {
+  const { transpileModule } = await import("typescript");
+  const source = readFileSync("src/data/hackathonSponsorship.ts", "utf8")
+    .replace('import { events } from "./hackathons";', 'const events = [{ id: "adaptive-authorization", prize: { amount: 300 } }];')
+    .replace('import { publicFormUrl } from "./hackathonForms";', 'const publicFormUrl = (url, open) => open ? url : null;');
+  const { outputText } = transpileModule(source, { compilerOptions: { module: 99, target: 99 } });
+  const config = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  const approved = { name: "TEST-ONLY-NOT-A-SPONSOR", status: "CONFIRMED", publicDisplayApproved: true, termsAccepted: true, contributionConfirmed: true, nameLogoPermission: true, eventIds: ["adaptive-authorization"], prizeAllocationsUsd: { "adaptive-authorization": 100 } };
+  for (const status of ["INTERESTED", "UNDER_REVIEW", "TERMS_PENDING", "COMPLETED"]) {
+    const records = [{ ...approved, status }];
+    assert.equal(config.confirmedSponsors(records).length, 0);
+    assert.equal(config.prizePools(records)[0].additional, 0);
+  }
+  for (const gate of ["publicDisplayApproved", "termsAccepted", "contributionConfirmed", "nameLogoPermission"])
+    assert.equal(config.confirmedSponsors([{ ...approved, [gate]: false }]).length, 0);
+  assert.equal(config.prizePools([approved])[0].total, 400);
+  assert.throws(() => config.prizePools([{ ...approved, prizeAllocationsUsd: { "adaptive-authorization": -1 } }]));
+  assert.equal(config.SPONSOR_INTEREST_FORM_URL, null);
+  assert.equal(config.SPONSOR_INTEREST_OPEN, false);
+  const html = read("hackathons/sponsors/index.html");
+  assert.match(html, /Sponsorship Interest Form — Opening Soon/);
+  assert.match(html, /Community sponsorship opportunities are currently open/);
+  assert.match(html, /PLANNED BASE/);
+  assert.doesNotMatch(html, /TEST-ONLY-NOT-A-SPONSOR|mailto:|drive\.google\.com|INTERESTED|UNDER_REVIEW|TERMS_PENDING/);
+  assert.ok(read("hackathons/index.html").includes('href="/hackathons/sponsors/"'));
 });

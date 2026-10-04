@@ -212,3 +212,12 @@ and community routes remain available. Shared guidance: [handbook](docs/hackatho
 [GitHub workflow](docs/hackathons/GITHUB_WORKFLOW.md) and
 [certificate policy](docs/hackathons/CERTIFICATE_POLICY.md). Documents newly added in
 this review diff will be available on GitHub main only after a separately authorized merge.
+
+### Hackathon sponsorship V1
+
+`/hackathons/sponsors/` reuses the hackathon red visual system. Proposed tiers,
+confirmed-only public recognition and event-specific cash prize allocations live in
+`src/data/hackathonSponsorship.ts`. `SPONSOR_INTEREST_FORM_URL` and approved contact
+remain null, with the collection gate closed. No payments or automatic acceptance.
+See [sponsorship program](docs/hackathons/SPONSORSHIP.md) and
+[organizer-review draft terms](docs/hackathons/SPONSORSHIP_TERMS_DRAFT.md).
