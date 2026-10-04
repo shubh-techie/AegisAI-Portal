@@ -28,3 +28,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-004 — Speakers, judges and participation workflow](SPEC-004-participation-workflow.md): PORTAL-006 public profiles, configurable forms, privacy and invitation templates.
 
 - [SPEC-005 — Communications and launch readiness](SPEC-005-launch-readiness.md): PORTAL-007 templates, operations, proposed scoring and social metadata.
+
+- [SPEC-006 — Production domain migration to aeglysai.com](SPEC-006-aeglysai-domain.md): PORTAL-008 origin-only migration, URL audit and validation.

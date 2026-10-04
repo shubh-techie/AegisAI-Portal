@@ -52,7 +52,7 @@ slots, no appointments claimed. No participant roster, sponsors, partners or win
 
 Local build, artifact/link/metadata tests and browser checks establish portal behavior, not
 GitHub Pages publication or live form operations. Hosting configuration remains static
-Astro output at `https://aegisai.world/`, built/uploaded/deployed through the existing Pages
+Astro output at `https://aeglysai.com/`, built/uploaded/deployed through the existing Pages
 workflow. It still has no pull-request trigger. Current task validation and any live HTTP
 observations are recorded in DEVELOPMENT_LOG.md; no new deployment is performed.
 

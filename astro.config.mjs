@@ -3,7 +3,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   // GitHub Pages serves the custom domain from its root.
-  site: "https://aegisai.world",
+  site: "https://aeglysai.com",
   base: "/",
   output: "static",
   trailingSlash: "always",
