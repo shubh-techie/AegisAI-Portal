@@ -74,3 +74,15 @@ observations are recorded in DEVELOPMENT_LOG.md; no new deployment is performed.
   npm reported two existing high-severity dependency findings; lockfile unchanged.
 - Documentation links and whitespace checks passed. No messages, commit, push, merge,
   form creation or deployment performed; temporary local browser/server stopped.
+
+## PORTAL-013-FINAL current foundation clarification — 2026-10-04
+
+The earlier checklist/form table is a PORTAL-007 snapshot. The foundation now adds
+three individual event routes, fork-only qualification, conditional certificate policy
+and the participant handbook. Current canonical form settings (all null, gates closed):
+PARTICIPANT_REGISTRATION_URL, QUALIFICATION_SUBMISSION_URL, JUDGE_APPLICATION_URL,
+SPEAKER_INTEREST_URL, PROJECT_SUBMISSION_URL. Earlier names are compatibility aliases;
+a speaker-interest form is now part of the V1 configuration, not a confirmed invitation.
+See [handbook](README.md), [workflow](GITHUB_WORKFLOW.md) and [certificate policy](CERTIFICATE_POLICY.md).
+Selection criteria/capacity, minimum valid-project and certificate issuance/verification
+requirements must also be finalized before intake. Registration launch remains pending.

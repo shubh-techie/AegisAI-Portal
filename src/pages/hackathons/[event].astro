@@ -1,0 +1,17 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import HackathonNav from "../../components/HackathonNav.astro";
+import EventDetails from "../../components/hackathons/EventDetails.astro";
+import { events } from "../../data/hackathons";
+import { challengePresentation } from "../../data/hackathonExperience";
+import { hackathonSocialPreview } from "../../data/hackathonSeo";
+export function getStaticPaths() {
+  return events.map((event, index) => ({ params: { event: event.id }, props: { event, index } }));
+}
+const { event, index } = Astro.props;
+---
+<Layout title={event.title} description={`Planned ${event.title}: ${challengePresentation[event.id].question} Launch ${event.launch}; submission ${event.submission}.`} socialImage={hackathonSocialPreview.image}>
+  <Hero eyebrow="Community / Planned challenge" title={event.title} description={challengePresentation[event.id].question}/>
+  <div class="container page-content"><HackathonNav/><EventDetails event={event} index={index}/></div>
+</Layout>

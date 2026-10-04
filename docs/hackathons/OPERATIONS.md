@@ -48,3 +48,16 @@ or automatic scoring/results system is implemented.
 
 Use [communications](communications/README.md), [submission requirements](SUBMISSION_REQUIREMENTS.md),
 [judging framework](JUDGING_FRAMEWORK.md) and [launch checklist](LAUNCH_READINESS.md).
+
+## PORTAL-013-FINAL clarification — 2026-10-04
+
+The earlier PORTAL-007 diagram is an operational outline, not the full applicant pathway.
+The current [handbook](README.md), [qualification template](QUALIFICATION_TEMPLATE.md) and
+[GitHub workflow](GITHUB_WORKFLOW.md) add fork-only qualification and organizer selection
+between registration and selected challenge work. Qualification does not guarantee selection.
+Canonical settings now live in src/data/hackathonForms.ts: PARTICIPANT_REGISTRATION_URL,
+QUALIFICATION_SUBMISSION_URL, JUDGE_APPLICATION_URL, SPEAKER_INTEREST_URL and
+PROJECT_SUBMISSION_URL. Earlier exported names are derived compatibility aliases.
+All URLs are null, collection gates closed; Opening Soon. V1 is Google Forms/Sheets/Drive,
+GitHub and email only, with no custom accounts or backend. See [certificate policy](CERTIFICATE_POLICY.md)
+for conditional future recognition; registration alone does not qualify.

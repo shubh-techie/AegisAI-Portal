@@ -13,6 +13,9 @@ const routes = [
   "hackathons",
   "hackathons/events",
   "hackathons/community",
+  "hackathons/adaptive-authorization",
+  "hackathons/behavioral-risk",
+  "hackathons/autonomous-resilience",
 ];
 const read = (path) => readFileSync(join("dist", path), "utf8");
 const pages = routes.map((route) => ({
@@ -30,7 +33,7 @@ const walk = (dir) =>
     entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
   );
 
-test("nine static pages have unique metadata and accessible landmarks", () => {
+test("twelve static pages have unique metadata and accessible landmarks", () => {
   const titles = new Set();
   const descriptions = new Set();
   for (const { route, html } of pages) {
@@ -205,7 +208,8 @@ test("hackathon foundation keeps events provisional and registration unavailable
   assert.match(landing, /Participation is FREE/);
   assert.match(landing, /USD \$300 prize per hackathon/);
   assert.match(landing, /subject to official event terms until finalized/);
-  assert.match(landing, /disabled[^>]*>Register for Hackathon/);
+  assert.match(landing, /disabled[^>]*>Start Qualification/);
+  assert.match(landing, /Opening Soon/);
   for (const id of ["adaptive-authorization", "behavioral-risk", "autonomous-resilience"])
     assert.ok(events.includes(`id="${id}"`));
   for (const month of ["November 2026", "December 2026", "January 2027", "February 2027", "March 2027"])
@@ -225,7 +229,7 @@ test("participation CTAs stay unavailable without official forms", () => {
   assert.doesNotMatch(community, /mailto:|tel:|drive\.google\.com|docs\.google\.com\/forms|forms\.gle/);
   for (const route of ["hackathons", "hackathons/events", "hackathons/community"]) {
     const html = read(`${route}/index.html`);
-    assert.match(html, /Register for Hackathon/);
+    assert.match(html, route === "hackathons" ? /Start Qualification/ : /Register for Hackathon/);
     assert.doesNotMatch(html, /Register Interest/);
   }
 });
@@ -297,4 +301,69 @@ test("AeglysAI branding retains only explained legacy references", () => {
   assert.match(read("about/index.html"),/previously known as AegisAI/);
   const png=readFileSync("dist/images/aeglysai-social.png");
   assert.equal(png.readUInt32BE(16),1200);assert.equal(png.readUInt32BE(20),630);
+});
+
+
+test("hackathon visual experience preserves honest empty states and qualification boundaries", () => {
+  const html = read("hackathons/index.html");
+  for (const section of ["challenges", "how-it-works", "qualification", "qualification-guide", "github-workflow", "why-participate", "engagement", "tracks", "speakers", "judges", "timeline", "judging", "resources", "faq", "code-of-conduct"])
+    assert.ok(html.includes(`id="${section}"`), section);
+  assert.match(html, /Work in your own fork/);
+  assert.match(html, /Participants do not receive write access to the official repository/);
+  assert.match(html, /does not guarantee selection/);
+  assert.match(html, /Prize eligibility and payment are subject to official event rules/);
+  assert.doesNotMatch(html, /Future guest speaker|Independent judge slot|Person to be announced/);
+  assert.match(html, /Keynote Speaker · PLANNED/);
+  assert.match(html, /Shubh Prabhat/);
+  for (const label of ["Start Qualification", "Submit Qualification", "Apply to Judge", "Express Speaker Interest", "Submit Project"])
+    assert.ok(html.includes(`disabled aria-describedby=`) && html.includes(label));
+  assert.doesNotMatch(html, /href="(?:#|null|undefined)"|mailto:|tel:|drive\.google\.com/);
+  for (const {route, html: other} of pages.filter(page => page.route !== "hackathons"))
+    assert.doesNotMatch(other, /class="hackathon-experience"/, route);
+  const css = readFileSync("src/styles/hackathon-experience.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const selector of css.matchAll(/(?:^|\n)([^@{}][^{}]*)\{/g))
+    assert.ok(selector[1].trim().startsWith(".hackathon-experience"), selector[1]);
+});
+
+test("form configuration rejects private/unsafe links and keeps collection gated", async () => {
+  const { transpileModule } = await import("typescript");
+  const { outputText } = transpileModule(readFileSync("src/data/hackathonForms.ts", "utf8"), { compilerOptions: { module: 99, target: 99 } });
+  const { hackathonForms, publicFormUrl } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  assert.ok(Object.values(hackathonForms).every(form => form.url === null && form.open === false));
+  assert.equal(publicFormUrl(null, true), null);
+  const fixture = "https://forms.gle/synthetic-test-fixture";
+  assert.equal(publicFormUrl(fixture, false), null);
+  assert.equal(publicFormUrl(fixture, true), fixture);
+  for (const invalid of ["javascript:alert(1)", "https://drive.google.com/private", "https://docs.google.com/forms/d/synthetic-test-fixture/edit", "http://forms.gle/synthetic-test-fixture", "https://forms.gle.evil.invalid/test", "not-a-url"])
+    assert.throws(() => publicFormUrl(invalid, true));
+  assert.doesNotMatch(read("hackathons/index.html"), /synthetic-test-fixture/);
+});
+
+test("closure routes preserve event identity, windows and shared fork/certificate guidance", () => {
+  const landing = read("hackathons/index.html");
+  for (const [id, launch, submission] of [
+    ["adaptive-authorization", "November 2026", "January 2027"],
+    ["behavioral-risk", "December 2026", "February 2027"],
+    ["autonomous-resilience", "January 2027", "March 2027"],
+  ]) {
+    const html = read(`hackathons/${id}/index.html`);
+    assert.ok(landing.includes(`href="/hackathons/${id}/"`));
+    assert.ok(html.includes(launch) && html.includes(submission));
+    assert.match(html, /hackathons\/#qualification/);
+    assert.match(html, /hackathons\/#certificates/);
+    assert.match(html, /Opening Soon/);
+    assert.match(html, /No appointments or results are claimed/);
+    assert.match(html, /Prize eligibility and payment are subject to official event rules/);
+    assert.ok(read("hackathons/events/index.html").includes(`id="${id}"`));
+  }
+  assert.match(landing, /Registration alone does not earn a certificate/);
+  assert.match(landing, /qualification\/example-user/);
+  assert.match(landing, /qualification branch URL and qualification file URL/);
+  assert.match(landing, /Final submission does not guarantee an AeglysAI merge/);
+  const template = readFileSync("docs/hackathons/QUALIFICATION_TEMPLATE.md", "utf8");
+  for (const heading of ["Build Result", "Test Result", "Architecture Understanding", "Technical Observation", "Improvement Idea", "Why It Matters", "Validation Approach"])
+    assert.ok(template.includes(`## ${heading}`));
+  const policy = readFileSync("docs/hackathons/CERTIFICATE_POLICY.md", "utf8");
+  for (const role of ["P", "F", "W", "J", "S", "M"])
+    assert.ok(policy.includes(`AEGLYS-H01-${role}-0001`));
 });
