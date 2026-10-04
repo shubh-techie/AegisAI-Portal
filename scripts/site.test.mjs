@@ -113,9 +113,15 @@ test("research claims keep planned work and unpublished results explicit", () =>
     assert.match(html, /Model D is planned research/);
 });
 
-test("production output has no client scripts or third-party embeds", () => {
-  for (const { html } of pages)
-    assert.doesNotMatch(html, /<script\b|<iframe\b|<form\b/);
+test("production output contains only the minimal inline theme script and no embeds", () => {
+  for (const { html } of pages) {
+    assert.doesNotMatch(html, /<iframe\b|<form\b/);
+    const scripts = [...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)];
+    assert.equal(scripts.length, 1);
+    assert.match(scripts[0][0], /data-theme-init/);
+    assert.doesNotMatch(scripts[0][0], /\bsrc=|fetch\(|XMLHttpRequest/);
+    assert.ok(html.indexOf('data-theme-init') < html.indexOf('rel="stylesheet"'));
+  }
   assert.equal(walk("dist").filter((path) => /\.(m?js)$/.test(path)).length, 0);
 });
 

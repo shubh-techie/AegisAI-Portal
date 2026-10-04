@@ -30,3 +30,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-005 — Communications and launch readiness](SPEC-005-launch-readiness.md): PORTAL-007 templates, operations, proposed scoring and social metadata.
 
 - [SPEC-006 — Production domain migration to aeglysai.com](SPEC-006-aeglysai-domain.md): PORTAL-008 origin-only migration, URL audit and validation.
+
+- [SPEC-007 — Light/dark theme system](SPEC-007-light-dark-theme.md): PORTAL-010 preference, accessibility and minimal-script requirements.

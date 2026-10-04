@@ -39,7 +39,7 @@ npm test
 npm run preview
 ```
 
-`npm test` checks the built `dist/` output, so run the build first. Production pages contain no client-side JavaScript. No React, database, backend, authentication, CMS, analytics, cookies, external fonts or marketing SDKs are included.
+`npm test` checks the built `dist/` output, so run the build first. Production pages contain one small inline theme script, with no client JavaScript bundle. Theme defaults to the system preference; the header sun/moon button saves a light/dark choice in localStorage, and the monitor button restores system mode. No React, database, backend, authentication, CMS, analytics, cookies, external fonts or marketing SDKs are included.
 
 ## Site structure
 

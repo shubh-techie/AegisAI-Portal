@@ -55,46 +55,46 @@ import { project, models, href } from "../data/project";
             height="20"
             patternUnits="userSpaceOnUse"
           >
-            <circle cx="1" cy="1" r="1" fill="#294052" />
+            <circle cx="1" cy="1" r="1" fill="var(--diagram-dots)" />
           </pattern>
         </defs>
         <rect width="420" height="330" fill="url(#dots)" />
         <g fill="none" stroke-width="1.5">
           <path
             d="M210 23 377 113v106L210 309 43 219V113Z"
-            stroke="#e9bb75"
+            stroke="var(--amber)"
             stroke-dasharray="5 6"
           />
-          <path d="m210 62 130 72v66l-130 71-130-71v-66Z" stroke="#487387" />
-          <path d="m210 99 94 51v37l-94 51-94-51v-37Z" stroke="#6b8dc6" />
+          <path d="m210 62 130 72v66l-130 71-130-71v-66Z" stroke="var(--diagram-c)" />
+          <path d="m210 99 94 51v37l-94 51-94-51v-37Z" stroke="var(--diagram-b)" />
           <path
             d="m210 131 56 31v19l-56 30-56-30v-19Z"
-            stroke="#64e1ed"
-            fill="#102a37"
+            stroke="var(--cyan)"
+            fill="var(--diagram-policy-bg)"
           />
           <path
             d="M210 23v108M377 219l-111-38M43 219l111-38"
-            stroke="#395063"
+            stroke="var(--diagram-connectors)"
           />
         </g>
         <g font-family="monospace" text-anchor="middle">
-          <text x="210" y="178" fill="#eaf6fb" font-size="15">
+          <text x="210" y="178" fill="var(--diagram-label)" font-size="15">
             POLICY
           </text>
-          <text x="210" y="54" fill="#e9bb75" font-size="11">
+          <text x="210" y="54" fill="var(--amber)" font-size="11">
             D / PLANNED
           </text>
-          <text x="321" y="235" fill="#a8bfd0" font-size="11">
+          <text x="321" y="235" fill="var(--diagram-c-label)" font-size="11">
             C
           </text>
-          <text x="281" y="211" fill="#aabff4" font-size="11">
+          <text x="281" y="211" fill="var(--diagram-b-label)" font-size="11">
             B
           </text>
-          <text x="248" y="184" fill="#64e1ed" font-size="11">
+          <text x="248" y="184" fill="var(--cyan)" font-size="11">
             A
           </text>
         </g>
-        <g fill="#64e1ed">
+        <g fill="var(--cyan)">
           <circle cx="210" cy="131" r="4" />
           <circle cx="266" cy="181" r="4" />
           <circle cx="154" cy="181" r="4" />
