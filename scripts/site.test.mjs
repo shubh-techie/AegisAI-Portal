@@ -259,7 +259,35 @@ test("launch rubric, submission package and hackathon social metadata are consis
     const html = read(`${route}/index.html`);
     assert.match(html, /property="og:description"/);
     assert.match(html, /name="twitter:description"/);
-    assert.match(html, /name="twitter:card" content="summary"/);
-    assert.doesNotMatch(html, /property="og:image"|name="twitter:image"|drive\.google\.com|mailto:|tel:/);
+    assert.match(html, /name="twitter:card" content="summary_large_image"/);
+    assert.doesNotMatch(html, /drive\.google\.com|mailto:|tel:/);
   }
+});
+
+
+test("AeglysAI branding retains only explained legacy references", () => {
+  for (const { route, html } of [...pages, {route:"404",html:read("404.html")}]) {
+    assert.match(html, /property="og:site_name" content="AeglysAI Research"/);
+    assert.match(html, /aria-label="AeglysAI home"/);
+    assert.match(html, /<title>[^<]*AeglysAI Research<\/title>/);
+    assert.match(html, /property="og:image" content="https:\/\/aeglysai\.com\/images\/aeglysai-social\.png"/);
+    assert.match(html, /property="og:image:width" content="1200"/);
+    assert.match(html, /property="og:image:height" content="630"/);
+    assert.match(html, /name="twitter:image:alt" content="AeglysAI/);
+    assert.doesNotMatch(html, /®|™|registered trademark|patented brand|exclusive trademark rights/i);
+    let cleaned=html.replaceAll("https://github.com/shubh-techie/AegisAI", "REPOSITORY_URL")
+      .replaceAll("AegisAI-Portal", "REPOSITORY_NAME")
+      .replaceAll("AeglysAI is the evolution of the research initiative previously known as AegisAI.", "HISTORICAL_TRANSITION")
+      .replaceAll("He created the initiative previously known as AegisAI", "HISTORICAL_BIO")
+      .replaceAll("An evolution into AegisAI", "HISTORICAL_TIMELINE")
+      .replaceAll("The repository evolved into AegisAI, expanding the focus toward adaptive authorization research.", "HISTORICAL_TIMELINE");
+    assert.doesNotMatch(cleaned, /aegis\s*ai|aegisai\.world/i,route);
+    assert.doesNotMatch(html, /AeglysAi|Aeglys AI|AEGLYS AI/);
+  }
+  const home=read("index.html");
+  assert.match(home,/Adaptive Intelligence for Secure &amp; Resilient Distributed Systems/);
+  assert.match(home,/Observe\. Assess\. Authorize\. Respond\./);
+  assert.match(read("about/index.html"),/previously known as AegisAI/);
+  const png=readFileSync("dist/images/aeglysai-social.png");
+  assert.equal(png.readUInt32BE(16),1200);assert.equal(png.readUInt32BE(20),630);
 });

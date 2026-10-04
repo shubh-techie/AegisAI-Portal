@@ -3,12 +3,12 @@
 Template only. Replace bracketed fields and verify arrangements before sending. Do not
 commit recipient contacts, responses, conflict disclosures or internal notes to this public repository.
 
-**Subject:** Invitation to judge — AegisAI [Challenge name]
+**Subject:** Invitation to judge — AeglysAI [Challenge name]
 
 Dear [Judge name],
 
 I would like to invite you to serve as an independent judge for the [Challenge name],
-part of AegisAI Community Hackathons. AegisAI is an open-source research initiative
+part of AeglysAI Community Hackathons. AeglysAI is an open-source research initiative
 exploring explainable, risk-aware and adaptive authorization for secure and resilient
 cloud-native distributed systems: https://github.com/shubh-techie/AegisAI.
 
@@ -51,4 +51,4 @@ approval, no public judge profile will be published.
 Thank you for considering the invitation.
 
 Shubh Prabhat
-Creator & Maintainer, AegisAI
+Creator & Maintainer, AeglysAI

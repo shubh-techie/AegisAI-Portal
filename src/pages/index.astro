@@ -6,7 +6,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import { project, models, href } from "../data/project";
 ---
 
-<Layout title="Adaptive Intelligence for Secure Distributed Systems">
+<Layout title={project.fullName}>
   <section class="home-hero container">
     <div class="hero-copy">
       <div class="eyebrow hero-kicker">
@@ -14,11 +14,12 @@ import { project, models, href } from "../data/project";
         initiative
       </div>
       <h1>
-        Aegis<span>AI</span>
+        Aeglys<span>AI</span>
         <span class="hero-fullname">{project.fullName}</span>
       </h1>
       <p class="tagline">{project.tagline}</p>
       <p class="hero-description">{project.description}</p>
+      <p class="hero-description">Intelligent capabilities can be incorporated into system control loops while remaining bounded by deterministic engineering mechanisms, rather than simply added as an external service.</p>
       <div class="actions">
         <a class="button button-primary" href={href("research")}>
           Explore Research <span aria-hidden="true">→</span>

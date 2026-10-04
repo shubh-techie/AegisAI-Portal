@@ -1,4 +1,4 @@
-name: Deploy AegisAI Portal to GitHub Pages
+name: Deploy AeglysAI Portal to GitHub Pages
 
 on:
   push:
