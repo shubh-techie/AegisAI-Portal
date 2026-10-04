@@ -13,7 +13,7 @@ Participation is free. This message confirms registration receipt; it does not e
 eligibility, acceptance of a submission or entitlement to an award.
 
 Review [Official event terms URL] and the challenge at [Verified event page URL].
-Start from https://github.com/shubh-techie/AegisAI. Launch is [Confirmed launch date/time zone],
+Start from https://github.com/shubh-techie/AeglysAI. Launch is [Confirmed launch date/time zone],
 and submissions close [Confirmed deadline/time zone]. If dates are not finalized, explicitly
 state that they are pending rather than filling a date from assumption.
 

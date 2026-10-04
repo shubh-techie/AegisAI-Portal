@@ -26,7 +26,7 @@ Selected event: [event]. Exact submission deadline and time zone: [pending or of
 confirmed deadline]. Each hackathon has a planned USD $300 prize. Prizes and rules are
 subject to official event terms until finalized; no award is claimed.
 
-Start with https://github.com/shubh-techie/AegisAI and review the event details at
+Start with https://github.com/shubh-techie/AeglysAI and review the event details at
 https://aeglysai.com/hackathons/events/. Model D remains planned research; prototypes
 and evaluation themes do not imply implemented or validated platform capabilities.
 

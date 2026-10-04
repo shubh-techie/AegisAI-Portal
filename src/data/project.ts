@@ -12,7 +12,7 @@ export const project = {
     "AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems",
   description:
     "An open-source research initiative exploring explainable, risk-aware and adaptive authorization for secure and resilient cloud-native distributed systems.",
-  github: "https://github.com/shubh-techie/AegisAI",
+  github: "https://github.com/shubh-techie/AeglysAI",
   question:
     "How does explainable, policy-bounded, closed-loop adaptive authorization perform relative to RBAC, ABAC and deterministic risk-aware authorization under behavioral and operational anomalies in cloud-native distributed systems?",
 };

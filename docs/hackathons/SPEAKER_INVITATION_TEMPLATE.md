@@ -10,7 +10,7 @@ Dear [Speaker name],
 I would like to invite you to contribute a guest session to [event name] in the
 AeglysAI Community Hackathons program. AeglysAI explores adaptive authorization,
 behavioral risk, cloud-native security and resilient distributed systems through
-open-source engineering and research: https://github.com/shubh-techie/AegisAI.
+open-source engineering and research: https://github.com/shubh-techie/AeglysAI.
 
 We propose a session on [topic and scope], aimed at platform engineers, cloud engineers,
 security engineers, SREs, software engineers, AI/ML engineers, researchers and graduate

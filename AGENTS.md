@@ -1,4 +1,4 @@
-# AegisAI-Portal agent instructions
+# AeglysAI-Portal agent instructions
 
 ## Required reading before changes
 

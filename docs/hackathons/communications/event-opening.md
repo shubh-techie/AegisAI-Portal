@@ -9,7 +9,7 @@
 Hello [Community or approved recipient],
 
 [Event name] is now open as of [Verified opening date/time zone].
-Explore [Challenge theme and problem] using https://github.com/shubh-techie/AegisAI.
+Explore [Challenge theme and problem] using https://github.com/shubh-techie/AeglysAI.
 Platform engineers, SREs, cloud engineers, security engineers and distributed systems
 engineers can investigate authorization, identity, risk, observability, resilience and
 incident response in authorized isolated environments.

@@ -4,7 +4,7 @@
 
 Observe. Assess. Authorize. Respond.
 
-A static public research website built with Astro, TypeScript and CSS. This repository is separate from the [AeglysAI research/application repository](https://github.com/shubh-techie/AegisAI). Research theme: AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems.
+A static public research website built with Astro, TypeScript and CSS. The [AeglysAI-Portal repository](https://github.com/shubh-techie/AeglysAI-Portal) is separate from the [AeglysAI research/application repository](https://github.com/shubh-techie/AeglysAI). Research theme: AI-Driven Automation for Resilient & Secure Cloud/Distributed Systems.
 
 ## Project records and agent workflow
 

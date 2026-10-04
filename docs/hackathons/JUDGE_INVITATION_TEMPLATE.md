@@ -10,7 +10,7 @@ Dear [Judge name],
 I would like to invite you to serve as an independent judge for the [Challenge name],
 part of AeglysAI Community Hackathons. AeglysAI is an open-source research initiative
 exploring explainable, risk-aware and adaptive authorization for secure and resilient
-cloud-native distributed systems: https://github.com/shubh-techie/AegisAI.
+cloud-native distributed systems: https://github.com/shubh-techie/AeglysAI.
 
 This event focuses on [selected event theme and technical scope]. The program's planned events are:
 
