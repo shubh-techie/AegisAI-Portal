@@ -153,7 +153,7 @@ test("creator identity is accessible without inventing social profiles", () => {
   assert.match(about, /LinkedIn/);
   assert.match(
     about,
-    /separate AegisAI-Portal website repository began in 2026/,
+    /separate AeglysAI-Portal website repository began in 2026/,
   );
   assert.match(read("publications/index.html"), /Creator profile:/);
 });
@@ -180,7 +180,7 @@ test("production routes and metadata use the aeglysai.com root", () => {
   )) {
     assert.doesNotMatch(
       readFileSync(path, "utf8"),
-      /\/AegisAI-Portal(?:\/|["'?#\s<]|$)|shubh-techie\.github\.io|aegisai\.world/i,
+      /(?:\/AegisAI-Portal|["\x27(=]\s*\/AeglysAI-Portal)(?:\/|["'?#\s<]|$)|shubh-techie\.github\.io|aegisai\.world/i,
       `Former deployment URL in ${path}`,
     );
   }
@@ -281,8 +281,9 @@ test("AeglysAI branding retains only explained legacy references", () => {
     assert.match(html, /property="og:image:height" content="630"/);
     assert.match(html, /name="twitter:image:alt" content="AeglysAI/);
     assert.doesNotMatch(html, /®|™|registered trademark|patented brand|exclusive trademark rights/i);
-    let cleaned=html.replaceAll("https://github.com/shubh-techie/AegisAI", "REPOSITORY_URL")
-      .replaceAll("AegisAI-Portal", "REPOSITORY_NAME")
+    assert.doesNotMatch(html, /github\.com\/shubh-techie\/AegisAI(?:[\/"?#\s<]|$)|AegisAI-Portal/);
+    assert.ok(html.includes('href="https://github.com/shubh-techie/AeglysAI"'));
+    let cleaned=html
       .replaceAll("AeglysAI is the evolution of the research initiative previously known as AegisAI.", "HISTORICAL_TRANSITION")
       .replaceAll("He created the initiative previously known as AegisAI", "HISTORICAL_BIO")
       .replaceAll("An evolution into AegisAI", "HISTORICAL_TIMELINE")
