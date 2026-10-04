@@ -1,6 +1,7 @@
 ---
 import { socialPreview } from "../data/social";
 import type { SocialImage } from "../data/hackathonSeo";
+import ThemeInit from "../components/ThemeInit.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { creator } from "../data/creator";
@@ -28,7 +29,9 @@ const socialImageUrl = socialImage ? new URL(asset(socialImage.path), Astro.site
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#080f1c" />
+    <ThemeInit />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={creator.name} />

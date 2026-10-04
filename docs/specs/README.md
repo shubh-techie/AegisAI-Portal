@@ -1,6 +1,6 @@
 # Specifications
 
-Add or update a SPEC when implementing significant functionality. Specifications below document their stated scope and status; they do not imply that the separate AegisAI research specification has been finalized.
+Add or update a SPEC when implementing significant functionality. Specifications below document their stated scope and status; they do not imply that the separate AeglysAI research specification has been finalized.
 
 Use sequential filenames such as `SPEC-001-short-title.md`. Include:
 
@@ -14,7 +14,7 @@ Use sequential filenames such as `SPEC-001-short-title.md`. Include:
 
 Separate proposed behavior from existing behavior. For a retrospective specification, identify it as such and cite the source code or commits it describes. Do not backdate it or present it as a previously approved document.
 
-The separate AegisAI research repository owns its research specification and finalized hypotheses. Do not invent them in this portal repository. Use the root [README.md](../../README.md) and [development log](../DEVELOPMENT_LOG.md) for the current portal baseline and pending work.
+The separate AeglysAI research repository owns its research specification and finalized hypotheses. Do not invent them in this portal repository. Use the root [README.md](../../README.md) and [development log](../DEVELOPMENT_LOG.md) for the current portal baseline and pending work.
 
 Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md).
 
@@ -32,3 +32,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-006 — Production domain migration to aeglysai.com](SPEC-006-aeglysai-domain.md): PORTAL-008 origin-only migration, URL audit and validation.
 
 - [SPEC-007 — AegisAI → AeglysAI brand migration](SPEC-007-aeglysai-brand.md): PORTAL-009 current identity, social card and classified historical/compatibility references.
+
+- [SPEC-008 — Light/dark theme system](SPEC-008-light-dark-theme.md): PORTAL-010 preference, accessibility and minimal-script requirements.
