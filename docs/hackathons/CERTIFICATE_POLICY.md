@@ -84,3 +84,13 @@ aeglysai.com
 
 Use actual issue date and verified eligibility; do not generate names or certificates
 as part of foundation work. Event terms govern all eventual issuance.
+
+## PORTAL-014 sponsor acknowledgement — 2026-10-04
+
+Future participant, finalist and winner certificate footers may acknowledge sponsors
+only after confirmed sponsorship, written certificate branding rights, sponsor name/logo
+permission and organizer approval of the final design. AeglysAI remains issuer unless
+otherwise formally agreed; sponsor acknowledgement cannot overpower issuer, recipient,
+achievement or event title and does not change eligibility. Sponsorship purchases no
+achievement certificate. See [sponsorship program](SPONSORSHIP.md) and
+[draft terms](SPONSORSHIP_TERMS_DRAFT.md). No certificates are generated here.
