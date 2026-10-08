@@ -10,6 +10,7 @@ const routes = [
   "experiments",
   "publications",
   "about",
+  "media",
   "hackathons",
   "hackathons/events",
   "hackathons/community",
@@ -34,7 +35,7 @@ const walk = (dir) =>
     entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
   );
 
-test("thirteen static pages have unique metadata and accessible landmarks", () => {
+test("fourteen static pages have unique metadata and accessible landmarks", () => {
   const titles = new Set();
   const descriptions = new Set();
   for (const { route, html } of pages) {
@@ -54,7 +55,7 @@ test("thirteen static pages have unique metadata and accessible landmarks", () =
     descriptions.add(html.match(/name="description" content="([^"]+)"/)[1]);
     assert.equal(
       (html.match(/aria-current="page"/g) || []).length,
-      route && !route.startsWith("hackathons/") ? 1 : 0,
+      route && route !== "media" && !route.startsWith("hackathons/") ? 1 : 0,
     );
   }
   assert.equal(titles.size, routes.length);
@@ -117,11 +118,15 @@ test("research claims keep planned work and unpublished results explicit", () =>
     assert.match(html, /Model D is planned research/);
 });
 
-test("production output contains only the minimal inline theme script and no embeds", () => {
+test("production output contains only scoped inline theme/carousel scripts and no embeds", () => {
   for (const { html } of pages) {
     assert.doesNotMatch(html, /<iframe\b|<form\b/);
     const scripts = [...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)];
-    assert.equal(scripts.length, 1);
+    assert.equal(scripts.length, html.includes("data-media-carousel") ? 2 : 1);
+    for (const script of scripts.slice(1)) {
+      assert.match(script[0], /data-media-carousel-init/);
+      assert.doesNotMatch(script[0], /\bsrc=|fetch\(|XMLHttpRequest/);
+    }
     assert.match(scripts[0][0], /data-theme-init/);
     assert.doesNotMatch(scripts[0][0], /\bsrc=|fetch\(|XMLHttpRequest/);
     assert.ok(html.indexOf('data-theme-init') < html.indexOf('rel="stylesheet"'));
@@ -168,7 +173,7 @@ test("production routes and metadata use the aeglysai.com root", () => {
   for (const { route, html } of pages) {
     const expected = `https://aeglysai.com/${route ? route + "/" : ""}`;
     assert.ok(html.includes(`property="og:url" content="${expected}"`));
-    for (const destination of routes.filter(route => !route.startsWith("hackathons/"))) {
+    for (const destination of routes.filter(route => route !== "media" && !route.startsWith("hackathons/"))) {
       assert.ok(
         html.includes(`href="/${destination ? destination + "/" : ""}"`),
       );
@@ -394,4 +399,60 @@ test("sponsorship privacy gates exclude review states and unconfirmed prize allo
   assert.match(html, /PLANNED BASE/);
   assert.doesNotMatch(html, /TEST-ONLY-NOT-A-SPONSOR|mailto:|drive\.google\.com|INTERESTED|UNDER_REVIEW|TERMS_PENDING/);
   assert.ok(read("hackathons/index.html").includes('href="/hackathons/sponsors/"'));
+});
+
+test("approved raster brand exports preserve source and resolve on every route", () => {
+  const original = readFileSync("public/brand/AeglysAI Dark Tech Brand Kit.png");
+  assert.deepEqual(readFileSync("public/brand/source/AeglysAI Dark Tech Brand Kit.png"), original);
+  for (const size of [512, 192, 180, 96, 48]) {
+    const png = readFileSync(`dist/brand/icons/icon-${size}.png`);
+    assert.equal(png.readUInt32BE(16), size);
+    assert.equal(png.readUInt32BE(20), size);
+  }
+  const favicon = readFileSync("dist/brand/icons/favicon.png");
+  assert.equal(favicon.readUInt32BE(16), 32);
+  for (const { html } of [...pages, { html: read("404.html") }]) {
+    assert.match(html, /rel="icon" type="image\/png" sizes="32x32" href="\/brand\/icons\/favicon.png"/);
+    assert.match(html, /rel="apple-touch-icon" sizes="180x180" href="\/brand\/icons\/icon-180.png"/);
+    assert.match(html, /class="brand-for-light" src="\/brand\/logo\/aeglysai-logo-dark.png"/);
+    assert.match(html, /class="brand-for-dark" src="\/brand\/icons\/icon-mark.png"/);
+    assert.doesNotMatch(html, /rel="manifest"/);
+  }
+});
+
+test("media page contains six source articles and homepage carousel contains all six sources", async () => {
+  const { transpileModule } = await import("typescript");
+  const { outputText } = transpileModule(readFileSync("src/data/media.ts", "utf8"), { compilerOptions: { module: 99, target: 99 } });
+  const { mediaArticles, sortedMediaArticles, featuredMediaArticles, formatPublicationDate } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  assert.equal(mediaArticles.length, 6);
+  const sorted = sortedMediaArticles();
+  const expected = ["business-outstanders-platform", "nerdbot-risk-intelligence", "cyber-mag-engineering-community", "programming-insider-authorization", "techbullion-infrastructure", "cyber-mag-policy-boundaries"];
+  assert.deepEqual(sorted.map(article => article.id), expected);
+  assert.deepEqual(featuredMediaArticles().map(article => article.id), expected.slice(0, 3));
+  const html = read("media/index.html"), home = read("index.html");
+  assert.deepEqual([...html.matchAll(/data-media-id="([^"]+)"/g)].map(match => match[1]), expected);
+  assert.deepEqual([...home.matchAll(/data-media-id="([^"]+)"/g)].map(match => match[1]), expected);
+  for (const article of mediaArticles) {
+    assert.equal([...html.matchAll(new RegExp(`href="${article.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`, "g"))].length, 1);
+    assert.ok(html.includes(`datetime="${article.publishedDate}"`));
+    assert.ok(html.includes(`href="${article.url}" target="_blank" rel="noopener noreferrer"`));
+  }
+  assert.ok(home.includes('href="/media/"'));
+  for (const output of [html, home]) {
+    assert.match(output, /aria-roledescription="carousel"/);
+    assert.equal([...output.matchAll(/class="media-thumbnail"/g)].length, 6);
+    assert.match(output, /aria-label="Previous articles"/);
+    assert.match(output, /aria-label="Next articles"/);
+    assert.match(output, /aria-live="polite"/);
+    for (const article of mediaArticles) assert.ok(output.includes(article.thumbnail.path.replaceAll('&', '&amp;')));
+  }
+  assert.match(html, /Editorial arrangements have not been independently verified/);
+  assert.doesNotMatch(html, /independent editorial coverage|endorsed by|award-winning|<blockquote/);
+  const undated = { ...mediaArticles[0], id: "TEST-ONLY-UNDATED", publishedDate: null };
+  const unverified = { ...mediaArticles[0], id: "TEST-ONLY-UNVERIFIED", publishedDate: "2026-10-07", titleVerified: false };
+  const fixtures = [undated, unverified, ...mediaArticles];
+  assert.deepEqual(featuredMediaArticles(fixtures).map(article => article.id), expected.slice(0, 3));
+  assert.equal(sortedMediaArticles(fixtures).at(-1).id, undated.id);
+  assert.equal(formatPublicationDate("2026-10-07"), "October 7, 2026");
+  assert.doesNotMatch(html + home, /TEST-ONLY-/);
 });

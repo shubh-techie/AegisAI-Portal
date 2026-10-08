@@ -1,0 +1,18 @@
+---
+import { asset } from "../data/project";
+---
+<span class="brand-artwork" aria-hidden="true">
+  <img class="brand-for-light" src={asset("brand/logo/aeglysai-logo-dark.png")} alt="" width="30" height="33" decoding="async"/>
+  <img class="brand-for-dark" src={asset("brand/icons/icon-mark.png")} alt="" width="30" height="33" decoding="async"/>
+</span>
+<style>
+  .brand-artwork { display: inline-flex; width: 30px; height: 33px; margin-right: 10px; flex-shrink: 0; }
+  .brand-artwork img { width: 30px; height: 33px; object-fit: contain; }
+  .brand-for-dark { display: none; }
+  :global(html[data-theme="dark"]) .brand-for-light { display: none; }
+  :global(html[data-theme="dark"]) .brand-for-dark { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :global(html:not([data-theme])) .brand-for-light { display: none; }
+    :global(html:not([data-theme])) .brand-for-dark { display: block; }
+  }
+</style>
