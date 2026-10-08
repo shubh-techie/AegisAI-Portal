@@ -34,3 +34,5 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 - [SPEC-007 — AegisAI → AeglysAI brand migration](SPEC-007-aeglysai-brand.md): PORTAL-009 current identity, social card and classified historical/compatibility references.
 
 - [SPEC-008 — Light/dark theme system](SPEC-008-light-dark-theme.md): PORTAL-010 preference, accessibility and minimal-script requirements.
+
+- [SPEC-009 — Media Coverage](SPEC-009-media-coverage.md): verified publisher-reported metadata, six external articles, responsive cards and latest-three homepage integration.

@@ -1,4 +1,6 @@
 ---
+import MediaCarousel from "../components/media/MediaCarousel.astro";
+import { sortedMediaArticles } from "../data/media";
 import Layout from "../layouts/Layout.astro";
 import ModelCard from "../components/ModelCard.astro";
 import ArchitectureDiagram from "../components/ArchitectureDiagram.astro";
@@ -154,6 +156,10 @@ import { project, models, href } from "../data/project";
         Toward reproducible experiments <span aria-hidden="true">→</span>
       </a>
     </div>
+  </section>
+  <section class="section container" aria-labelledby="featured-media-heading" id="featured-media">
+    <div class="section-heading-row"><div><span class="eyebrow">Media Coverage</span><h2 id="featured-media-heading">Featured in the Media</h2></div><a class="text-link" href={href("media")}>View All Media Coverage <span aria-hidden="true">→</span></a></div>
+    <MediaCarousel articles={sortedMediaArticles()} id="featured-media-track" label="Featured media articles"/>
   </section>
   <section class="container closing-panel">
     <div>

@@ -1,4 +1,5 @@
 ---
+import BrandMark from "./BrandMark.astro";
 import ThemeControls from "./ThemeControls.astro";
 import { href, navigation, project } from "../data/project";
 const current = Astro.url.pathname.replace(/\/$/, "");
@@ -7,9 +8,7 @@ const current = Astro.url.pathname.replace(/\/$/, "");
 <header class="site-header">
   <div class="container header-inner">
     <a class="wordmark" href={href()} aria-label="AeglysAI home">
-      <span class="brand-symbol" aria-hidden="true">
-        Λ
-      </span>
+      <BrandMark />
       Aeglys<span>AI</span>
     </a>
     <nav aria-label="Main navigation">

@@ -60,3 +60,16 @@ all Git refs/tags/commit IDs unchanged. Record observed results in DEVELOPMENT_L
 
 No new architecture or ADR needed. Authorized review/deployment and any social-cache refresh
 are future actions; GitHub repository rename and old-domain redirect are separate tasks.
+
+## PORTAL-015 asset integration extension — 2026-10-04
+
+Authorized noncreative raster crops/resizes from the approved Dark Tech brand sheet.
+Source retained unchanged and copied to public/brand/source. Clean logo/icon/banner
+regions and source coordinates documented in public/brand/README.md. Header/footer
+reuse existing text with theme-specific small symbols; favicon/apple touch metadata
+uses exported PNGs. Global theme engine, layouts and research content unchanged.
+No manifest exists, so none/PWA introduced. Dedicated OG/hackathon cards and full dark
+primary logo require clean sources; retain existing truthful social previews. Acceptance:
+source hash unchanged, crops omit labels/neighbor panels/text truncation, aspect ratios
+preserved, raster limitations disclosed, root asset URLs resolve, both themes/mobile
+navigation and accessible home link work. Validate install/check/build/tests and diff.

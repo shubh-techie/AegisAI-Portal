@@ -1,0 +1,86 @@
+---
+import MediaCard from './MediaCard.astro';
+import type { MediaArticle } from '../../data/media';
+interface Props { articles: MediaArticle[]; id: string; compact?: boolean; label: string; }
+const { articles, id, compact = true, label } = Astro.props;
+---
+<section class="media-carousel" data-media-carousel role="region" aria-roledescription="carousel" aria-label={label}>
+  <div class="media-track" id={id} tabindex="0" aria-label="Article cards; use arrow keys or swipe to browse">
+    {articles.map((article, index) => <div class="media-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${articles.length}`}><MediaCard article={article} compact={compact}/></div>)}
+  </div>
+  <div class="media-controls" hidden>
+    <button type="button" data-prev aria-label="Previous articles" aria-controls={id}><span aria-hidden="true">←</span></button>
+    <div class="media-pagination" aria-label="Choose article position">
+      {articles.map((_, index) => <button type="button" data-position={index} aria-label={`Show articles starting at ${index + 1}`} aria-controls={id}><span></span></button>)}
+    </div>
+    <button type="button" data-next aria-label="Next articles" aria-controls={id}><span aria-hidden="true">→</span></button>
+    <span class="sr-only media-status" aria-live="polite" aria-atomic="true"></span>
+  </div>
+</section>
+<script is:inline data-media-carousel-init>
+  document.querySelectorAll('[data-media-carousel]').forEach(carousel => {
+    if (carousel.dataset.initialized) return;
+    carousel.dataset.initialized = 'true';
+    const track = carousel.querySelector('.media-track');
+    const slides = [...carousel.querySelectorAll('.media-slide')];
+    const prev = carousel.querySelector('[data-prev]');
+    const next = carousel.querySelector('[data-next]');
+    const dots = [...carousel.querySelectorAll('[data-position]')];
+    const status = carousel.querySelector('.media-status');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0, visible = 1, max = 0, scheduled = false;
+    function update() {
+      const step = slides[1] ? slides[1].offsetLeft - slides[0].offsetLeft : track.clientWidth;
+      visible = Math.max(1, Math.round((track.clientWidth + 24) / step));
+      max = Math.max(0, slides.length - visible);
+      current = Math.min(max, Math.max(0, Math.round(track.scrollLeft / step)));
+      prev.disabled = current === 0;
+      next.disabled = current === max;
+      dots.forEach((dot, index) => {
+        dot.hidden = index > max;
+        dot.setAttribute('aria-current', index === current ? 'true' : 'false');
+      });
+      const text = `Articles ${current + 1}–${Math.min(slides.length, current + visible)} of ${slides.length}`;
+      if (status.textContent !== text) status.textContent = text;
+    }
+    function go(index) {
+      const target = Math.max(0, Math.min(max, index));
+      track.scrollTo({ left: slides[target].offsetLeft - slides[0].offsetLeft, behavior: reduced.matches ? 'instant' : 'smooth' });
+    }
+    prev.addEventListener('click', () => go(current - 1));
+    next.addEventListener('click', () => go(current + 1));
+    dots.forEach((dot, index) => dot.addEventListener('click', () => go(index)));
+    track.addEventListener('keydown', event => {
+      if (event.target !== track) return;
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      go(event.key === 'Home' ? 0 : event.key === 'End' ? max : current + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    track.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => { update(); scheduled = false; });
+    }, { passive: true });
+    new ResizeObserver(update).observe(track);
+    carousel.querySelector('.media-controls').hidden = false;
+    update();
+  });
+</script>
+<style>
+  .media-carousel { min-width: 0; }
+  .media-track { position: relative; display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; scrollbar-width: thin; padding-bottom: 12px; }
+  .media-slide { flex: 0 0 calc((100% - 48px) / 3); min-width: 0; scroll-snap-align: start; }
+  .media-slide :global(.media-card) { height: 100%; }
+  .media-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 18px; }
+  .media-controls[hidden], .media-pagination button[hidden] { display: none; }
+  .media-controls button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--cyan); background: var(--surface); border: 1px solid var(--line); border-radius: 50%; font: inherit; }
+  .media-controls button:disabled { opacity: 0.4; cursor: default; }
+  .media-controls button:hover:not(:disabled) { border-color: var(--cyan); }
+  .media-pagination { display: flex; }
+  .media-pagination button { border: 0; background: transparent; width: 44px; }
+  .media-pagination span { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: width 180ms ease, background 180ms ease; }
+  .media-pagination [aria-current="true"] span { background: var(--cyan); width: 22px; border-radius: 8px; }
+  @media (max-width: 1023px) { .media-slide { flex-basis: calc((100% - 24px) / 2); } }
+  @media (max-width: 639px) { .media-slide { flex-basis: 100%; } .media-controls { gap: 4px; } .media-pagination button { width: 32px; } }
+  @media (prefers-reduced-motion: reduce) { .media-track { scroll-behavior: auto; } .media-pagination span { transition: none; } }
+</style>

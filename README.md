@@ -39,7 +39,7 @@ npm test
 npm run preview
 ```
 
-`npm test` checks the built `dist/` output, so run the build first. Production pages contain one small inline theme script, with no client JavaScript bundle. Theme defaults to the system preference; the header sun/moon button saves a light/dark choice in localStorage, and the monitor button restores system mode. No React, database, backend, authentication, CMS, analytics, cookies, external fonts or marketing SDKs are included.
+`npm test` checks the built `dist/` output, so run the build first. Production pages contain a small inline theme script; Home and Media Coverage also include a scoped carousel script, with no client JavaScript bundle. Theme defaults to the system preference; the header sun/moon button saves a light/dark choice in localStorage, and the monitor button restores system mode. No React, database, backend, authentication, CMS, analytics, cookies, external fonts or marketing SDKs are included.
 
 ## Site structure
 
@@ -51,6 +51,7 @@ npm run preview
 | `/experiments/`                         | Experiments           |
 | `/publications/`                        | Publications & Talks  |
 | `/about/`                               | About & Roadmap       |
+| `/media/`                               | Media Coverage        |
 | `/hackathons/`                          | Community Hackathons  |
 | `/hackathons/events/`                   | Hackathon Events      |
 | `/hackathons/community/`                | Hackathon Community   |
@@ -221,3 +222,5 @@ confirmed-only public recognition and event-specific cash prize allocations live
 remain null, with the collection gate closed. No payments or automatic acceptance.
 See [sponsorship program](docs/hackathons/SPONSORSHIP.md) and
 [organizer-review draft terms](docs/hackathons/SPONSORSHIP_TERMS_DRAFT.md).
+
+Media coverage records are maintained in `src/data/media.ts`; see [SPEC-009](docs/specs/SPEC-009-media-coverage.md) for source evidence, publication-date verification and image permissions. The homepage and `/media/` expose all six articles through a responsive image carousel (3 desktop / 2 tablet / 1 mobile), with original publication image URLs and a branded fallback. Original external articles remain separate from research papers.

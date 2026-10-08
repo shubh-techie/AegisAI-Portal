@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import MediaCarousel from "../components/media/MediaCarousel.astro";
+import { sortedMediaArticles } from "../data/media";
+const articles = sortedMediaArticles();
+---
+<Layout title="AeglysAI in the Media" description="External articles covering AeglysAI, Shubh Prabhat, adaptive security, policy-bounded AI and resilient distributed systems.">
+  <Hero eyebrow="Media Coverage" title="AeglysAI in the Media" description="Explore external publications covering AeglysAI's research direction, adaptive security architecture, policy-bounded AI, and the engineering community working toward more resilient distributed systems."/>
+  <div class="container page-content">
+    <section aria-labelledby="media-articles-heading">
+      <h2 id="media-articles-heading">External publications</h2>
+      <p class="media-context">Newest first by publisher-reported publication date. Summaries are brief portal descriptions; external coverage is not an endorsement or validation of research results. Editorial arrangements have not been independently verified.</p>
+      <MediaCarousel articles={articles} id="all-media-track" label="All media articles" compact={false}/>
+    </section>
+  </div>
+</Layout>
+<style>
+  .media-context { max-width: 850px; color: var(--muted); line-height: 1.8; margin: 18px 0 32px; font-size: 0.9rem; }
+</style>
