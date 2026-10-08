@@ -11,6 +11,7 @@ const routes = [
   "publications",
   "about",
   "media",
+  "speaking",
   "hackathons",
   "hackathons/events",
   "hackathons/community",
@@ -19,6 +20,8 @@ const routes = [
   "hackathons/behavioral-risk",
   "hackathons/autonomous-resilience",
 ];
+// Include approved generated presentation details in the same route/asset/metadata checks.
+if (existsSync("dist/speaking")) routes.push(...readdirSync("dist/speaking", { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => `speaking/${entry.name}`));
 const read = (path) => readFileSync(join("dist", path), "utf8");
 const pages = routes.map((route) => ({
   route,
@@ -35,7 +38,7 @@ const walk = (dir) =>
     entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
   );
 
-test("fourteen static pages have unique metadata and accessible landmarks", () => {
+test("static pages have unique metadata and accessible landmarks", () => {
   const titles = new Set();
   const descriptions = new Set();
   for (const { route, html } of pages) {
@@ -118,9 +121,18 @@ test("research claims keep planned work and unpublished results explicit", () =>
     assert.match(html, /Model D is planned research/);
 });
 
-test("production output contains only scoped inline theme/carousel scripts and no embeds", () => {
+test("production output contains only scoped inline scripts and approved local PDF embeds", () => {
   for (const { html } of pages) {
-    assert.doesNotMatch(html, /<iframe\b|<form\b/);
+    assert.doesNotMatch(html, /<form\b/);
+    if (!html.includes('class="presentation-pdf-viewer"')) assert.doesNotMatch(html, /<iframe\b/);
+    else {
+      const embeds = [...html.matchAll(/<iframe\b[^>]*>/g)];
+      assert.equal(embeds.length, 1);
+      assert.match(embeds[0][0], /class="presentation-pdf-viewer"/);
+      assert.match(embeds[0][0], /src="\/presentations\/[A-Za-z0-9_/-]+\.pdf#view=FitH"/);
+      assert.match(embeds[0][0], /title="PDF slides: /);
+      assert.match(embeds[0][0], /loading="lazy"/);
+    }
     const scripts = [...html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/g)];
     assert.equal(scripts.length, html.includes("data-media-carousel") ? 2 : 1);
     for (const script of scripts.slice(1)) {
@@ -158,7 +170,7 @@ test("creator identity is accessible without inventing social profiles", () => {
   }
   const about = read("about/index.html");
   assert.match(about, /id="creator-heading"/);
-  assert.match(about, /Software &amp; Distributed Systems Engineer/);
+  assert.match(about, /Solution Architect/);
   assert.match(about, /LinkedIn/);
   assert.match(
     about,
@@ -173,7 +185,7 @@ test("production routes and metadata use the aeglysai.com root", () => {
   for (const { route, html } of pages) {
     const expected = `https://aeglysai.com/${route ? route + "/" : ""}`;
     assert.ok(html.includes(`property="og:url" content="${expected}"`));
-    for (const destination of routes.filter(route => route !== "media" && !route.startsWith("hackathons/"))) {
+    for (const destination of routes.filter(route => route !== "media" && !route.startsWith("hackathons/") && !route.startsWith("speaking/"))) {
       assert.ok(
         html.includes(`href="/${destination ? destination + "/" : ""}"`),
       );
@@ -455,4 +467,146 @@ test("media page contains six source articles and homepage carousel contains all
   assert.equal(sortedMediaArticles(fixtures).at(-1).id, undated.id);
   assert.equal(formatPublicationDate("2026-10-07"), "October 7, 2026");
   assert.doesNotMatch(html + home, /TEST-ONLY-/);
+});
+
+test("speaking publishes only approved presentations and preserves an honest empty state", async () => {
+  const { transpileModule } = await import("typescript");
+  const { outputText } = transpileModule(readFileSync("src/data/presentations.ts", "utf8").replace('"./project"', JSON.stringify(new URL("../src/data/project.ts", import.meta.url).href)), { compilerOptions: { module: 99, target: 99 } });
+  const { presentations, publishedPresentations } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  const approved = publishedPresentations();
+  const html = read("speaking/index.html");
+  assert.ok(html.includes('rel="canonical" href="https://aeglysai.com/speaking/"'));
+  assert.ok(read("sitemap-0.xml").includes("https://aeglysai.com/speaking/"));
+  for (const { html } of pages) assert.ok(html.includes('href="/speaking/"'));
+  if (approved.length === 0) {
+    assert.match(html, /No presentations published yet/);
+    assert.doesNotMatch(html, /data-presentation-slug=|<iframe/);
+    assert.doesNotMatch(read("index.html"), /id="featured-presentations-heading"/);
+    assert.equal(routes.filter(route => route.startsWith("speaking/")).length, 0);
+  }
+  for (const presentation of approved) {
+    const detail = read(`speaking/${presentation.slug}/index.html`);
+    assert.ok(html.includes(`href="/speaking/${presentation.slug}/"`));
+    if (presentation.pdf) {
+    assert.ok(detail.includes(`src="/${presentation.pdf.path}#view=FitH"`));
+    assert.ok(detail.includes(`href="/${presentation.pdf.path}" target="_blank" rel="noopener noreferrer"`));
+    assert.equal(/download(?:\s|>)/.test(detail), presentation.pdf.downloadEnabled);
+    } else {
+      assert.doesNotMatch(detail, /<iframe|Download PDF|Open PDF/);
+      assert.match(detail, presentation.thumbnail ? /First-page preview/ : /Slides: Not yet published/);
+    }
+    if (presentation.conference) {
+      assert.ok(detail.includes(presentation.conference.organizer.url));
+      if (presentation.conference.technicalSponsor) assert.ok(detail.includes(presentation.conference.technicalSponsor.url));
+      assert.ok(detail.includes(presentation.conference.startDate));
+      assert.ok(detail.includes(presentation.conference.endDate));
+    }
+    assert.match(detail, presentation.delivery ? /Completed|Delivered at an event/ : /Event delivery is not recorded/);
+    if (presentation.thumbnail) assert.ok(detail.includes(`src="/${presentation.thumbnail.path}"`));
+    else assert.match(detail, /Slide preview unavailable/);
+  }
+  assert.equal(presentations.filter(record => record.approvedForPublication && record.publicationStatus === "PUBLISHED").length, approved.length);
+});
+
+test("presentation publication rejects missing assets, invalid dates and unsupported delivery claims", async () => {
+  const { transpileModule } = await import("typescript");
+  const { outputText } = transpileModule(readFileSync("src/data/presentations.ts", "utf8").replace('"./project"', JSON.stringify(new URL("../src/data/project.ts", import.meta.url).href)), { compilerOptions: { module: 99, target: 99 } });
+  const { publishedPresentations, featuredPresentations } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const root = mkdtempSync(join(tmpdir(), "presentation-policy-"));
+  const fixture = { slug: "local-test-only", title: "LOCAL TEST ONLY", description: "Synthetic unit test; never published.", category: "Test", speaker: "LOCAL TEST ONLY", publicationStatus: "PUBLISHED", approvedForPublication: true, publishedDate: null, delivery: null, pdf: { path: "presentations/test.pdf", downloadEnabled: false }, thumbnail: null, featured: true };
+  try {
+    mkdirSync(join(root, "presentations"));
+    assert.deepEqual(publishedPresentations([{ ...fixture, approvedForPublication: false }, { ...fixture, publicationStatus: "DRAFT" }], root), []);
+    assert.throws(() => publishedPresentations([fixture], root), /Missing presentation asset/);
+    writeFileSync(join(root, fixture.pdf.path), "not a PDF");
+    assert.throws(() => publishedPresentations([fixture], root), /Invalid PDF signature/);
+    writeFileSync(join(root, fixture.pdf.path), "%PDF-1.4\nTEST-ONLY signature fixture");
+    assert.equal(publishedPresentations([fixture], root).length, 1);
+    assert.equal(featuredPresentations([{ ...fixture, featured: false }], root).length, 0);
+    assert.throws(() => publishedPresentations([{ ...fixture, pdf: null }], root), /requires an approved PDF or first-page preview/);
+    writeFileSync(join(root, "presentations/test.png"), Buffer.from("89504e470d0a1a0a", "hex"));
+    const preview = { ...fixture, pdf: null, thumbnail: { path: "presentations/test.png", source: "PDF_FIRST_PAGE" } };
+    assert.equal(publishedPresentations([preview], root).length, 1);
+    const invitation = { ...fixture, pdf: null, participationStatus: "Invited" };
+    assert.equal(publishedPresentations([invitation], root).length, 1);
+    assert.throws(() => publishedPresentations([{ ...invitation, participationStatus: "Completed" }], root), /requires recorded delivery/);
+    assert.throws(() => publishedPresentations([{ ...invitation, participationStatus: "Delivered" }], root), /Invalid participation status/);
+    assert.throws(() => publishedPresentations([{ ...invitation, delivery: { event: "Test", date: null } }], root), /conflicts with participation status/);
+    assert.throws(() => publishedPresentations([fixture, fixture], root), /duplicate presentation slug/);
+    assert.throws(() => publishedPresentations([{ ...fixture, slug: "../escape" }], root), /Invalid or duplicate/);
+    assert.throws(() => publishedPresentations([{ ...fixture, publishedDate: "2026-02-30" }], root), /Invalid date/);
+    assert.throws(() => publishedPresentations([{ ...fixture, delivery: { event: "", date: null } }], root), /unsupported delivery claim/);
+    assert.throws(() => publishedPresentations([{ ...fixture, pdf: { ...fixture.pdf, path: "https://external.invalid/test.pdf" } }], root), /local public\/presentations/);
+    assert.throws(() => publishedPresentations([{ ...fixture, thumbnail: { path: "presentations/missing.png", source: "PDF_FIRST_PAGE" } }], root), /Missing presentation asset/);
+    assert.equal(publishedPresentations([{ ...fixture, delivery: { event: "LOCAL TEST ONLY", date: "2026-10-07" } }], root).length, 1);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+
+test("publications and speaking separate proposals from manuscripts and invitations", () => {
+  const publications = read("publications/index.html");
+  assert.doesNotMatch(publications, /data-presentation-slug|Proposed talks|WRU Key Talk/);
+  assert.match(publications, /href="\/speaking\/"/);
+  assert.match(publications, /Manuscript in preparation/);
+  const speaking = read("speaking/index.html");
+  assert.match(speaking, /Ideas Worth Sharing/);
+  for (const section of ["featured-engagement-heading", "engagements-heading", "library-heading", "collaboration-heading"]) assert.ok(speaking.includes(`id="${section}"`));
+  assert.ok(!speaking.includes('id="engagement-invited"'));
+  assert.ok(speaking.includes('id="engagement-completed"'));
+  assert.ok(speaking.includes('id="engagement-confirmed"'));
+  assert.ok(speaking.includes('id="engagement-awaiting"'));
+  assert.equal((speaking.match(/data-presentation-slug=/g) ?? []).length, 3);
+  assert.doesNotMatch(speaking, /No confirmed talks listed|No upcoming talks listed|No completed talks listed/);
+  const invitation = read("speaking/gicite-2026-wru-key-talk/index.html");
+  assert.match(invitation, /Confirmed — Upcoming/);
+  assert.match(invitation, /World Research Union/);
+  assert.match(invitation, /Technische Universität Berlin/);
+  assert.match(invitation, /2026-11-06/);
+  assert.doesNotMatch(invitation, /<iframe|Download PDF|Delivered at an event|IEEE/);
+  for (const slug of ["building-ai-driven-incident-response", "from-static-security-policies"]) assert.match(read(`speaking/${slug}/index.html`), /Proposed/);
+});
+
+
+test("speaking portfolio separates event participation from technical resources", async () => {
+  const { transpileModule } = await import("typescript");
+  const { outputText } = transpileModule(readFileSync("src/data/presentations.ts", "utf8").replace('"./project"', JSON.stringify(new URL("../src/data/project.ts", import.meta.url).href)), { compilerOptions: { module: 99, target: 99 } });
+  const { speakingPortfolio, speakingView } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+  const portfolio = speakingPortfolio();
+  assert.equal(portfolio.featured.slug, "gicite-2026-wru-key-talk");
+  assert.deepEqual(portfolio.engagements.map(record => record.participationStatus), ["Completed", "Acceptance Sent", "Upcoming"]);
+  assert.equal(portfolio.library.length, 3);
+  assert.ok(portfolio.library.every(record => record.participationStatus === "Proposed" || record.thumbnail || record.pdf));
+  const invitation = speakingView(portfolio.featured);
+  assert.equal(invitation.talkTitle, "To Be Announced");
+  assert.equal(invitation.abstract, null);
+  assert.equal(invitation.slidesUrl, null);
+  assert.equal(invitation.role, "Invited Keynote Speaker");
+  assert.equal(invitation.location, "Berlin, Germany");
+  assert.equal(invitation.slideStatus, "Not available");
+  const resource = speakingView(portfolio.library.find(record => record.thumbnail), path => `/${path}`);
+  assert.equal(resource.status, "Completed");
+  assert.equal(resource.slideStatus, "Preview only");
+  assert.ok(resource.thumbnailUrl.endsWith("beyond-static-access-control.png"));
+});
+
+
+test("speaking closure keeps three conferences, written-confirmation gate and public biography", () => {
+  const atai = read("speaking/beyond-static-access-control/index.html");
+  assert.match(atai, /Completed/);
+  assert.match(atai, /AI-Driven Adaptive Security for Resilient Cloud-Native Systems/);
+  assert.match(atai, /Keynote Speaker/);
+  assert.match(atai, /2026-09-26/);
+  const etic = read("speaking/etic-2026/index.html");
+  assert.match(etic, /Acceptance sent — awaiting confirmation/);
+  assert.match(etic, /To Be Confirmed/);
+  assert.match(etic, /2026-12-11/);
+  assert.doesNotMatch(etic, /Keynote|Download PDF|<iframe/);
+  for (const html of [atai, etic, read("speaking/gicite-2026-wru-key-talk/index.html"), read("about/index.html")]) {
+    assert.match(html, /Solution Architect/);
+    assert.match(html, /Creator &amp; Maintainer, AeglysAI/);
+    assert.match(html, /AI-Driven Automation for Resilient and Secure Cloud &amp; Distributed Systems/);
+  }
+  assert.equal((read("speaking/index.html").match(/data-engagement-status=/g) ?? []).length, 4); // three cards plus featured view
 });

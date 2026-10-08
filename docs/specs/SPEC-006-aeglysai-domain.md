@@ -1,5 +1,21 @@
 # SPEC-006 — Production domain migration to aeglysai.com
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED origin configuration: `03670f7`, merged by `1d68408`
+(PR #8). Current origin remains https://aeglysai.com, base `/`, output static.
+Current brand/social preview now use AeglysAI (SPEC-007); fourteen content routes plus custom 404 and
+robots.txt exist including Media Coverage (SPEC-009). Site config remains the source
+for canonicals, sitemap and robots. No new hosting dependency, tracked CNAME or
+old-domain redirect exists. Earlier null-image/old-repository notes below are the
+original domain-only snapshot. Successful current deployment/DNS/HTTPS was not
+verified in this synchronization.
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 - Recorded: 2026-10-03 (America/Chicago).
 - Task: PORTAL-008.
 - Status: IMPLEMENTED locally, uncommitted for review; no live migration claimed.

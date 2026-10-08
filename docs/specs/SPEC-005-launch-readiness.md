@@ -1,5 +1,22 @@
 # SPEC-005 — Hackathon communications and launch readiness
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED drafts and metadata configuration: `45fb2a2`, merged by
+`07ebdf3` (PR #7). Draft communications are artifacts, not messages sent or completed
+judging. Current `social.ts` and `hackathonSeo.ts` supply the local 1200×630
+AeglysAI PNG preview, introduced during rebrand `5b5251c`; the original text-only
+preview observation below is historical. Five canonical forms are null/closed;
+qualification/certificate guidance comes from `8431b47`, sponsorship drafts from
+`280fd65`. Organizer terms remain IN PREPARATION and actual launch remains PLANNED.
+See the [launch checklist](../hackathons/LAUNCH_READINESS.md) for current gates.
+No live CI/deployment or sending operation is asserted.
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 - Recorded: 2026-10-03 (America/Chicago).
 - Task: PORTAL-007.
 - Status: IMPLEMENTED locally as draft communications/operations and portal copy/metadata; event launch remains PLANNED.

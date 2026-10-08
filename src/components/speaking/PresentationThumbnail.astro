@@ -1,0 +1,17 @@
+---
+import { asset } from '../../data/project';
+import type { Presentation } from '../../data/presentations';
+interface Props { presentation: Presentation; }
+const { presentation } = Astro.props;
+---
+<div class="presentation-thumbnail">
+  {presentation.thumbnail ? <img src={asset(presentation.thumbnail.path)} alt="" width="960" height="540" loading="lazy" decoding="async"/> : <div class="presentation-placeholder" aria-hidden="true"><img src={asset('brand/icons/icon-mark.png')} alt="" width="48" height="48"/><span>AeglysAI</span><small>Slide preview unavailable</small></div>}
+</div>
+<style>
+  .presentation-thumbnail { aspect-ratio: 16 / 9; background: var(--surface-raised); overflow: hidden; border-bottom: 1px solid var(--line); }
+  .presentation-thumbnail > img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+  .presentation-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: var(--cyan); }
+  .presentation-placeholder img { width: 48px; height: 48px; border-radius: 8px; }
+  .presentation-placeholder span { font-weight: 650; }
+  .presentation-placeholder small { color: var(--muted); }
+</style>

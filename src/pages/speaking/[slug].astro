@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import PresentationThumbnail from '../../components/speaking/PresentationThumbnail.astro';
+import PresentationMetadata from '../../components/speaking/PresentationMetadata.astro';
+import SpeakerProfile from '../../components/speaking/SpeakerProfile.astro';
+import PdfViewer from '../../components/speaking/PdfViewer.astro';
+import { publishedPresentations, type Presentation } from '../../data/presentations';
+import { href, papers } from '../../data/project';
+export function getStaticPaths() {
+  return publishedPresentations().map(presentation => ({ params: { slug: presentation.slug }, props: { presentation } }));
+}
+interface Props { presentation: Presentation; }
+const { presentation } = Astro.props;
+---
+<Layout title={presentation.title} description={presentation.description}>
+  <Hero eyebrow={presentation.category} title={presentation.title} description={presentation.description}/>
+  <div class="container page-content">
+    <a class="text-link" href={href('speaking')}>← All presentations</a>
+    <div class="presentation-overview">
+      <PresentationThumbnail presentation={presentation}/>
+      <PresentationMetadata presentation={presentation}/>
+    </div>
+    <SpeakerProfile/>
+    {presentation.topics && <section class="section" aria-labelledby="topics-heading"><h2 id="topics-heading">Presentation topics</h2><ul>{presentation.topics.map(topic => <li>{topic}</li>)}</ul></section>}
+    {presentation.previousTitle && <p class="preview-note">Earlier proposed title: {presentation.previousTitle}</p>}
+    <section class="section" aria-labelledby="abstract-heading"><h2 id="abstract-heading">Abstract</h2><p>{presentation.abstract ?? (presentation.participationStatus === 'Resources' ? presentation.description : 'To be confirmed')}</p></section>
+    {presentation.relatedPaperTitles?.length && <section class="section" aria-labelledby="related-heading"><h2 id="related-heading">Related research publications</h2>{presentation.relatedPaperTitles.map(title => <p><a class="text-link" href={`${href('publications')}#paper-${papers.indexOf(title) + 1}`}>{title} →</a></p>)}</section>}
+    {presentation.pdf ? <PdfViewer presentation={presentation}/> : <p class="preview-note">{presentation.thumbnail ? 'First-page preview. The full slide deck is not available.' : 'Slides: Not yet published.'}</p>}
+  </div>
+</Layout>
+<style>
+  .preview-note { margin-top: 32px; color: var(--muted); }
+  .presentation-overview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; margin-top: 28px; }
+  @media (max-width: 639px) { .presentation-overview { grid-template-columns: 1fr; gap: 24px; } }
+</style>

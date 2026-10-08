@@ -21,6 +21,7 @@ export const navigation = [
   { label: "Architecture", path: "architecture" },
   { label: "Experiments", path: "experiments" },
   { label: "Publications", path: "publications" },
+  { label: "Speaking", path: "speaking" },
   { label: "About", path: "about" },
   { label: "Hackathons", path: "hackathons" },
 ];
@@ -67,11 +68,6 @@ export const models: {
 export const papers = [
   "Adaptive Risk-Aware Authorization for Zero-Trust Distributed Cloud Systems",
   "AI-Driven Behavioral Anomaly Detection and Autonomous Incident Response in Cloud-Native Systems",
-];
-export const talks = [
-  "Beyond RBAC: Adaptive Authorization for Zero-Trust Cloud Systems",
-  "Building AI-Driven Incident Response for Distributed Systems",
-  "From Static Security Policies to Risk-Aware Cloud Authorization",
 ];
 export const evolution = [
   {

@@ -1,0 +1,31 @@
+---
+import { formatPresentationDate, type Presentation } from '../../data/presentations';
+interface Props { presentation: Presentation; compact?: boolean; }
+const { presentation, compact = false } = Astro.props;
+const conference = presentation.conference;
+---
+<div class="presentation-metadata">
+  <p class="presentation-state">{presentation.participationNote ?? (presentation.participationStatus && presentation.participationStatus !== 'Resources' ? presentation.participationStatus : presentation.delivery ? 'Delivered at an event' : presentation.pdf ? 'Slides published' : 'Presentation preview')}</p>
+  {presentation.role && <p><strong>Role:</strong> {presentation.role}</p>}
+  {presentation.series && <p><strong>Series:</strong> {presentation.series}</p>}
+  <p><strong>Speaker:</strong> {presentation.speaker}</p>
+  {presentation.publishedDate && <p>Slides published: <time datetime={presentation.publishedDate}>{formatPresentationDate(presentation.publishedDate)}</time></p>}
+  {presentation.delivery && <p><strong>Event:</strong> {presentation.delivery.event}{presentation.delivery.date && <> · <time datetime={presentation.delivery.date}>{formatPresentationDate(presentation.delivery.date)}</time></>}</p>}
+  {conference && <div class="conference-info">
+    <p><strong>Conference:</strong> <a href={conference.sourceUrl} target="_blank" rel="noopener noreferrer">{compact ? conference.shortName : `${conference.name} (${conference.shortName})`}</a></p>
+    <p><time datetime={conference.startDate}>{formatPresentationDate(conference.startDate)}</time> – <time datetime={conference.endDate}>{formatPresentationDate(conference.endDate)}</time> · {conference.mode}</p>
+    {conference.venue && <p><strong>Venue:</strong> {conference.venue}</p>}
+    <>
+      <p><strong>Organized by:</strong> <a href={conference.organizer.url} target="_blank" rel="noopener noreferrer">{conference.organizer.name}</a></p>
+      {conference.technicalSponsor && <p><strong>Technically sponsored by:</strong> <a href={conference.technicalSponsor.url} target="_blank" rel="noopener noreferrer">{conference.technicalSponsor.name}</a></p>}
+    </>
+  </div>}
+  {!conference && <><p><strong>Event, organizer, date and venue:</strong> To be confirmed</p></>}
+  {presentation.talkTitle !== undefined && <p><strong>Talk title:</strong> {presentation.talkTitle ?? 'To Be Confirmed'}</p>}
+  {!presentation.pdf && <p><strong>Slides:</strong> Not yet published</p>}
+  {!presentation.delivery && <p>Event delivery is not recorded.</p>}
+</div>
+<style>
+  .presentation-metadata p { margin: 0 0 10px; font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .presentation-metadata .presentation-state { color: var(--cyan); font-size: 0.75rem; }
+</style>

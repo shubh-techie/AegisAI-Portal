@@ -35,4 +35,26 @@ Follow the reading order and development workflow in [AGENTS.md](../../AGENTS.md
 
 - [SPEC-008 — Light/dark theme system](SPEC-008-light-dark-theme.md): PORTAL-010 preference, accessibility and minimal-script requirements.
 
-- [SPEC-009 — Media Coverage](SPEC-009-media-coverage.md): verified publisher-reported metadata, six external articles, responsive cards and latest-three homepage integration.
+- [SPEC-009 — Media Coverage](SPEC-009-media-coverage.md): verified publisher-reported metadata, six external articles, publisher image thumbnails/fallbacks, responsive all-six carousels on Home and /media/.
+
+- [SPEC-010 — Speaking & Presentations](SPEC-010-speaking-presentations.md): approval-gated local PDF listing/detail templates, first-page previews, fallback viewer and conditional homepage integration. IMPLEMENTED locally with editorial hero, featured invitation, filtered engagement gallery and separate topic/slide library; full deck remains private.
+
+
+## Current implementation index — 2026-10-07
+
+All nine numbered specifications and the existing
+[Hackathon Experience specification](HACKATHON_EXPERIENCE_SPEC.md) now distinguish
+current committed implementation from their original task snapshots. Current source
+baseline: `74c2963` (PR #14 merge). Domain history in SPEC-002 is superseded by SPEC-006;
+current image behavior is covered by SPEC-007/SPEC-009. No duplicate specification was added.
+
+See the [feature-status matrix and roadmap](../../README.md#feature-status-and-roadmap),
+[frontend architecture](../../README.md#frontend-architecture-and-content-ownership),
+[Git version history](../PROJECT_HISTORY.md#verified-git-tags--2026-10-07-audit) and
+[engineering changelog](../DEVELOPMENT_LOG.md). Speaking & Presentations was PLANNED at the audited commit; the subsequent local implementation is documented in SPEC-010. Its /speaking/ route/templates now exist in the working tree, but no approved slides or delivered engagement are asserted.
+Historical acceptance/test counts remain evidence for their original tasks, not a current
+route count or a newly executed validation run.
+
+PORTAL-SPEAKING-FINAL extends existing SPEC-010 in place (no duplicate specification).
+[Speaking evidence tracker](../speaking/SPEAKING_EVIDENCE_TRACKER.md) records artifact availability
+and organizer follow-ups separately from public runtime records.

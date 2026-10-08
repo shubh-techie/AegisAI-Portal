@@ -2,9 +2,12 @@
 export const creator = {
   name: "Shubh Prabhat",
   initials: "SP",
-  role: "Software & Distributed Systems Engineer",
+  role: "Solution Architect",
+  projectDesignation: "Creator & Maintainer, AeglysAI",
+  researchFocus: "AI-Driven Automation for Resilient and Secure Cloud & Distributed Systems",
+  website: "https://aeglysai.com/",
   biography: [
-    "Shubh Prabhat is a software and distributed-systems engineer whose technical interests span cloud-native architecture, microservices, identity and authorization, network automation, resilient systems, and AI-driven automation.",
+    "Shubh Prabhat is a solution architect whose technical interests span cloud-native architecture, microservices, identity and authorization, network automation, resilient systems, and AI-driven automation.",
     "He created the initiative previously known as AegisAI and maintains it as AeglysAI, an open-source research initiative for investigating explainable, risk-aware and adaptive authorization in cloud-native distributed systems.",
   ],
   interests: [
