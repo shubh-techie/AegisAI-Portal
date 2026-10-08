@@ -1,49 +1,83 @@
 # SPEC-009 — Media Coverage
 
-Recorded 2026-10-07. Status: IMPLEMENTED locally for review; no deployment.
-Task: user-requested Media Coverage page and homepage integration.
-Baseline: feature/aeglysai-brand-assets at ba5c514 with pending brand work; all existing
-changes preserved on the new feature/media-coverage branch. This feature adds no
-backend, dependencies, runtime fetching or publishing automation.
+Recorded 2026-10-07; synchronized 2026-10-07 against source at `74c2963`.
+Status: COMPLETED / IMPLEMENTED in `85332d9`, merged by `74c2963` (PR #14).
+`v0.2.0` points to `85332d9`; this is Git evidence, not a verified deployment or
+GitHub Release. The same commit contains previously pending approved brand assets.
+This revision consolidates current behavior into the existing specification, superseding
+the original grid/latest-three/neutral-thumbnail sections; no duplicate spec is added.
 
-## Scope and behavior
+## Scope and current behavior
 
-- `/media/` uses the existing Layout/Hero and neutral research styling. One h1:
-  AeglysAI in the Media; exact requested introduction. Canonical remains on aeglysai.com.
-- Six records in src/data/media.ts, ordered by publisher-reported verified publication
-  date descending. Undated items follow dated records, tie-break by stable id.
-- Each card has publisher, full headline, verified date/time element, short portal
-  summary, category, locally created article illustration and original external link.
-- src/components/media/MediaCard.astro owns shared compact/full presentation; cards
-  adapt with existing responsive grids, semantic headings, focus styles and both themes.
-- Homepage features at most three dated, title-verified records with a recorded check
-  date. Current selection: Business Outstanders, Nerdbot, Cyber Mag community article.
-  New entries require data only, not layout edits. Missing/unverified entries are
-  excluded from homepage recency selection; the full page labels manual-review fields.
-- Discover through homepage View All Media Coverage. Global navigation is retained.
-  Existing research, publication/status, hackathon, branding/theme and SEO behavior
-  preserved. External media coverage is distinct from papers in preparation.
+- Six external media records in `src/data/media.ts`, covering five publications (The Cyber
+  Mag has two articles). Both Home and `/media/` call `sortedMediaArticles()` and render
+  all six in publisher-reported publication-date order, newest first; undated records
+  follow dated ones with ID tie-breaking. Headline/date/article URLs remain unchanged.
+- `/media/` reuses Layout/Hero, one h1 “AeglysAI in the Media”, the original introduction
+  and coverage/context disclaimer. Full cards include category and short portal summary.
+- Home retains “Featured in the Media” and View All Media Coverage linking to `/media/`;
+  its cards are compact (no summary/category). Global navigation was not extended for media.
+- Shared `MediaCard.astro` presents a 16:9 thumbnail, publication name, available date/time,
+  headline visually clamped to three lines and “Read Article →”. Full headline text remains
+  in the DOM and the accessible link name. Links open original publications using
+  `target="_blank"`, `rel="noopener noreferrer"` and new-tab context.
+- `MediaCarousel.astro` provides the shared carousel without a dependency, autoplay or loop:
+  three visible cards at ≥1024px, two at 640–1023px, one at <640px, with 24px gaps.
+  Previous/next move one card and disable at the boundaries. Valid start-position indicators
+  adapt to the visible count (4 desktop / 5 tablet / 6 mobile for the current six records).
+- Native horizontal scrolling/scroll snap supports touch/swipe. The focusable track handles
+  Left/Right/Home/End when it itself has focus; original links retain normal keyboard behavior.
+  Groups carry slide position labels, controls have accessible names/track references and a
+  polite live region announces the visible range. ResizeObserver updates range/controls.
+- Movement is smooth except for reduced-motion preference. Without JavaScript the articles
+  remain scrollable and links usable; inactive arrow/indicator controls remain hidden.
 
-## Data and editorial boundary
+## Content storage, metadata and boundaries
 
-Fields: id, publication, title, url, category, summary, publishedDate|null,
-titleVerified, verifiedOn|null, dateEvidence|null, thumbnail|null (path, alt, permission).
-No author fields, quotes, logos, awards, endorsements or research findings inferred.
-Dates are publishers' own reports, not independently established project-history dates;
-do not rewrite project history based on these dates. DateModified is not DatePublished.
+Typed MediaArticle fields: id, publication, title, url, category, summary,
+publishedDate|null, titleVerified, verifiedOn|null, dateEvidence|null and thumbnail|null.
+Thumbnail fields: path, alt, permission. All current thumbnails have empty alt because they
+are decorative beside identifying text. Dates format with Intl.DateTimeFormat in UTC.
+Null dates display manual-review wording; unverified titles retain a visible review label.
 
-Summaries are original brief descriptions, not copied article excerpts. Editorial,
-sponsorship or paid-placement arrangements remain unverified; no independence claim.
-Public page says coverage is not an endorsement or validation of research results.
-No publisher artwork reuse permission supplied: media-article.svg is original neutral
-portal artwork, not a publisher logo or screenshot. No third-party image requests,
-tracking, article-body copy or invented affiliation.
+`featuredMediaArticles()` still exists and tests verified/dated latest-three selection, but
+neither page calls it. The source comment about excluding unverified/undated records from
+homepage recency selection reflects that helper's older usage; the current homepage renders
+the full sorted list. This documentation-only task does not remove or change the helper.
 
-Future metadata unavailable: retain supplied URL/headline, set titleVerified false,
-verifiedOn/null dates as appropriate, and label missing fields for manual review.
-Never derive a date from URL, copyright year, sidebar, author profile or update date.
-Recheck original article title and publication evidence before assigning verified fields.
-Future external images require documented permission and local valid asset path.
+No database, content API, runtime metadata fetch/scraper, CMS, auth or analytics is added.
+Metadata edits require a rebuild. Summaries are short original portal descriptions, not
+article-body excerpts. Coverage is distinct from research papers in preparation; no awards,
+endorsements, results, independence or affiliations are inferred. Source dates are publisher
+reports, not verified project-history dates; modified dates must not replace publication dates.
+When metadata is unavailable, preserve supplied headline/URL and flag review rather than
+inventing facts or deriving dates from URL/sidebar/copyright text.
+
+## Images and fallback handling
+
+Five current HTTPS thumbnails came from `og:image`; Nerdbot's uses the featured-image link
+on the original article. Exact selected URLs are in `src/data/media.ts`; recorded image
+verification on 2026-10-07 found HTTP 200 and image content types at all six endpoints.
+This synchronization inspected stored source/evidence and did not re-fetch publications.
+
+Images load directly from publisher/CDN URLs, not vendored copies. PUBLISHER_METADATA
+records provenance only, not granted reuse rights or an ownership/license assertion.
+The existing enum also permits ORIGINAL_ARTWORK and PERMISSION_CONFIRMED; no current
+publisher image is marked as permission-confirmed. Public metadata does not guarantee
+future reachability, hotlink permission or redistribution rights. No unrelated stock or
+generated article photograph is used, and no new image-processing dependency was added.
+
+`MediaCard.astro` uses a reserved aspect-ratio frame, width/height attributes, lazy loading,
+asynchronous decoding, no-referrer and object-fit cover. There is no generated srcset,
+automatic compression, runtime resizing or Astro Image pipeline for these thumbnails.
+Local approved images can use `asset()`; HTTPS paths bypass that helper.
+
+Behind each thumbnail is an existing local AeglysAI icon plus branded text/gradient.
+Missing/null thumbnails display it immediately; an inline image-error handler hides failed
+images to reveal it when JavaScript is enabled. With scripts disabled, scrollability remains
+but hiding a failed image is not guaranteed. The original `public/images/media-article.svg`
+remains unused by current cards; it is neither a publisher image nor the active fallback.
+Third-party image requests do occur, superseding the original no-external-image description.
 
 ## Source verification — 2026-10-07
 
@@ -62,46 +96,33 @@ no certificate verification disabled. Future availability can change; no uptime 
 Source publication dates differ from October update dates; July/August source dates do
 not establish that the portal was branded AeglysAI then. Historical records untouched.
 
+## Frontend integration and dependencies
+
+Home (`src/pages/index.astro`) and full media (`src/pages/media.astro`) reuse the same
+carousel/card components; the full route passes compact=false. Layout, theme tokens and
+metadata behavior remain shared. Theme inline initialization runs on all HTML pages;
+these two routes additionally have the inline carousel initializer and image-error handlers.
+No client JavaScript bundle/library or backend is added. `85332d9` did not modify
+package.json/package-lock.json. Existing Astro/sitemap/TypeScript/check tooling remains.
+See [frontend architecture](../../README.md#frontend-architecture-and-content-ownership).
+
 ## Acceptance and validation
 
-Build must emit /media/index.html and sitemap/canonical/social metadata. All six URLs
-appear once as card links with target=_blank, rel=noopener noreferrer and accessible
-new-tab names. Full page is sorted; homepage chooses exactly the three verified newest
-records, never substitutes null/unverified records. No date or headline invented.
-Test unknown dates, unverified records and deterministic ordering with in-memory
-fixtures; production must not contain fixtures. Verify existing route metadata/assets,
-light/dark mobile/desktop navigation, focus states, readable typography and no overflow.
-Run Node 24 npm run check/build/test and git diff --check. No lint script configured.
-Actual validation outcomes go in DEVELOPMENT_LOG.md. Commit/push/deploy not authorized.
+- Emit `/media/index.html` and existing canonical/social/crawl metadata.
+- Both routes contain all six unchanged original links in sorted order; full route retains
+  context/category/summary. Verify null metadata review states and deterministic sorting;
+  legacy latest-three helper tests do not define the homepage's current record count.
+- Verify 3/2/1 cards, arrows/boundaries, valid indicators, native swipe, keyboard navigation,
+  focus, visible-range announcements, reduced motion, no-JavaScript scrollability and no
+  page-level overflow. Headlines clamp visually while full text stays accessible.
+- Verify real thumbnail requests and JS-enabled failure fallback; local placeholder icon
+  resolves and reserved dimensions prevent image-driven shifts. No unrelated imagery.
+- Run Node 24 `npm run check`, `npm run build`, then `npm test`, plus `git diff --check`
+  for application changes. Existing output tests allow theme plus scoped carousel scripts,
+  assert all six card/image URLs and preserve the site's research/route/link requirements.
 
-
-## 2026-10-07 — Image carousel enhancement
-
-This extension supersedes the original grid/latest-three/image illustration presentation.
-IMPLEMENTED locally: shared dependency-free CSS scroll-snap carousel on the homepage
-and /media/, containing all six unchanged articles in date order. Displays 3 cards at
-1024px and above, 2 at 640–1023px and 1 below 640px. Full media cards retain their
-existing summaries/category; headlines visually clamp to three lines with full text
-available to assistive technology. Original article URLs and metadata are unchanged.
-
-Images use verified public publisher URLs, not licensed local copies. PUBLISHER_METADATA
-records provenance only; it does not assert artwork ownership or a granted reuse license.
-The user requested publisher thumbnails. Five URLs came from og:image; Nerdbot uses
-the article's featured image link exposed by the original page. All six image endpoints
-returned HTTP 200 with image content types on 2026-10-07. See src/data/media.ts for exact
-URLs. Publication metadata does not guarantee future availability or redistribution
-rights; no publisher images were vendored. Missing/null/failed images show the existing
-AeglysAI icon and a code-authored branded placeholder, never unrelated stock artwork.
-
-Reserved 16:9 frames, explicit dimensions, lazy loading, asynchronous decoding and
-no-referrer requests reduce loading impact and prevent image-driven layout shifts.
-Navigation includes previous/next buttons with disabled boundaries, responsive position
-indicators, keyboard Left/Right/Home/End, native touch scrolling and smooth movement.
-Reduced-motion preference disables smooth movement. A live region announces the visible
-range; the scroll track is keyboard focusable. Without carousel JavaScript the articles
-remain scrollable and original links remain usable; inactive controls stay hidden.
-No autoplay, dependency, runtime metadata fetch, backend or navigation changes.
-
-Acceptance: all six articles accessible on both routes, 3/2/1 sizing, functional arrows,
-indicators/keyboard, image failure fallback, no page overflow and successful existing
-check/build/test commands. Observed outcomes are recorded in DEVELOPMENT_LOG.md.
+Prior implementation validation is recorded in [DEVELOPMENT_LOG.md](../DEVELOPMENT_LOG.md):
+check/build and nineteen tests passed, with responsive Chrome/control/touch/reduced-motion
+and no-JavaScript checks. These are earlier observed local outcomes; no build/browser test
+or remote CI/deployment is claimed by this documentation-only synchronization. Ongoing
+metadata/image maintenance and independent deployment verification remain follow-up work.

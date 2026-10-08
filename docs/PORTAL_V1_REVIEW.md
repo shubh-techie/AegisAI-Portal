@@ -1,5 +1,12 @@
 # Portal V1 review — PORTAL-003
 
+Current-status note — 2026-10-07: this is the original PORTAL-003 review, not the
+current release/deployment assessment. Its creator changes were committed in `e8d7f6b`
+and merged by `bbe7491`. The old base path, text-only metadata and pending-commit notes
+below describe that review date. See the [current implementation/roadmap](../README.md#feature-status-and-roadmap)
+and [verified Git history](PROJECT_HISTORY.md) for later changes. The original observations
+and historical validation outcomes are preserved.
+
 Reviewed on 2026-09-23 (CDT), on `feature/creator-profile`, based on commit `653e401` plus the uncommitted creator-profile changes. This report describes local validation, not a new release or deployment.
 
 ## Implementation

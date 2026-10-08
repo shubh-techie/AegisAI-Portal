@@ -1,5 +1,20 @@
 # SPEC-002 — aegisai.world root-path migration
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED historical migration: `450dd0f`, merged by `8a3646c` (PR #4).
+Its aegisai.world target was superseded by SPEC-006 / `03670f7`, merged by `1d68408`;
+current Astro site is https://aeglysai.com with base `/`. The retained sections below
+are the 2026-09-25 configuration/asset snapshot, not current favicon or social-image
+requirements. PNG favicon/touch icons and a shared local social preview now exist;
+see SPEC-007 and the [current image architecture](../../README.md#images).
+Static build/Pages boundaries are retained; no redirect or live deployment is inferred.
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 - Recorded: 2026-09-25 (America/Chicago).
 - Task: PORTAL-005.
 - Status: IMPLEMENTED locally, pending review and deployment.

@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PresentationCard from '../../components/speaking/PresentationCard.astro';
+import EngagementCard from '../../components/speaking/EngagementCard.astro';
+import FeaturedEngagement from '../../components/speaking/FeaturedEngagement.astro';
+import { speakingPortfolio } from '../../data/presentations';
+import { creator } from '../../data/creator';
+const { engagements, featured, library } = speakingPortfolio();
+const filters = [
+  { id: 'invited', label: 'Invited', statuses: ['Invited'] },
+  { id: 'confirmed', label: 'Confirmed / Upcoming', statuses: ['Confirmed', 'Upcoming'] },
+  { id: 'completed', label: 'Completed', statuses: ['Completed'] },
+  { id: 'awaiting', label: 'Awaiting confirmation', statuses: ['Acceptance Sent'] },
+].filter(filter => engagements.some(record => filter.statuses.includes(record.participationStatus!)));
+const topics = ['Adaptive Security and Zero Trust', 'Policy-Bounded AI', 'Resilient Distributed Systems', 'Cloud-Native Security', 'AI-Driven Automation'];
+---
+<Layout title="Speaking & Technical Presentations" description="Technical talks, research presentations and speaking invitations on adaptive security, zero-trust architecture and resilient distributed systems. Participation and slide availability are stated separately.">
+  <section class="speaking-hero" aria-labelledby="speaking-title">
+    <div class="container">
+      <p class="eyebrow">Speaking & Technical Presentations</p>
+      <h1 id="speaking-title">Ideas Worth Sharing.</h1>
+      <p class="speaking-lead">Exploring adaptive security, AI-driven engineering, zero-trust architecture, and resilient distributed systems through technical talks, research presentations, and community discussions.</p>
+      <nav aria-label="Speaking sections"><a href="#engagements">Engagements ↓</a><a href="#slide-library">Technical talks & slides ↓</a></nav>
+    </div>
+  </section>
+  <div class="container speaking-content">
+    {featured && <FeaturedEngagement presentation={featured}/>}
+    <section id="engagements" class="portfolio-section" aria-labelledby="engagements-heading">
+      <p class="eyebrow">02 / Speaking engagements</p>
+      <h2 id="engagements-heading">Conversations with context.</h2>
+      <p class="section-intro">Invitations and event participation, with their current status clearly stated.</p>
+      {engagements.length ? <div class="engagement-gallery">
+        <fieldset class="engagement-filters"><legend class="sr-only">Filter speaking engagements</legend>
+          <label><input type="radio" name="engagement-filter" id="engagement-all" checked/><span>All</span></label>
+          {filters.map(filter => <label><input type="radio" name="engagement-filter" id={`engagement-${filter.id}`}/><span>{filter.label}</span></label>)}
+        </fieldset>
+        <div class="engagement-grid">{engagements.map(presentation => <EngagementCard presentation={presentation}/>)}</div>
+      </div> : <p>No event engagements listed.</p>}
+    </section>
+    <section id="slide-library" class="portfolio-section" aria-labelledby="library-heading">
+      <p class="eyebrow">03 / Technical talks & slide library</p>
+      <h2 id="library-heading">From research to discussion.</h2>
+      <p class="section-intro">Presentation resources and topics in development. A slide preview does not establish event delivery.</p>
+      <div class="cards-grid three slide-grid">{library.map(presentation => <PresentationCard presentation={presentation}/>)}</div>
+    </section>
+    <section class="portfolio-section collaboration" aria-labelledby="collaboration-heading">
+      <div><p class="eyebrow">04 / Speaking topics & collaboration</p><h2 id="collaboration-heading">Let’s explore the hard questions.</h2><p class="section-intro">Technical discussions and research exchanges around secure, explainable and resilient systems.</p><a class="text-link contact-link" href={creator.links.github} target="_blank" rel="noopener noreferrer">Connect via GitHub ↗<span class="sr-only"> (opens in a new tab)</span></a></div>
+      <ul>{topics.map(topic => <li>{topic}</li>)}</ul>
+    </section>
+  </div>
+</Layout>
+<style>
+  .speaking-hero { background: #0d1b31; color: #f4f7fb; padding: 72px 0 56px; border-bottom: 1px solid #294467; }
+  .speaking-hero .eyebrow { color: #9dbfea; }
+  .speaking-hero h1 { font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1.08; letter-spacing: -.045em; margin: 24px 0; max-width: 100%; }
+  .speaking-lead { color: #c9d6e8; font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.8; max-width: 850px; }
+  .speaking-hero nav { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 24px; }
+  .speaking-hero nav a { color: #afcdf4; min-height: 44px; display: inline-flex; align-items: center; }
+  .speaking-content { padding-top: 48px; padding-bottom: 64px; }
+  .portfolio-section { margin-top: 56px; scroll-margin-top: 24px; }
+  h2 { margin: 12px 0 16px; font-size: clamp(1.65rem, 3vw, 2.2rem); line-height: 1.3; }
+  .section-intro { color: var(--muted); line-height: 1.8; max-width: 750px; margin-bottom: 24px; }
+  .engagement-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .engagement-filters { border: 0; padding: 0; margin: 0 0 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .engagement-filters label { position: relative; cursor: pointer; }
+  .engagement-filters input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .engagement-filters span { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); background: var(--surface); }
+  .engagement-filters input:checked + span { color: var(--cyan); background: var(--implemented-bg); border-color: var(--accent-border); }
+  .engagement-filters input:focus-visible + span { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .engagement-gallery:has(#engagement-invited:checked) :global([data-engagement-status]:not([data-engagement-status="Invited"])),
+  .engagement-gallery:has(#engagement-confirmed:checked) :global([data-engagement-status]:not([data-engagement-status="Confirmed"]):not([data-engagement-status="Upcoming"])),
+  .engagement-gallery:has(#engagement-completed:checked) :global([data-engagement-status]:not([data-engagement-status="Completed"])) { display: none; }
+  .engagement-gallery:has(#engagement-awaiting:checked) :global([data-engagement-status]:not([data-engagement-status="Acceptance Sent"])) { display: none; }
+  .slide-grid { margin-top: 24px; }
+  .collaboration { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; padding-top: 36px; border-top: 1px solid var(--line); }
+  .collaboration ul { list-style: none; padding: 0; margin: 0; }
+  .collaboration li { padding: 14px 0; border-bottom: 1px solid var(--line); line-height: 1.6; }
+  .contact-link { display: inline-flex; align-items: center; min-height: 44px; }
+  @media (max-width: 767px) { .engagement-grid, .collaboration { grid-template-columns: 1fr; } .speaking-hero { padding: 48px 0 36px; } .speaking-content { padding-top: 32px; } .portfolio-section { margin-top: 40px; } }
+</style>

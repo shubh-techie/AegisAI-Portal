@@ -1,5 +1,31 @@
 # SPEC-004 — Speakers, judges and participation workflow
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED publication filter/profile configuration: `21c5615`,
+merged by `280730f` (PR #6). `8431b47` later centralized intake in `hackathonForms.ts`:
+PARTICIPANT_REGISTRATION_URL, QUALIFICATION_SUBMISSION_URL, JUDGE_APPLICATION_URL,
+SPEAKER_INTEREST_URL and PROJECT_SUBMISSION_URL. All are null with closed gates;
+legacy names derive from them. Guest/judge slots remain empty; confirmation plus
+explicit publicDisplayApproved is still required. No invitations or external intake
+are established by these files. Speaker profiles have topics, but no eventAssignments
+field; eventAssignments currently belongs to Judge. A separate public speaking-history
+module is PLANNED in the [roadmap](../../README.md#next-work), not implemented here.
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+### Speaking module follow-up — 2026-10-07
+
+The subsequent user-authorized module is IMPLEMENTED locally in
+[SPEC-010](SPEC-010-speaking-presentations.md): /speaking/, approved-record detail templates
+and conditional featured cards. The earlier roadmap-only status above records the prior
+snapshot. Creator metadata remains unchanged; no supplied PDF/content, recorded delivery,
+keynote confirmation or new public person is inferred. Existing proposed talks and hackathon
+speaker/judge arrangements retain their original status.
+
+## Original task record
+
 - Recorded: 2026-10-03 (America/Chicago).
 - Task: PORTAL-006.
 - Status: IMPLEMENTED locally, pending review; external forms, invitations and scheduling remain PLANNED.

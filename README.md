@@ -19,7 +19,7 @@ main -> feature branch -> implementation -> local validation -> commit -> push
 
 Preserve existing commits and use new commits for corrections. Do not rewrite history, amend historical commits, alter their dates/authors or force push. Keep one logical change per commit and follow the current task's authorization before committing or publishing. Update the development log for meaningful work; significant functionality needs a SPEC, and important architectural decisions need an ADR.
 
-This workflow describes the required process, not existing branch-protection settings. The pending deployment workflow has no pull-request trigger; pre-merge PR CI remains a setup task.
+This workflow describes the required process, not existing branch-protection settings. The deployment workflow has no pull-request trigger; pre-merge PR CI remains a setup task.
 
 ## Local development
 
@@ -52,18 +52,76 @@ npm run preview
 | `/publications/`                        | Publications & Talks  |
 | `/about/`                               | About & Roadmap       |
 | `/media/`                               | Media Coverage        |
+| `/speaking/`                            | Speaking & Presentations |
+| `/speaking/<approved-slug>/`             | Approved presentation details |
 | `/hackathons/`                          | Community Hackathons  |
 | `/hackathons/events/`                   | Hackathon Events      |
 | `/hackathons/community/`                | Hackathon Community   |
+| `/hackathons/adaptive-authorization/`    | Adaptive Authorization event |
+| `/hackathons/behavioral-risk/`           | Behavioral Risk event |
+| `/hackathons/autonomous-resilience/`     | Autonomous Resilience event |
+| `/hackathons/sponsors/`                  | Sponsorship program |
 | `/404.html`                             | Custom not-found page |
+| `/robots.txt`                           | Generated crawl policy |
+| `/sitemap-index.xml`, `/sitemap-0.xml`   | Generated sitemap files |
 
-- `src/data/project.ts`: shared project details, models, statuses, navigation, publication topics and timeline.
-- `src/components/`: Header, Footer, Hero, StatusBadge, ModelCard, ArchitectureDiagram, ResearchTimeline and SectionHeading.
-- `src/layouts/Layout.astro`: semantic page shell and SEO metadata.
-- `src/styles/global.css`: responsive design, diagrams, focus styles and reduced-motion support.
-- `src/pages/robots.txt.ts`: build-time robots.txt generation; no runtime server is required.
-- `public/`: local SVG favicon and `.nojekyll` marker.
-- `scripts/site.test.mjs`: production route, link, metadata and research-integrity checks.
+Fifteen content routes plus a custom 404 currently generate sixteen HTML files (including the three event routes from
+`src/pages/hackathons/[event].astro` using `getStaticPaths()`), plus `robots.txt`.
+Approved presentation records add detail pages to that total. The current build reports twenty-one HTML pages; robots.txt and sitemap files are additional crawl output. `/media/` is
+linked from Home; the shared header navigation remains unchanged by the media feature.
+
+## Frontend architecture and content ownership
+
+Astro builds TypeScript data and `.astro` templates into static HTML and CSS in `dist/`.
+`astro.config.mjs` sets static output, trailing slashes, the root base and sitemap integration.
+There is no runtime content API: edits to repository data or assets require a rebuild.
+
+| Layer | Implementation and responsibility |
+| --- | --- |
+| Page shell and metadata | `src/layouts/Layout.astro`: shared Header/Footer, skip link, author, canonical, Open Graph/Twitter and noindex handling |
+| Shared UI | `src/components/`: Hero, SectionHeading, StatusBadge, ModelCard, ArchitectureDiagram, ResearchTimeline, CreatorProfile/CreatorLinks and BrandMark |
+| Theme | ThemeInit/ThemeControls and `src/styles/global.css`: semantic `light-dark()` tokens, system preference and optional `aeglysai-theme` localStorage setting |
+| Speaking UI/content | `src/components/speaking/`, `src/data/presentations.ts`, `/speaking/` and `[slug].astro`: approved local PDF records, reusable previews/cards/metadata/viewer |
+| Media UI | `src/components/media/MediaCarousel.astro` and `MediaCard.astro`: shared compact/full cards and native scroll-snap carousel |
+| Hackathon UI | `src/components/hackathons/`, HackathonNav, HackathonRegistration and HackathonPersonCard; scoped `src/styles/hackathon-experience.css` used by the series and sponsor experiences |
+| Research and creator content | `src/data/project.ts`: project/models, proposed papers/talks and research timeline; `creator.ts`: supplied public identity/photo/profile links |
+| Media content | `src/data/media.ts`: six typed records, date evidence, thumbnail provenance and sorting; both pages call `sortedMediaArticles()` |
+| Hackathon content | `hackathons.ts`: events; `hackathonExperience.ts`: landing copy; `hackathonPeople.ts`: consent-filtered public profiles; `hackathonForms.ts`: five canonical intake settings |
+| Sponsorship and social metadata | `hackathonSponsorship.ts`: proposed tiers/approved recognition; `hackathonSeo.ts` and `social.ts`: page and social-preview configuration |
+| Assets and crawl output | `public/`: copied local assets including brand PNGs, portrait, social preview and `.nojekyll`; `src/pages/robots.txt.ts` and sitemap integration generate crawl files |
+| Verification and hosting | `scripts/site.test.mjs`: built-output checks; `.github/workflows/deploy-pages.yml`: Node 24 build/check/test and Pages deployment restricted to main |
+
+The conceptual research diagram on `/architecture/` describes the separate research
+initiative; it is not the portal's deployment topology. The portal has no database,
+authentication, application backend or experiment runner. Draft operational documents
+under `docs/hackathons/` do not create external Forms/Sheets/Drive workflows.
+
+Theme initialization is inline on every HTML route. Home and `/media/` additionally
+include the inline carousel initializer and image-error handlers. No client framework,
+client JavaScript bundle, carousel library or runtime publisher metadata fetch is used.
+Without JavaScript, theme follows CSS/system preference, theme controls stay hidden and
+media cards remain horizontally scrollable with inactive carousel controls hidden.
+
+### Dependencies
+
+Current direct dependencies from `package.json`: Astro `^7.3.4` and `@astrojs/sitemap`
+`^3.7.4`; development tools are `@astrojs/check` `^0.9.10` and TypeScript `~5.9.3`.
+`package-lock.json` pins resolved packages. Node 24 is selected by `.nvmrc`; the package
+engine range is broader (`>=22.12.0`). Media and brand asset integration in `85332d9`
+introduced no dependency or lockfile changes. Native DOM APIs, ResizeObserver and CSS
+scroll snap provide the carousel. Existing architectural decisions are retained; the
+[ADR directory](docs/adr/README.md) contains guidance, not a fabricated historical ADR.
+
+### Images
+
+Local asset URLs use `asset()` from `src/data/project.ts`. `CreatorProfile.astro` checks
+portrait existence at build time and uses an initials fallback if absent. BrandMark
+selects existing PNG symbols by theme; Layout uses PNG favicon and Apple touch icons.
+The 1200×630 social preview comes from `social.ts`, independently of media thumbnails.
+Public files are copied as supplied/exported; there is no Astro Image transformation
+pipeline or automatic remote thumbnail compression/srcset generation in this code.
+Media uses publisher HTTPS URLs directly, reserved 16:9 frames, lazy loading and async
+decoding. See the [Media Coverage section](#media-coverage) for failure behavior and provenance.
 
 ## Research content and integrity
 
@@ -103,7 +161,7 @@ Permissions are scoped by job: the build receives `contents: read`; deployment r
 1. In this repository's **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source.
 2. After review, commit and merge approved portal changes into `main`. The push triggers the workflow. Alternatively, run **Deploy AeglysAI Portal to GitHub Pages** manually on `main` after the workflow is available on the default branch.
 3. Check the workflow's build and deployment jobs and the `github-pages` environment URL.
-4. Verify Home, Research, Architecture, Experiments, Publications, About and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
+4. Verify all routes listed above, including Media Coverage, hackathon event details, sponsors and a missing route on the published site. Confirm styles, navigation, favicon and the custom 404 work.
 
 Configure and verify the production custom domain in GitHub Pages before deployment. A successful local build does not publish changes; the workflow deploys the reviewed version after it reaches `main`.
 
@@ -118,19 +176,71 @@ base: "/",
 
 The deployment workflow uses this configuration directly, without `SITE_URL` or `BASE_PATH` overrides. The static output and GitHub Pages build/upload/deploy architecture remain unchanged. Do not restore the former repository prefix when building for this domain.
 
-Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, favicon and creator photo are served from root paths. Canonical and Open Graph URLs use `https://aeglysai.com`; robots.txt references `https://aeglysai.com/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
+Internal navigation resolves to `/`, `/research/`, `/architecture/`, `/experiments/`, `/publications/` and `/about/`. CSS, PNG brand icons, social preview and creator photo are served from root paths; media thumbnails use external publisher URLs. Canonical and Open Graph URLs use `https://aeglysai.com`; robots.txt references `https://aeglysai.com/sitemap-index.xml`. The build includes directory indexes plus `404.html` and requires no application server.
 
-The site uses system fonts, a local SVG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, JSON-LD; social previews use the local AeglysAI asset. Twitter/X metadata uses the shared large-image preview. Tests reject old deployment paths and development URLs in generated artifacts.
+The site uses system fonts, a local PNG favicon and inline SVG/HTML diagrams; there are no external font services, client JavaScript bundles, JSON-LD; social previews use the local AeglysAI asset. Twitter/X metadata uses the shared large-image preview. Tests reject old deployment paths and development URLs in generated artifacts.
 
-The existing GitHub Actions custom-domain setup is retained. No `CNAME` file is added. See [SPEC-002 — Custom-domain migration](docs/specs/SPEC-002-custom-domain.md) for the audit and validation requirements. Earlier deployment URLs in historical logs and the dated V1 review are intentionally preserved.
+The existing GitHub Actions custom-domain setup is retained. No `CNAME` file is added. See [SPEC-006 — Current production origin](docs/specs/SPEC-006-aeglysai-domain.md) and the historical [SPEC-002 root-path migration](docs/specs/SPEC-002-custom-domain.md) for audit and validation requirements. Earlier deployment URLs in historical logs and the dated V1 review are intentionally preserved.
 
 Official references: [Astro GitHub Pages deployment](https://docs.astro.build/en/guides/deploy/github/) and [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
-## Review and next work
+## Feature status and roadmap
 
-Review the portal wording against the finalized research specification before publishing. Model status and paper/talk titles need to be maintained as the research evolves. No publication files, datasets, experimental results or verified literature list are supplied yet. Open Graph and Twitter/X metadata use the local AeglysAI social preview.
+Speaking module follow-up: IMPLEMENTED locally on feature/speaking-presentations (SPEC-010), with approved resource and invitation metadata. The earlier documentation synchronization remains uncommitted and preserved.
 
-Recommended next task: review the domain-only migration, then verify the deployed routes and assets at aeglysai.com after an authorized deployment. Do not publish speculative hypotheses or research outcomes.
+Snapshot: implementation through `74c2963` (PR #14 merge), checked 2026-10-07.
+Completed means implemented and merged in this portal repository; it does not establish
+live deployment, operational event readiness or measured research effectiveness.
+In progress means documents/content are in preparation with work still required;
+no active coding branch or completion date is inferred.
+
+| Feature | Status | Evidence / remaining work |
+| --- | --- | --- |
+| Research portal pages, conceptual diagrams and creator profile | COMPLETED / IMPLEMENTED | Astro pages/components; creator commit `e8d7f6b`, merge `bbe7491`; LinkedIn URL remains null |
+| Root domain, current brand and light/dark/system theme | COMPLETED / IMPLEMENTED | Config/Layout/ThemeInit; domain `03670f7`, rebrand `5b5251c`, theme `52ae928` and reconciliation `247ef9e` |
+| Approved raster brand assets and image metadata | COMPLETED / IMPLEMENTED | BrandMark/Layout and `public/brand/`, committed in `85332d9`; higher-resolution masters/specialized social cards remain source-dependent |
+| Media Coverage and both six-article carousels | COMPLETED / IMPLEMENTED | `85332d9`, merged by `74c2963`; publisher image reachability needs maintenance |
+| Hackathon frontend, event detail routes and participant handbook | COMPLETED / IMPLEMENTED | `8431b47`, merge `9030455`; events themselves remain PLANNED |
+| Sponsorship frontend and draft terms | COMPLETED / IMPLEMENTED | `280fd65`, merge `ba5c514`; sponsor records empty, intake closed, no payments or contributions implied |
+| Papers, proposed talks and literature/specification preparation | IN PROGRESS / IN PREPARATION | `/publications/` and research copy; no manuscripts, accepted talks, verified reference list or results supplied |
+| Hackathon organizer terms, judging, privacy and certificate operations | IN PROGRESS / IN PREPARATION | Existing draft handbook/operations; dates, eligibility, funding, contacts, people and issuance details remain TBD |
+| Live forms, event sessions, selection/results and certificate issuance | PLANNED | Five canonical form URLs null/closed, sponsor intake null/closed; no live workflow or issued artifact established |
+| Speaking & Presentations module | IMPLEMENTED LOCALLY | Listing/nav, shared cards/detail/PDF viewer and approval gates exist; ATAI completed, GICITE confirmed/upcoming, ETIC awaiting written confirmation, two proposals and shared details; full PDF remains private |
+| PR-triggered CI | PLANNED | Current Pages workflow triggers on main push/manual dispatch only |
+| Model D, telemetry/feedback and comparative experiments | PLANNED RESEARCH | Separate research repository scope; no implemented Model D or validated comparisons asserted here |
+| Deployment of the current merged revision | UNVERIFIED | Workflow exists; no current successful Actions/environment record inspected in this documentation task |
+
+### Next work
+
+1. Finalize organizer launch terms, funding, eligibility/selection, privacy/conduct contact,
+   confirmed people and challenge material before opening approved Forms responder URLs.
+2. Add PR-triggered build/check/test validation and verify current Pages deployment evidence
+   and live route/assets independently of the local build or merge.
+3. Maintain publication metadata and image availability; add a creator LinkedIn destination
+   only when supplied and verified. Higher-resolution brand masters remain future asset work.
+4. Supply and approve actual PDF decks/public metadata for **Speaking & Presentations**.
+   The module's listing, data/schema, detail template and native PDF viewer are now implemented
+   locally; follow the authoring workflow below before adding content. Event delivery needs
+   evidence separate from publishing slides; existing proposed talks/keynote remain in preparation/planned.
+5. Continue research-specification/literature preparation and Model D/evaluation work in
+   the separate research repository; publish only supported findings and reproducible evidence.
+
+No completion dates or new release versions are assigned. Research phase labels V0.1/V0.2
+on About describe the research roadmap and are distinct from portal Git tags.
+
+## Changelog and version history
+
+Use [DEVELOPMENT_LOG.md](docs/DEVELOPMENT_LOG.md) as the existing engineering changelog and
+[PROJECT_HISTORY.md](docs/PROJECT_HISTORY.md#verified-git-tags--2026-10-07-audit) for the
+verified tag/commit table and major merged milestones. The latest media implementation
+is `85332d9`, tagged `v0.2.0`, merged by `74c2963` (PR #14). Its commit also contains the
+previously pending brand assets; it is not solely a carousel-only diff.
+
+The actual tag sequence is `v1.0.0`, `v1.0.0-aeglysai`, `v1.1.0`, then `v0.2.0` by creation
+date. This is not monotonically increasing semantic versioning. Preserve the tags; do not
+invent `v1.2.0` or rename history. The private package version remains `0.1.0` and is not
+a synchronized release identifier. Tags and merges do not prove GitHub Release objects,
+publication or successful deployment; those outcomes were not verified in this task.
 
 ## Community hackathon configuration
 
@@ -178,8 +288,8 @@ See the [launch checklist](docs/hackathons/LAUNCH_READINESS.md),
 The operational framework is prepared; event terms and live forms remain pending.
 No email infrastructure, messages sent, judging or results are implied.
 
-`SUBMISSION_FORM_URL` now configures the shared submission form; all three shared form
-URLs and per-event overrides remain null. Use public responder URLs after testing;
+`SUBMISSION_FORM_URL` derives from `PROJECT_SUBMISSION_URL`; all five canonical form
+URLs and per-event overrides remain null, with collection gates closed. Use public responder URLs after testing;
 never place private Drive folders or application responses in public configuration.
 
 `src/data/hackathonSeo.ts` owns per-page SEO; `src/data/social.ts` owns the shared social asset referenced by `hackathonSocialPreview.image` and the site layout.
@@ -202,7 +312,7 @@ URL audit. Dated history and prior domain-migration specifications retain their 
 
 ## Current brand
 
-AeglysAI is the evolution of the initiative previously known as AegisAI. Existing research direction, model IDs, publication titles and technical lineage are preserved. GitHub repository URLs and the internal package identifier remain unchanged.
+AeglysAI is the evolution of the initiative previously known as AegisAI. Existing research direction, model IDs, publication titles and technical lineage are preserved. The portal and research repository URLs use AeglysAI names after the reference cleanup in `b14722f`; the internal package identifier remains `aegisai-research-portal`.
 
 ### Hackathon foundation closure
 
@@ -211,8 +321,7 @@ The series landing links to /hackathons/adaptive-authorization/,
 and community routes remain available. Shared guidance: [handbook](docs/hackathons/README.md),
 [qualification template](docs/hackathons/QUALIFICATION_TEMPLATE.md),
 [GitHub workflow](docs/hackathons/GITHUB_WORKFLOW.md) and
-[certificate policy](docs/hackathons/CERTIFICATE_POLICY.md). Documents newly added in
-this review diff will be available on GitHub main only after a separately authorized merge.
+[certificate policy](docs/hackathons/CERTIFICATE_POLICY.md). The foundation and handbook were committed in `8431b47` and merged in `9030455`; event operations remain planned.
 
 ### Hackathon sponsorship V1
 
@@ -223,4 +332,142 @@ remain null, with the collection gate closed. No payments or automatic acceptanc
 See [sponsorship program](docs/hackathons/SPONSORSHIP.md) and
 [organizer-review draft terms](docs/hackathons/SPONSORSHIP_TERMS_DRAFT.md).
 
-Media coverage records are maintained in `src/data/media.ts`; see [SPEC-009](docs/specs/SPEC-009-media-coverage.md) for source evidence, publication-date verification and image permissions. The homepage and `/media/` expose all six articles through a responsive image carousel (3 desktop / 2 tablet / 1 mobile), with original publication image URLs and a branded fallback. Original external articles remain separate from research papers.
+## Media Coverage
+
+COMPLETED / IMPLEMENTED in `85332d9`, merged into main by `74c2963` (PR #14).
+Both the Home “Featured in the Media” section and `/media/` show all six external
+articles, sorted newest-first by publisher-reported publication date:
+
+| Publication | Article topic | Publication date |
+| --- | --- | --- |
+| Business Outstanders | Open-source adaptive-security research platform | 2026-10-07 |
+| Nerdbot | Explainable risk intelligence and policy authority | 2026-09-25 |
+| The Cyber Mag | Research and engineering community | 2026-09-11 |
+| Programming Insider | Adaptive authorization for zero-trust clouds | 2026-08-01 |
+| TechBullion | Enterprise engineering and intelligent infrastructure | 2026-07-21 |
+| The Cyber Mag | Policy-bounded adaptive cyber defense | 2026-07-02 |
+
+`src/data/media.ts` stores IDs, original headlines/URLs, publications, categories, brief
+portal summaries, nullable publication dates, verification flags/date evidence and thumbnail
+provenance. No database or runtime scraping is used. `featuredMediaArticles()` remains a
+latest-three helper tested in isolation; neither page uses it now. Both use the full
+`sortedMediaArticles()` list. Missing dates/headline verification render manual-review labels.
+
+`MediaCard.astro` shows a 16:9 image, publisher, date, three-line visual headline and
+“Read Article →” linking to the original publisher in a new tab with `noopener noreferrer`
+and full accessible headline/new-tab context. The full page additionally retains categories
+and summaries, plus its coverage/context disclaimer; Home uses compact cards and links to
+View All Media Coverage. No article text, endorsement or research outcome is inferred.
+
+`MediaCarousel.astro` displays three cards at widths ≥1024px, two at 640–1023px and one
+below 640px. Previous/next arrows move one card, stop at the ends, and position indicators
+adapt to the visible count (four valid starts on desktop, five tablet, six mobile).
+The track supports native scrolling/swiping, keyboard Left/Right/Home/End, focus styles,
+visible-range announcements and reduced-motion preferences. It does not autoplay or loop.
+
+Five thumbnails came from publication `og:image` metadata and Nerdbot's from the original
+featured-image link. They load directly from publisher/CDN HTTPS URLs with no-referrer,
+lazy loading and asynchronous decoding; a reserved frame and explicit dimensions prevent
+image-driven layout shifts. Decorative thumbnails have empty alt text because nearby text
+identifies each article. A missing thumbnail shows the existing AeglysAI icon/text placeholder;
+with JavaScript enabled, failed loads are hidden to reveal it. Error hiding uses an inline
+handler, so the same failure behavior is not guaranteed with JavaScript disabled.
+`PUBLISHER_METADATA` records provenance, not a granted redistribution license. There are
+third-party image requests; metadata alone does not guarantee rights or future availability.
+No publisher artwork is vendored and no unrelated stock image is used. The old local
+`media-article.svg` remains in public assets but is not the current card thumbnail/fallback.
+
+See [SPEC-009](docs/specs/SPEC-009-media-coverage.md) for exact article source links,
+verification evidence, architecture and acceptance criteria. Earlier validation is recorded
+in the changelog; this documentation-only synchronization does not rerun the application build.
+
+
+## Speaking & Presentations
+
+IMPLEMENTED locally with centralized proposals, invitation statuses and an approved first-page preview. No deployment performed.
+`/speaking/` groups invitations, confirmed/upcoming/completed talks, proposals and presentation resources. Shared navigation adds Speaking; approved
+records generate `/speaking/<slug>/` using the existing Astro getStaticPaths convention.
+Home's small Featured Presentations grid is conditional on explicitly featured approved
+records, including this preview. Existing Media Coverage is retained.
+
+`src/data/presentations.ts` owns the reusable Presentation schema and publication helpers.
+Records need both publicationStatus=PUBLISHED and approvedForPublication=true, actual local
+supplied title/description/category/speaker. Resource records require an actual local PDF or page-1 image; invitations/proposals may omit slides. Dates are
+nullable; slide publication date is independent of delivery. Without approved delivery evidence,
+a resource is labeled Slides published, or Presentation preview when only its cover is public. Conference metadata is separate from evidenced delivery.
+Invalid approved metadata, assets, PDF headers or duplicate slugs fail the build.
+
+Reusable components under `src/components/speaking/` are PresentationCard, PresentationThumbnail,
+PresentationMetadata and PdfViewer. Cards show 16:9 lazy previews, supplied content and View
+Presentation. Detail pages use shared metadata/canonicals. Records with an approved PDF use a titled lazy native PDF iframe,
+an always-visible Open PDF fallback and optional Download PDF link. Browser PDF support varies;
+opening the PDF separately remains available without JavaScript. No PDF.js/library/database added.
+
+Keep unapproved slides/images outside public/ (Astro copies all public files even if records
+are draft). After content/rights approval, put final versioned assets under public/presentations/
+and configure the record. Export the **actual first PDF page**, never invent slide artwork:
+
+```sh
+node scripts/presentation-thumbnail.mjs supplied.pdf first-page.png
+```
+
+This explicit authoring helper uses macOS sips/ImageIO or optional system pdftoppm on other
+platforms (manual first-page export is also supported). It preserves the page, caps its longest
+edge at 960px and refuses to overwrite existing output; review before publication. No npm or
+build-time dependency was added. If export is unavailable, thumbnail=null shows a branded
+missing-preview state. The 16:9 frame uses contain to preserve the whole slide.
+
+PDFs are served as supplied static files; the portal does not automatically compress them.
+Optimize size/accessibility at export, review, then rebuild. Thumbnails load independently of
+PDFs; the viewer is lazy. See [SPEC-010](docs/specs/SPEC-010-speaking-presentations.md) for fields,
+publication gates, acceptance and authoring instructions. No production placeholder metadata,
+real presentation delivery, conference invitation or attendance is claimed.
+
+
+Approved-preview follow-up: the user approved the first-page image and supplied ATAI 2026
+conference information. The local 960×540 PNG is the actual cover of **Beyond Static Access
+Control** (Shubh Prabhat). The detail page and homepage feature show this preview. Conference
+dates September 26–27, 2026, hybrid format, ACM Houston Chapter USA organizer and IoES
+technical sponsor match the [organizer's conference page](https://houston.acm.org/atai2026.html).
+The full draft PDF remains outside public assets; publication date and delivery remain null.
+See SPEC-010 for the separate draft-review findings and approved scope.
+
+Publications now focuses on the existing two research manuscripts, with a Speaking link.
+All five public records live in presentations.ts: completed ATAI with approved cover preview,
+confirmed/upcoming GICITE, ETIC awaiting written confirmation, and the two existing proposals. Speaking
+separates an event engagement gallery from the technical slide/topic library. Only matching
+participation filters appear; a past conference date never establishes completed delivery.
+GICITE title/abstract remain to be confirmed and no slides are published. Venue is attributed
+to the organizer. Existing /publications/, /speaking/ and ATAI detail URLs remain unchanged;
+there were no existing individual proposal URLs requiring redirects.
+
+Optional relatedPaperTitles reference the existing papers in project.ts and generate links
+in both directions using publication anchors. None is configured because no supplied
+presentation is identified as the same research paper. Invitation letters and evidence
+stay outside the public repository, source metadata and public assets. Only approved public
+status/date/event fields are rendered. See SPEC-010 for the status workflow.
+
+Roadmap follow-up: obtain participation acceptance before changing Invited to Confirmed;
+mark Upcoming only after scheduling is confirmed, and Completed only after reviewed delivery.
+Supply approved titles, abstracts, slide files and research associations when available.
+
+Speaking UX follow-up: navy “Ideas Worth Sharing” hero, featured GICITE invitation, responsive
+2/1-column engagement gallery with native All/Invited filters (Confirmed/Upcoming and Completed
+appear when matching records exist), separate slide library and compact topics/GitHub contact.
+No client filter script or dependencies. EngagementCard/FeaturedEngagement share canonical
+records; speakingView exposes normalized public metadata with independent slide status. Proposal
+cards stay in the library. Future actual slide files enable View/Download actions after validation.
+Roadmap: obtain approved engagement participation/title/abstract and slide assets; preserve status
+accuracy and private evidence separation as future records are added.
+
+PORTAL-SPEAKING-FINAL closure: three conference records are now present, retaining two proposals.
+ATAI is Completed, supported by privately inspected certificate/schedule, with the certificate's
+full presentation title and approved existing first-slide preview. GICITE is Confirmed — Upcoming
+per user update; organizer acknowledgment remains unverified. ETIC uses Acceptance sent —
+awaiting confirmation because written organizer confirmation was not located; exact role/title TBD.
+Existing creator source now uses Solution Architect, Creator & Maintainer, AeglysAI and the supplied
+research focus; approved portrait retained. No full draft PDF or private document published.
+See [Speaking evidence tracker](docs/speaking/SPEAKING_EVIDENCE_TRACKER.md) for per-artifact
+status and [existing SPEC-010](docs/specs/SPEC-010-speaking-presentations.md) for closure requirements.
+Roadmap: collect organizer confirmations/agenda/listings, finalize upcoming titles and approve
+final slide/event assets; no invented recordings/certificates/downloads.

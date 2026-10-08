@@ -1,5 +1,22 @@
 # SPEC-008 — Light/dark theme system
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED: ThemeInit/ThemeControls and semantic tokens introduced in
+`52ae928`, merged through `55c0edb`; theme branch reconciliation `247ef9e` merged by
+`1ae0493` (PR #10). Current name is AeglysAI; the final original-snapshot sentence
+below about outstanding rebrand work is superseded. Theme preference behavior remains
+unchanged. Media (`85332d9`) adds its own inline carousel initializer only on Home and
+/media/; the theme script remains inline on all HTML routes. It is no longer accurate
+to describe the whole site as having only one script per page. No client JavaScript
+bundle or new dependency was added. BrandMark uses the same theme selection for PNG
+symbols. See SPEC-009 and [current architecture](../../README.md#frontend-architecture-and-content-ownership).
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 Recorded: 2026-10-03. PORTAL-010, local implementation for review.
 
 Revision: renumbered from SPEC-007 to SPEC-008 on 2026-10-03 during merge reconciliation, preserving SPEC-007 for the brand migration. Implementation and validation content unchanged.

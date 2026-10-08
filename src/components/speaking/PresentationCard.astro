@@ -1,0 +1,32 @@
+---
+import { asset, href } from '../../data/project';
+import type { Presentation } from '../../data/presentations';
+import PresentationThumbnail from './PresentationThumbnail.astro';
+import { speakingView } from '../../data/presentations';
+interface Props { presentation: Presentation; }
+const { presentation } = Astro.props;
+const view = speakingView(presentation);
+---
+<article class="info-card presentation-card" data-presentation-slug={presentation.slug}>
+  <PresentationThumbnail presentation={presentation}/>
+  <div class="presentation-body">
+    <p class="eyebrow">{presentation.category}</p>
+    <h3>{presentation.title}</h3>
+    <p>{view.abstract ?? 'Technical topic in development. Abstract to be confirmed.'}</p>
+    <p class="slide-status">{view.status === 'Proposed' ? 'Proposed · In Development' : view.slideStatus}</p>
+    <p class="slide-availability">{presentation.pdf ? 'PDF slides available' : presentation.thumbnail ? 'First-slide preview · Full PDF not published' : 'Slides not yet available'}</p>
+    {presentation.pdf && <div class="slide-actions"><a class="text-link" href={view.slidesUrl!} target="_blank" rel="noopener noreferrer">View Slides ↗<span class="sr-only">: {presentation.title} (opens in a new tab)</span></a>{presentation.pdf.downloadEnabled && <a class="text-link" href={asset(presentation.pdf.path)} download>Download Slides<span class="sr-only">: {presentation.title}</span></a>}</div>}
+    <a class="text-link presentation-link" href={href(`speaking/${presentation.slug}`)}>{presentation.thumbnail || presentation.pdf ? 'View Presentation' : 'Explore Topic'} <span aria-hidden="true">→</span><span class="sr-only">: {presentation.title}</span></a>
+  </div>
+</article>
+<style>
+  .presentation-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
+  .presentation-body { display: flex; flex-direction: column; gap: 16px; padding: 24px; flex: 1; }
+  .presentation-body h3, .presentation-body > p { margin: 0; }
+  .presentation-body h3 { font-size: 1.15rem; line-height: 1.5; }
+  .slide-status { color: var(--cyan); font-size: .8rem; }
+  .slide-availability { color: var(--muted); font-size: .85rem; }
+  .slide-actions { display: flex; flex-wrap: wrap; gap: 16px; }
+  .slide-actions a { min-height: 44px; display: inline-flex; align-items: center; }
+  .presentation-link { margin-top: auto; display: inline-flex; align-items: center; min-height: 44px; }
+</style>

@@ -1,4 +1,6 @@
 ---
+import PresentationCard from "../components/speaking/PresentationCard.astro";
+import { featuredPresentations } from "../data/presentations";
 import MediaCarousel from "../components/media/MediaCarousel.astro";
 import { sortedMediaArticles } from "../data/media";
 import Layout from "../layouts/Layout.astro";
@@ -6,6 +8,7 @@ import ModelCard from "../components/ModelCard.astro";
 import ArchitectureDiagram from "../components/ArchitectureDiagram.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { project, models, href } from "../data/project";
+const presentations = featuredPresentations();
 ---
 
 <Layout title={project.fullName}>
@@ -161,6 +164,10 @@ import { project, models, href } from "../data/project";
     <div class="section-heading-row"><div><span class="eyebrow">Media Coverage</span><h2 id="featured-media-heading">Featured in the Media</h2></div><a class="text-link" href={href("media")}>View All Media Coverage <span aria-hidden="true">→</span></a></div>
     <MediaCarousel articles={sortedMediaArticles()} id="featured-media-track" label="Featured media articles"/>
   </section>
+  {presentations.length > 0 && <section class="section container" aria-labelledby="featured-presentations-heading">
+    <div class="section-heading-row"><div><span class="eyebrow">Speaking &amp; Presentations</span><h2 id="featured-presentations-heading">Featured Presentations</h2></div><a class="text-link" href={href("speaking")}>View All Presentations <span aria-hidden="true">→</span></a></div>
+    <div class="cards-grid three">{presentations.map(presentation => <PresentationCard presentation={presentation}/>)}</div>
+  </section>}
   <section class="container closing-panel">
     <div>
       <span class="eyebrow">Work in the open</span>

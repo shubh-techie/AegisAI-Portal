@@ -1,5 +1,38 @@
 # PORTAL-012 — AeglysAI Hackathon Experience Specification
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED experience and closure: `8431b47`, merged by `9030455`
+(PR #12), tagged `v1.1.0` at the merge. Sponsorship extension `280fd65` merged by
+`ba5c514` (PR #13). The original PLANNED heading/record tables below are a proposal
+snapshot; later extensions plus this update identify actual implementation.
+Current components are SeriesHero, EventCard, ParticipantJourney, PeopleSection,
+FormCta, TechnicalIcon and EventDetails, with shared components reused; not every
+original proposed component/type was implemented. Speaker event assignments and
+fully specified milestone/activity schemas remain proposals, not existing typed records.
+The red stylesheet is imported by the series and sponsors; event details/community
+retain neutral styling. Five canonical form URLs remain null/closed. Handbook,
+qualification, fork workflow and conditional certificate policy exist as static documents;
+actual events, selection, certificates, challenge/research implementation, forms and
+confirmed people remain PLANNED. No new dependency or backend is introduced.
+Speaking & Presentations is a distinct planned portal module in the existing
+[README roadmap](../../README.md#next-work); existing proposed talks and keynote do not
+establish completed presentations.
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+### Speaking module follow-up — 2026-10-07
+
+The subsequent user-authorized module is IMPLEMENTED locally in
+[SPEC-010](SPEC-010-speaking-presentations.md): /speaking/, approved-record detail templates
+and conditional featured cards. The earlier roadmap-only status above records the prior
+snapshot. Creator metadata remains unchanged; no supplied PDF/content, recorded delivery,
+keynote confirmation or new public person is inferred. Existing proposed talks and hackathon
+speaker/judge arrangements retain their original status.
+
+## Original task record
+
 Recorded: 2026-10-03 (America/Chicago). Status: **PLANNED — specification for review**.
 Baseline: clean `feature/hackathon-experience` at `9bb31ec`, which includes the repository-name cleanup, domain/brand migrations and theme work. This document defines future work; it does not implement a redesign, create forms, confirm arrangements or establish launch readiness.
 

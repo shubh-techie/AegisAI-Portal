@@ -1,5 +1,16 @@
 # Launch readiness — 2026-10-03
 
+Current-status note — 2026-10-07: static foundation/experience/handbook code is merged
+(`8431b47` → `9030455`), and sponsorship UI/draft terms are merged (`280fd65` → `ba5c514`).
+The historical checklist below is not an assertion that those commits are still pending.
+Registration launch remains not ready: all five `hackathonForms.ts` URLs are null/closed,
+sponsor form/contact remain null, public guest/judge/sponsor records remain empty and
+organizer terms/schedules/funding/contacts are unfinished. Current previews use the local
+AeglysAI social PNG; earlier text-only observations below are historical. Current Actions
+success, live deployment, forms, messages and events were not verified by this documentation
+task. Use the [current feature matrix/roadmap](../../README.md#feature-status-and-roadmap)
+and the closure clarification below together with the original launch gates.
+
 Status: portal implementation and draft operations are prepared locally; **registration
 launch is not ready**. No current event, prize award, speaker invitation, judging activity
 or attendance is claimed. Recheck this snapshot whenever configuration changes.

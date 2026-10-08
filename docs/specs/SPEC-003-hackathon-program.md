@@ -1,5 +1,24 @@
 # SPEC-003 — Community hackathon program foundation
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED frontend: foundation `c21f16c` merged by `c966416`;
+experience/handbook/event-detail implementation `8431b47` merged by `9030455`.
+Names now use AeglysAI. Seven hackathon content routes exist, including sponsors
+(`280fd65`, merge `ba5c514`); see the [route inventory](../../README.md#site-structure).
+Events, keynote and all external participation operations remain PLANNED.
+`hackathonForms.ts` owns five null/closed canonical form settings; aliases in
+`hackathons.ts` are derived. `hackathonPeople.ts` owns speaker/judge records.
+The source and operational boundaries supersede the original three-route/form notes
+below. Current red treatment applies to the series and sponsors, not event/community
+detail pages. Full closure/sponsorship scope is in the existing
+[experience specification](HACKATHON_EXPERIENCE_SPEC.md).
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 - Recorded: 2026-10-03 (America/Chicago).
 - Task: PORTAL-005 — Hackathon Program Foundation (identifier supplied by user; distinct from the prior domain-migration task also labeled PORTAL-005).
 - Status: IMPLEMENTED locally as an uncommitted diff on `feature/hackathon-program`; events and program arrangements remain PLANNED.

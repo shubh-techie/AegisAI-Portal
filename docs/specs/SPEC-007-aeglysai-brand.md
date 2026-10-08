@@ -1,5 +1,23 @@
 # SPEC-007 — AegisAI → AeglysAI brand migration
 
+## Current status — 2026-10-07 synchronization
+
+COMPLETED / IMPLEMENTED: brand rework `5b5251c` merged by `55c0edb` (PR #9);
+repository-reference cleanup `b14722f` merged by `9bb31ec` (PR #11).
+Approved raster assets, BrandMark, PNG favicon/touch metadata and LinkedIn Page banner
+were later committed together with media in `85332d9`, merged by `74c2963` (PR #14).
+That commit is not exclusively a media UI change. Current portal/core URLs use
+AeglysAI names; `aegisai-research-portal` remains the internal package identifier.
+`public/brand/README.md` retains crop provenance and source limitations. Shared local
+social preview remains unchanged; no specialized new social cards, vector master,
+manifest or PWA is claimed. Earlier classifications are the original audit snapshot;
+current image handling is documented in the [README](../../README.md#images).
+
+Current baseline: `74c2963`, verified against local source and Git history. Implementation/merge
+is not deployment evidence. The original dated task record follows unchanged.
+
+## Original task record
+
 - Recorded: 2026-10-03 (America/Chicago).
 - Task: PORTAL-009.
 - Status: IMPLEMENTED locally, uncommitted for review; no deployment claimed.

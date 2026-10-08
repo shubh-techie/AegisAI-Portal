@@ -1,0 +1,12 @@
+---
+import EngagementCard from './EngagementCard.astro';
+import type { Presentation } from '../../data/presentations';
+interface Props { presentation: Presentation; }
+const { presentation } = Astro.props;
+---
+<section aria-labelledby="featured-engagement-heading">
+  <p class="eyebrow">01 / Featured engagement</p>
+  <h2 id="featured-engagement-heading">An invitation to share ideas.</h2>
+  <EngagementCard presentation={presentation} featured/>
+</section>
+<style>h2 { margin: 12px 0 28px; }</style>

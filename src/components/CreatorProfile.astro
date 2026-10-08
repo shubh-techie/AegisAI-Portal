@@ -37,6 +37,8 @@ const hasPhoto = existsSync(resolve("public", creator.photo.path));
     <h2 id="creator-heading">Creator &amp; Maintainer</h2>
     <h3>{creator.name}</h3>
     <p class="creator-role">{creator.role}</p>
+    <p>{creator.projectDesignation}</p>
+    <p>{creator.researchFocus}</p>
     <div class="prose">
       {creator.biography.map((paragraph) => (
         <p>{paragraph}</p>
